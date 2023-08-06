@@ -12,3 +12,8 @@ main{
   text-align: justify;
 }
 figcaption{text-align: center}
+.div-float{
+  float: right;
+  width: 50%;
+  margin-left: 1em;
+}
