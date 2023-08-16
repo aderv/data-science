@@ -455,18 +455,18 @@ var3         -0.1475995 -0.01353928  0.00552749  0.28389997</code></pre>
 </div>
 </div>
 <p>Es buen ejercicio intentar obtener estos resultados a partir de las ecuaciones matriciales del modelo</p>
-<div class="cell" data-hash="reg-multiple_cache/html/unnamed-chunk-6_34ca305f8145759dd42c69820a7ff917">
+<div class="cell" data-hash="reg-multiple_cache/html/unnamed-chunk-6_4121866d187dc34fae068401a0fca975">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># matriz X</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>mx <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">data.frame</span>(<span class="at">intercepto =</span> <span class="fu">rep</span>(<span class="dv">1</span>, n), <span class="at">var1 =</span> x1, <span class="at">var2 =</span> x2, <span class="at">var3 =</span> x3))</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>mx <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n), x1, x2, x3)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>beta_est <span class="ot">&lt;-</span> <span class="fu">solve</span>(<span class="fu">t</span>(mx)<span class="sc">%*%</span>mx)<span class="sc">%*%</span><span class="fu">t</span>(mx)<span class="sc">%*%</span>y</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>H <span class="ot">&lt;-</span> mx<span class="sc">%*%</span><span class="fu">solve</span>(<span class="fu">t</span>(mx)<span class="sc">%*%</span>mx)<span class="sc">%*%</span><span class="fu">t</span>(mx)</span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>beta_est</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>                 [,1]
-intercepto 0.02071457
-var1       2.77634472
-var2       3.16818077
-var3       4.67855453</code></pre>
+<pre><code>         [,1]
+   0.02071457
+x1 2.77634472
+x2 3.16818077
+x3 4.67855453</code></pre>
 </div>
 </div>
 <p>Predicciones, residuales, matriz de varianzas y covarianzas</p>
@@ -498,7 +498,7 @@ var2       -0.1586067  0.01027060  0.30036354  0.00552749
 var3       -0.1475995 -0.01353928  0.00552749  0.28389997</code></pre>
 </div>
 </div>
-<p>El <span class="math inline">\(\mathrm{R^2}\)</span> del modelo es por definición, <span class="math inline">\(\mathrm{R^2} = 1- \frac{\mathrm{RSS}}{\mathrm{TSS}}\)</span>. El cálculo directo en <code>R</code> sería</p>
+<p>El <span class="math inline">\(\mathrm{R^2}\)</span> del modelo es por definición, <span class="math inline">\(\mathrm{R^2} = 1- \frac{\mathrm{SSE}}{\mathrm{SST}}\)</span>. El cálculo directo en <code>R</code> sería</p>
 <div class="cell" data-hash="reg-multiple_cache/html/unnamed-chunk-8_bd47e57b448d82618282b8ee5404ad93">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">sum</span>(res<span class="sc">*</span>res)<span class="sc">/</span><span class="fu">sum</span>((y<span class="sc">-</span><span class="fu">mean</span>(y))<span class="sc">^</span><span class="dv">2</span>)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>r2</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
