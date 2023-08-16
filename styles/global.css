@@ -3,4 +3,13 @@ h2{color: #9a2984;}
 main{
   text-align: justify;
 }
+aside{
+  text-align: left;
+}
 figcaption{text-align: center}
+
+.div-float{
+  float: right;
+  width: 50%;
+  margin-left: 1em;
+}

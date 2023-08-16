@@ -104,7 +104,7 @@ gtag('config', 'G-JBLWWCLEGX', { 'anonymize_ip': true});
 <link rel="stylesheet" href="styles/index.css">
 </head>
 
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating slimcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -174,8 +174,27 @@ gtag('config', 'G-JBLWWCLEGX', { 'anonymize_ip': true});
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Regresión Lineal</span></span>
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Regresión Lineal</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reg-simple.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Regresión lineal simple</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reg-multiple.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Regresión lineal múltiple</span></span></a>
+  </div>
+</li>
+      </ul>
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
@@ -208,7 +227,7 @@ gtag('config', 'G-JBLWWCLEGX', { 'anonymize_ip': true});
 </nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -233,9 +252,9 @@ gtag('config', 'G-JBLWWCLEGX', { 'anonymize_ip': true});
 
 </header>
 
-<section id="presentación" class="level1 unnumbered">
+<section id="presentación" class="level1 unnumbered page-columns page-full">
 <h1 class="unnumbered">Presentación</h1>
-<section id="descripción-del-curso" class="level2">
+<section id="descripción-del-curso" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="descripción-del-curso">Descripción del curso</h2>
 <p>El curso de ciencia de datos presenta una introducción a la teoría e implementación de métodos estadísticos para el análisis de datos. Se hace énfasis en los modelos predictivos que buscan aproximar una variable de interés <span class="math inline">\(Y\)</span> (métodos supervisados) en términos de un conjunto de variables predictoras <span class="math inline">\((\textbf{X})\)</span>, usando una función <strong>f</strong> que debe ser <em>aprendida</em> a través de un conjunto de datos <span class="math inline">\((x_i, y_i)\ i=1,2,...,n\)</span>.</p>
 <div class="div-float">
@@ -255,7 +274,7 @@ gtag('config', 'G-JBLWWCLEGX', { 'anonymize_ip': true});
 </ul>
 <p>El objetivo principal de este curso es desarrollar de manera formal, pero sin exceso en la teoría matemática, los modelos estadísticos en ciencia de datos. Las habilidades de programación y conocimientos básicos en los campos de aplicación se desarrollarán en la medida de lo necesario.</p>
 <p>Resolver problemas de ciencia de datos no es un proceso lineal, pero sí se puede enmarcar en una serie de etapas que ayudan a desarrollar de manera consistente el trabajo o flujo de trabajo.</p>
-<p>En la <a href="uso-ggplot2.html#fig-workflow">Figura&nbsp;<span>2.1</span></a> se muestra un esquema de este proceso sistemático. La primera etapa se conoce como <strong>disputa de datos</strong> (<em>data wrangling</em>)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> y consiste en la obtención y <em>puesta a punto</em> de los datos que se van a utilizar. Esta fase requiere <strong>importar</strong>, <strong>ordenar</strong> y <strong>transformar</strong> los datos, y necesita habilidades específicas en manejo de bases de datos. Las personas con alta especialización en esta área se conocen somo Ingenieros de Datos (<em>Data Engineers</em>).</p>
+<div class="page-columns page-full"><p>En la <a href="uso-ggplot2.html#fig-workflow">Figura&nbsp;<span>2.1</span></a> se muestra un esquema de este proceso sistemático. La primera etapa se conoce como <strong>disputa de datos</strong> (<em>data wrangling</em>)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> y consiste en la obtención y <em>puesta a punto</em> de los datos que se van a utilizar. Esta fase requiere <strong>importar</strong>, <strong>ordenar</strong> y <strong>transformar</strong> los datos, y necesita habilidades específicas en manejo de bases de datos. Las personas con alta especialización en esta área se conocen somo Ingenieros de Datos (<em>Data Engineers</em>).</p><div class="no-row-height column-margin column-container"><li id="fn1"><p><sup>1</sup>&nbsp;Algunos autores lo definen como una <em>pelea</em> con los datos</p></li></div></div>
 <div id="fig-workflow" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <div class="cell">
@@ -298,12 +317,12 @@ MO --&gt; CO
 <p>La tercera fase (y la que más desarrollaremos en este curso) es la <strong>Modelación</strong> y se trata de aplicar modelos estadísticos y de <em>machine learning</em> para obtener ideas e información a partir de los datos. Este proceso también es iterativo y puede requerir aplicar varios tipos de modelos, evaluarlos y compararlos para obtener buenos resultados. Los especialistas en esta área son los Científicos de Datos (<em>Data Scientists</em>).</p>
 <p>La última fase del proceso es la <strong>comunicación</strong> de los resultados y hallazgos. Es importante aprender a presentar los resultados y veremos algunas herramientas básicas para lograrlo.</p>
 </section>
-<section id="recursos-bibliógraficos" class="level2">
+<section id="recursos-bibliógraficos" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="recursos-bibliógraficos">Recursos bibliógraficos</h2>
 <p>Hay muchos (muchísimos) recursos disponibles para apoyar este curso. Es fundamental usar lenguajes de programación y en este caso usaremos <code>R</code>, cualquier curso <em>online</em>, libro o tutorial puede servir para aprender los conceptos básicos, el estudiante es libre de escoger y aprender (si aún no sabe) <code>R</code> de una fuente de su preferencia.</p>
 <p>El libro principal para los conceptos estadísticos será <span class="citation" data-cites="james2021">James et&nbsp;al. (<a href="references.html#ref-james2021" role="doc-biblioref">2021</a>)</span>, ya que maneja un buen balance entre aplicaciones y teoría para el bagaje matemático que se espera de los estudiantes. Este libro también trae código y aplicaciones en <code>R</code>, pero hay mejores fuentes en este aspecto.</p>
 <p>Otros 2 libros interesantes para la parte conceptual y teórica son <span class="citation" data-cites="irizarry huang_data">(<a href="references.html#ref-irizarry" role="doc-biblioref">Irizarry, s.&nbsp;f.</a>; <a href="references.html#ref-huang_data" role="doc-biblioref">Huang y Deng, s.&nbsp;f.</a>)</span>, un poco menos desarrollados en lo conceptual con respecto a <span class="citation" data-cites="james2021">(<a href="references.html#ref-james2021" role="doc-biblioref">James et&nbsp;al. 2021</a>)</span> pero a cambio traen más y mejor código para aplicaciones usando <code>R</code>.</p>
-<p>El libro de <span class="citation" data-cites="wickham">(<a href="references.html#ref-wickham" role="doc-biblioref">Wickham, Çetinkaya-Rundel, y Grolemund, s.&nbsp;f.</a>)</span> es excelente para aprender a hacer ciencia de datos en <code>R</code>, sobre todo en la parte de análisis exploratorio de datos, tiene muchos ejemplos y código muy bien escrito. Su desventaja<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> es la falta de modelos estadísticos.</p>
+<div class="page-columns page-full"><p>El libro de <span class="citation" data-cites="wickham">(<a href="references.html#ref-wickham" role="doc-biblioref">Wickham, Çetinkaya-Rundel, y Grolemund, s.&nbsp;f.</a>)</span> es excelente para aprender a hacer ciencia de datos en <code>R</code>, sobre todo en la parte de análisis exploratorio de datos, tiene muchos ejemplos y código muy bien escrito. Su desventaja<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> es la falta de modelos estadísticos.</p><div class="no-row-height column-margin column-container"><li id="fn2"><p><sup>2</sup>&nbsp;Desventaja en el sentido de que el libro no está pensado para hacer modelación por lo que tendremos que usar otras fuentes para esta parte</p></li></div></div>
 <p>Un libro que requiere algo más de madurez matemática que <span class="citation" data-cites="james2021">(<a href="references.html#ref-james2021" role="doc-biblioref">James et&nbsp;al. 2021</a>)</span> es <span class="citation" data-cites="hastie2009">(<a href="references.html#ref-hastie2009" role="doc-biblioref">Hastie, Tibshirani, y Friedman 2009</a>)</span>, aunque no se usará como referencia principal, es útil para profundizar en algunos temas importantes. De igual manera, se pueden consultar las notas disponibles en línea de 2 cursos de estadística no paramétrica <span class="citation" data-cites="garcia_notes">(<a href="references.html#ref-garcia_notes" role="doc-biblioref">García-Portugués, s.&nbsp;f.a</a>)</span> y modelos predictivos <span class="citation" data-cites="garcia_notes1">(<a href="references.html#ref-garcia_notes1" role="doc-biblioref">García-Portugués, s.&nbsp;f.b</a>)</span>.</p>
 <p>Los libros <span class="citation" data-cites="alexander2023 healy2018 kabacoff">(<a href="references.html#ref-alexander2023" role="doc-biblioref">Alexander 2023</a>; <a href="references.html#ref-healy2018" role="doc-biblioref">K. Healy 2018</a>; <a href="references.html#ref-kabacoff" role="doc-biblioref">Kabacoff, s.&nbsp;f.</a>)</span> son excelentes referencias para profundizar en aspectos de visualización de datos usando <code>R</code>. También se pueden encontrar toda una serie de recursos valiosos en la web, como <span class="citation" data-cites="emaasit healy holtz">(<a href="references.html#ref-emaasit" role="doc-biblioref">Emaasit, s.&nbsp;f.</a>; <a href="references.html#ref-healy" role="doc-biblioref">C. Healy y Holtz, s.&nbsp;f.</a>; <a href="references.html#ref-holtz" role="doc-biblioref">Holtz, s.&nbsp;f.</a>)</span>.</p>
 <p>Los libros <span class="citation" data-cites="james2021 hastie2009">(<a href="references.html#ref-james2021" role="doc-biblioref">James et&nbsp;al. 2021</a>; <a href="references.html#ref-hastie2009" role="doc-biblioref">Hastie, Tibshirani, y Friedman 2009</a>)</span> pueden obtenerse de las bases de datos de la universidad. Los libros <span class="citation" data-cites="irizarry huang_data wickham garcia_notes garcia_notes1 alexander2023 healy2018 kabacoff">(<a href="references.html#ref-irizarry" role="doc-biblioref">Irizarry, s.&nbsp;f.</a>; <a href="references.html#ref-huang_data" role="doc-biblioref">Huang y Deng, s.&nbsp;f.</a>; <a href="references.html#ref-wickham" role="doc-biblioref">Wickham, Çetinkaya-Rundel, y Grolemund, s.&nbsp;f.</a>; <a href="references.html#ref-garcia_notes" role="doc-biblioref">García-Portugués, s.&nbsp;f.a</a>, <a href="references.html#ref-garcia_notes1" role="doc-biblioref">s.&nbsp;f.b</a>; <a href="references.html#ref-alexander2023" role="doc-biblioref">Alexander 2023</a>; <a href="references.html#ref-healy2018" role="doc-biblioref">K. Healy 2018</a>; <a href="references.html#ref-kabacoff" role="doc-biblioref">Kabacoff, s.&nbsp;f.</a>)</span> están disponibles en la web y son de libre acceso.</p>
@@ -323,10 +342,10 @@ MO --&gt; CO
 <li><p>Analizar y comunicar de manera clara los resultados de la aplicación de modelos estadísticos en bases de datos</p></li>
 </ul>
 </section>
-<section id="metodología" class="level2">
+<section id="metodología" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="metodología">Metodología</h2>
 <p>El contenido del curso será presentado en sesiones presenciales los días martes a las 8:00 am y miércoles a las 4:00 pm. Durante las clases se irán desarrollando de manera simultánea conceptos y código en <code>R</code>, por lo que es necesario estar en salas de informática.</p>
-<p>El estudiante es responsable de trabajar semanalmente en el curso para afianzar los temas dados. se realizarán exámenes cortos<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> periódicamente para evaluar la evolución de cada estudiante en la asimilación de los temas. Se dejarán talleres/tareas para estimular la investigación y profundización de los temas vistos durante las clases.</p>
+<div class="page-columns page-full"><p>El estudiante es responsable de trabajar semanalmente en el curso para afianzar los temas dados. se realizarán exámenes cortos<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> periódicamente para evaluar la evolución de cada estudiante en la asimilación de los temas. Se dejarán talleres/tareas para estimular la investigación y profundización de los temas vistos durante las clases.</p><div class="no-row-height column-margin column-container"><li id="fn3"><p><sup>3</sup>&nbsp;No es necesario que estas evaluaciones rápidas o quices sean programadas o avisadas con anticipación, pueden realizarse en cualquier clase y en cualquier momento de la clase. Si <span class="math inline">\(p_k\)</span> es la probabilidad de haya quiz en la k-ésima clase, entonces <span class="math inline">\(p_k&gt;0 \ \forall k\)</span></p></li></div></div>
 </section>
 <section id="plan-de-trabajo-por-semana" class="level2">
 <h2 class="anchored" data-anchor-id="plan-de-trabajo-por-semana">Plan de trabajo por semana</h2>
@@ -539,14 +558,7 @@ Wickham, Hadley, Mine Çetinkaya-Rundel, y Garrett Grolemund. s.&nbsp;f. <em>R f
 </div>
 </section>
 </section>
-<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
-<hr>
-<ol>
-<li id="fn1"><p>Algunos autores lo definen como una <em>pelea</em> con los datos<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Desventaja en el sentido de que el libro no está pensado para hacer modelación por lo que tendremos que usar otras fuentes para esta parte<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>No es necesario que estas evaluaciones rápidas o quices sean programadas o avisadas con anticipación, pueden realizarse en cualquier clase y en cualquier momento de la clase. Si <span class="math inline">\(p_k\)</span> es la probabilidad de haya quiz en la k-ésima clase, entonces <span class="math inline">\(p_k&gt;0 \ \forall k\)</span><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
