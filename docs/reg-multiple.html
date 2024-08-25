@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.5.56">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Ciencia de Datos - 5&nbsp; Regresión lineal múltiple</title>
+<title>9&nbsp; Regresión lineal múltiple – Ciencia de Datos</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -33,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -81,7 +81,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "Sin resultados",
     "search-matching-documents-text": "documentos encontrados",
@@ -90,6 +96,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "resultado adicional en este documento",
     "search-more-matches-text": "resultados adicionales en este documento",
     "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancelar",
     "search-submit-button-title": "Enviar",
     "search-label": "Buscar"
@@ -105,8 +112,35 @@ gtag('js', new Date());
 gtag('config', 'G-JBLWWCLEGX', { 'anonymize_ip': true});
 </script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles/global.css">
 </head>
@@ -117,13 +151,13 @@ gtag('config', 'G-JBLWWCLEGX', { 'anonymize_ip': true});
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./reg-simple.html">Regresión Lineal</a></li><li class="breadcrumb-item"><a href="./reg-multiple.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Regresión lineal múltiple</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ds-intro.html">Ciencia de datos</a></li><li class="breadcrumb-item"><a href="./reg-multiple.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Regresión lineal múltiple</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -132,7 +166,7 @@ gtag('config', 'G-JBLWWCLEGX', { 'anonymize_ip': true});
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Ciencia de Datos</a> 
@@ -153,9 +187,9 @@ gtag('config', 'G-JBLWWCLEGX', { 'anonymize_ip': true});
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">Análisis Exploratorio</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -182,23 +216,58 @@ gtag('config', 'G-JBLWWCLEGX', { 'anonymize_ip': true});
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Regresión Lineal</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Inferencia clásica</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./r-prob.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Probabilidad</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./r-estimacion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Estimación</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./r-hipotesis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Pruebas de hipótesis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Ciencia de datos</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ds-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Definiciones</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./reg-simple.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Regresión lineal simple</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Regresión lineal simple</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./reg-multiple.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Regresión lineal múltiple</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Regresión lineal múltiple</span></span></a>
   </div>
 </li>
       </ul>
@@ -212,28 +281,28 @@ gtag('config', 'G-JBLWWCLEGX', { 'anonymize_ip': true});
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-  <li><a href="#estimación-de-los-parámetros" id="toc-estimación-de-los-parámetros" class="nav-link active" data-scroll-target="#estimación-de-los-parámetros"><span class="header-section-number">5.1</span> Estimación de los parámetros</a></li>
-  <li><a href="#valor-esperado-y-varianza" id="toc-valor-esperado-y-varianza" class="nav-link" data-scroll-target="#valor-esperado-y-varianza"><span class="header-section-number">5.2</span> Valor esperado y Varianza</a></li>
-  <li><a href="#predicción" id="toc-predicción" class="nav-link" data-scroll-target="#predicción"><span class="header-section-number">5.3</span> Predicción</a></li>
-  <li><a href="#inferencia" id="toc-inferencia" class="nav-link" data-scroll-target="#inferencia"><span class="header-section-number">5.4</span> Inferencia</a></li>
-  <li><a href="#pruebas-de-significancia" id="toc-pruebas-de-significancia" class="nav-link" data-scroll-target="#pruebas-de-significancia"><span class="header-section-number">5.5</span> Pruebas de significancia</a></li>
-  <li><a href="#uso-de-r-para-los-cálculos" id="toc-uso-de-r-para-los-cálculos" class="nav-link" data-scroll-target="#uso-de-r-para-los-cálculos"><span class="header-section-number">5.6</span> Uso de <code>R</code> para los cálculos</a></li>
+  <li><a href="#estimación-de-los-parámetros" id="toc-estimación-de-los-parámetros" class="nav-link active" data-scroll-target="#estimación-de-los-parámetros"><span class="header-section-number">9.1</span> Estimación de los parámetros</a></li>
+  <li><a href="#valor-esperado-y-varianza" id="toc-valor-esperado-y-varianza" class="nav-link" data-scroll-target="#valor-esperado-y-varianza"><span class="header-section-number">9.2</span> Valor esperado y Varianza</a></li>
+  <li><a href="#predicción" id="toc-predicción" class="nav-link" data-scroll-target="#predicción"><span class="header-section-number">9.3</span> Predicción</a></li>
+  <li><a href="#inferencia" id="toc-inferencia" class="nav-link" data-scroll-target="#inferencia"><span class="header-section-number">9.4</span> Inferencia</a></li>
+  <li><a href="#pruebas-de-significancia" id="toc-pruebas-de-significancia" class="nav-link" data-scroll-target="#pruebas-de-significancia"><span class="header-section-number">9.5</span> Pruebas de significancia</a></li>
+  <li><a href="#uso-de-r-para-los-cálculos" id="toc-uso-de-r-para-los-cálculos" class="nav-link" data-scroll-target="#uso-de-r-para-los-cálculos"><span class="header-section-number">9.6</span> Uso de <code>R</code> para los cálculos</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content page-columns page-full" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ds-intro.html">Ciencia de datos</a></li><li class="breadcrumb-item"><a href="./reg-multiple.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Regresión lineal múltiple</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Regresión lineal múltiple</span></h1>
+<h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Regresión lineal múltiple</span></h1>
 </div>
 
 
@@ -246,12 +315,14 @@ gtag('config', 'G-JBLWWCLEGX', { 'anonymize_ip': true});
   </div>
   
 
+
 </header>
 
-<section id="estimación-de-los-parámetros" class="level2 page-columns page-full" data-number="5.1">
-<h2 data-number="5.1" class="anchored" data-anchor-id="estimación-de-los-parámetros"><span class="header-section-number">5.1</span> Estimación de los parámetros</h2>
-<div class="page-columns page-full"><p>Recuerde que el modelo general es <span class="math display">\[y_i = f(x_i) + \varepsilon_i\]</span> Y lo hemos reducido al caso muy especial de regresión lineal simple <span class="math display">\[y_i = \beta_0 + \beta_1 x_i + \varepsilon_i\]</span> La generalización natural de este modelo es <span class="math display">\[y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} +...+ \beta_p x_{ip} + \varepsilon_i\]</span> que se llama modelo de regresión lineal múltiple. En este caso, tenemos <span class="math inline">\(p\)</span> variables y <span class="math inline">\(p+1\)</span> parámetros<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p><div class="no-row-height column-margin column-container"><li id="fn1"><p><sup>1</sup>&nbsp;algunos textos consideran <span class="math inline">\(p\)</span> como el número de parámetros</p></li></div></div>
-<p>El modelo con múltiples variables se puede escribir de forma concisa usando notación matricial</p>
+
+<section id="estimación-de-los-parámetros" class="level2 page-columns page-full" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="estimación-de-los-parámetros"><span class="header-section-number">9.1</span> Estimación de los parámetros</h2>
+<p>Recuerde que el modelo general es <span class="math display">\[y_i = f(x_i) + \varepsilon_i\]</span> Y lo hemos reducido al caso muy especial de regresión lineal simple <span class="math display">\[y_i = \beta_0 + \beta_1 x_i + \varepsilon_i\]</span> La generalización natural de este modelo es <span class="math display">\[y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} +...+ \beta_p x_{ip} + \varepsilon_i\]</span> que se llama modelo de regresión lineal múltiple. En este caso, tenemos <span class="math inline">\(p\)</span> variables y <span class="math inline">\(p+1\)</span> parámetros<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;algunos textos consideran <span class="math inline">\(p\)</span> como el número de parámetros</p></div></div><p>El modelo con múltiples variables se puede escribir de forma concisa usando notación matricial</p>
 <p><span class="math display">\[\bf{y} = \bf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}\]</span> Donde <span class="math display">\[\bf{y} = \begin{bmatrix}
 y_1 \\ y_2 \\ \vdots \\ y_n
 \end{bmatrix}, \hspace{10pt}
@@ -278,8 +349,8 @@ y_1 \\ y_2 \\ \vdots \\ y_n
 \boldsymbol{\hat{\beta}} = \left( \textbf{X}^T\bf{X}  \right)^{-1}\textbf{X}^T\bf{y}
 \]</span></p>
 </section>
-<section id="valor-esperado-y-varianza" class="level2" data-number="5.2">
-<h2 data-number="5.2" class="anchored" data-anchor-id="valor-esperado-y-varianza"><span class="header-section-number">5.2</span> Valor esperado y Varianza</h2>
+<section id="valor-esperado-y-varianza" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="valor-esperado-y-varianza"><span class="header-section-number">9.2</span> Valor esperado y Varianza</h2>
 <p>Los supuestos de homocedasticidad y no autocorrelación para los términos del error en el modelo, se pueden resumir estableciendo la matriz de varianzas y covarianzas del error como <span class="math display">\[\mathrm{Cov} \left( \boldsymbol{\varepsilon}\right) = \sigma^2 \mathbb{I}\]</span> Además, <span class="math inline">\(\mathrm{E}\left( \boldsymbol{\varepsilon}\right) = \bf{0}\)</span> y se asume que la matriz <span class="math inline">\(\bf{X}\)</span> no es estocástica.</p>
 <p>Como consecuencia tenemos que</p>
 <p><span class="math display">\[\mathrm{E} \left( \bf{{y}} \right) = \mathrm{E}\left( \boldsymbol{{\bf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}}}\right) = \mathrm{E} \left( \bf{X} \boldsymbol{\beta} \right) + \mathrm{E} \left( \boldsymbol{\varepsilon} \right)= \bf{X}\boldsymbol{\beta} + \bf{0} = \bf{X}\boldsymbol{\beta}\\
@@ -314,8 +385,8 @@ y_1 \\ y_2 \\ \vdots \\ y_n
 <p>Si queremos estimar la matriz de varianzas y covarianzas, debemos estimar la varianza del modelo, lo hacemos usando el estimador de mínimos cuadrados</p>
 <p><span class="math display">\[\hat\sigma^2 = \frac{\boldsymbol{\varepsilon}^T \boldsymbol{\varepsilon}}{n-p-1}\]</span></p>
 </section>
-<section id="predicción" class="level2" data-number="5.3">
-<h2 data-number="5.3" class="anchored" data-anchor-id="predicción"><span class="header-section-number">5.3</span> Predicción</h2>
+<section id="predicción" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="predicción"><span class="header-section-number">9.3</span> Predicción</h2>
 <p>Al igual que en modelo de regresión lineal simple, una predicción para un conjunto de datos <em>nuevos</em> de las variables independientes, se obtiene al reemplezar dichos valores en la ecuación lineal.</p>
 <p>Sea <span class="math inline">\(\textbf{x}_0\)</span> el vector que contiene los valores para los cuáles se quiere predecir la variable <span class="math inline">\(y\)</span>. en notación matricial tenemos</p>
 <p><span class="math display">\[\hat{y} = \textbf{x}_0^T \boldsymbol{\hat \beta}\]</span> siendo, <span class="math inline">\(\textbf{x}_0^T = \begin{bmatrix} 1 &amp; x_{01} &amp; x_{02} &amp; \dots &amp; x_{0p} \end{bmatrix}\)</span></p>
@@ -323,16 +394,16 @@ y_1 \\ y_2 \\ \vdots \\ y_n
 <p><span class="math display">\[\hat{\bf{y}} = \textbf{X}\boldsymbol{\hat \beta} = \textbf{X}\left( \textbf{X}^T \textbf{X}\right)^{-1} \textbf{X}^T \bf{y} = \textbf{H}\bf{y}\]</span> La matriz <span class="math inline">\(\textbf{H} = \textbf{X}\left( \textbf{X}^T \textbf{X}\right)^{-1} \textbf{X}^T\)</span> se suele llamar matriz sombrero, ya que le “pone” un sombrero al vector <span class="math inline">\(\bf{y}\)</span></p>
 <p>Con el último resultado, salta a la vista un hecho importante, las predicciones son <strong>combinaciones lineales</strong> de los datos observados. El modelo de regresión lineal es un caso particular de una clase de modelos más generales que son <strong>suavizadores lineales</strong> (hay otros modelos diferentes a los de regresión lineal que son suavizadores lineales)</p>
 </section>
-<section id="inferencia" class="level2" data-number="5.4">
-<h2 data-number="5.4" class="anchored" data-anchor-id="inferencia"><span class="header-section-number">5.4</span> Inferencia</h2>
+<section id="inferencia" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="inferencia"><span class="header-section-number">9.4</span> Inferencia</h2>
 <p>Si queremos ir más allá de la sola estimación de los parámetros y predicción puntual, debemos asumir una distribución para el error del modelo y obtener la distribución de los estimadores. Bajo el supuesto de normalidad, que es el más común</p>
 <p><span class="math display">\[\boldsymbol{\varepsilon} \sim N_n \left( \bf{0}, \sigma^2 \mathbb{I} \right) \Rightarrow
 \textbf{y} \sim N_n \left( \bf{X}\boldsymbol{\beta}, \sigma^2 \mathbb{I} \right)
 \]</span> Teniendo en cuenta que los estimadores son combinaciones lineales de <span class="math inline">\(\bf{y}\)</span>, y toda combinación lineal de distribuciones normales es también una distribución normal</p>
 <p><span class="math display">\[\boldsymbol{\hat \beta}\sim N_{p+1} \left( \boldsymbol{\beta}, \left( \textbf{X}^T \textbf{X}\right)^{-1} \sigma^2 \right)\]</span> Con esto ya podemos calcular intervalos de confianza y hacer algunas pruebas de hipótesis</p>
 </section>
-<section id="pruebas-de-significancia" class="level2" data-number="5.5">
-<h2 data-number="5.5" class="anchored" data-anchor-id="pruebas-de-significancia"><span class="header-section-number">5.5</span> Pruebas de significancia</h2>
+<section id="pruebas-de-significancia" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="pruebas-de-significancia"><span class="header-section-number">9.5</span> Pruebas de significancia</h2>
 <p>Cuando tenemos un modelo con múltiples variables, podemos hablar de la significancia global del modelo y de significancia individual de las variables.</p>
 <p>La significancia global del modelo se usa para responder a la pregunta: ¿Al menos una de las variables es importante o explica en términos estadísticos a la variable <span class="math inline">\(y\)</span>? Para esto, usamos una prueba de hipótesis y un estadístico F (recordar por qué una distribución F en lugar de una distribución T, es valioso pero no fundamental para este curso)</p>
 <p><span class="math display">\[
@@ -356,12 +427,12 @@ F_{cal} &amp; = \frac{\left( \mathrm{TSS - RSS}\right)/p}{ \mathrm{RSS}/(n-p-1)}
 \end{equation}
 \]</span> para algún <span class="math inline">\(j=1,2,3,...,p\)</span></p>
 </section>
-<section id="uso-de-r-para-los-cálculos" class="level2 page-columns page-full" data-number="5.6">
-<h2 data-number="5.6" class="anchored" data-anchor-id="uso-de-r-para-los-cálculos"><span class="header-section-number">5.6</span> Uso de <code>R</code> para los cálculos</h2>
+<section id="uso-de-r-para-los-cálculos" class="level2 page-columns page-full" data-number="9.6">
+<h2 data-number="9.6" class="anchored" data-anchor-id="uso-de-r-para-los-cálculos"><span class="header-section-number">9.6</span> Uso de <code>R</code> para los cálculos</h2>
 <p>Trabajemos primero con un conjunto de datos simulados para observar algunos detalles de cálculo en el modelo de regresión lineal múltiple</p>
 <p>Consideremos el modelo lineal “real”</p>
 <p><span class="math display">\[y = 1 + 2x_1 + 3x_2 + 4x_3 + \varepsilon\]</span> Simulemos 100 observaciones de cada variable independiente (generadas uniformemente entre 0 y 1) y un error normalmente distribuido con media de 0 y desviación estándar de 1.5</p>
-<div class="cell" data-hash="reg-multiple_cache/html/unnamed-chunk-1_2863ae87ce168aab055209d5600b3c95">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">789</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span></span>
@@ -389,8 +460,8 @@ F_{cal} &amp; = \frac{\left( \mathrm{TSS - RSS}\right)/p}{ \mathrm{RSS}/(n-p-1)}
 # ℹ 90 more rows</code></pre>
 </div>
 </div>
-<div class="page-columns page-full"><p>Ajustamos un modelo de regresión lineal usando las funciones de <code>R</code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p><div class="no-row-height column-margin column-container"><li id="fn2"><p><sup>2</sup>&nbsp;como haríamos en la práctica, no es necesario usar las ecuaciones matriciales que hemos visto. Ni siquiera <code>R</code> ajusta el modelo con esas ecuaciones matriciales internamente (¿Por qué?)</p></li></div></div>
-<div class="cell" data-hash="reg-multiple_cache/html/unnamed-chunk-2_cc95ae2ba9286279aab9355ab10ced91">
+<p>Ajustamos un modelo de regresión lineal usando las funciones de <code>R</code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;como haríamos en la práctica, no es necesario usar las ecuaciones matriciales que hemos visto. Ni siquiera <code>R</code> ajusta el modelo con esas ecuaciones matriciales internamente (¿Por qué?)</p></div></div><div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>modelo1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> var_dep <span class="sc">~</span> var1 <span class="sc">+</span> var2 <span class="sc">+</span> var3, <span class="at">data =</span> datos)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo1)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -417,7 +488,7 @@ F-statistic: 44.89 on 3 and 96 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <p>Al aplicar la función <code>lm</code> se guardan varios resultados, podemos acceder por el nombre de cada uno en el objeto <code>modelo1</code> o en el objeto <code>summary(modelo1)</code></p>
-<div class="cell" data-hash="reg-multiple_cache/html/unnamed-chunk-3_b763ecb06b23b2912263f856741b1432">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(modelo1)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "coefficients"  "residuals"     "effects"       "rank"         
@@ -432,7 +503,7 @@ F-statistic: 44.89 on 3 and 96 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <p>Podemos imprimir los coeficientes estimados o el <span class="math inline">\(\mathrm{R}^2\)</span></p>
-<div class="cell" data-hash="reg-multiple_cache/html/unnamed-chunk-4_d3cec18bdbeb5d66a8622f8e91d724e5">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>modelo1<span class="sc">$</span>coefficients</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(Intercept)        var1        var2        var3 
@@ -444,7 +515,7 @@ F-statistic: 44.89 on 3 and 96 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <p>La matriz de varianzas y covarianzas de los estimadores se obtiene con</p>
-<div class="cell" data-hash="reg-multiple_cache/html/unnamed-chunk-5_b7b943e29e7d84e0f7cada37dfc6f960">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vcov</span>(modelo1)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            (Intercept)        var1        var2        var3
@@ -455,7 +526,7 @@ var3         -0.1475995 -0.01353928  0.00552749  0.28389997</code></pre>
 </div>
 </div>
 <p>Es buen ejercicio intentar obtener estos resultados a partir de las ecuaciones matriciales del modelo</p>
-<div class="cell" data-hash="reg-multiple_cache/html/unnamed-chunk-6_4121866d187dc34fae068401a0fca975">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># matriz X</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>mx <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">rep</span>(<span class="dv">1</span>,n), x1, x2, x3)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>beta_est <span class="ot">&lt;-</span> <span class="fu">solve</span>(<span class="fu">t</span>(mx)<span class="sc">%*%</span>mx)<span class="sc">%*%</span><span class="fu">t</span>(mx)<span class="sc">%*%</span>y</span>
@@ -470,7 +541,7 @@ x3 4.67855453</code></pre>
 </div>
 </div>
 <p>Predicciones, residuales, matriz de varianzas y covarianzas</p>
-<div class="cell" data-hash="reg-multiple_cache/html/unnamed-chunk-7_5cc2d6dba8ab5aad030038d5a4e81ab3">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>y_est <span class="ot">&lt;-</span> H<span class="sc">%*%</span>y</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> y <span class="sc">-</span> y_est</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>sigma2_est <span class="ot">&lt;-</span> <span class="fu">sum</span>(res<span class="sc">*</span>res)<span class="sc">/</span>(n<span class="dv">-3-1</span>)</span>
@@ -491,15 +562,15 @@ x3 4.67855453</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>cov_beta</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>           intercepto        var1        var2        var3
-intercepto  0.2515144 -0.14854787 -0.15860673 -0.14759946
-var1       -0.1485479  0.32213475  0.01027060 -0.01353928
-var2       -0.1586067  0.01027060  0.30036354  0.00552749
-var3       -0.1475995 -0.01353928  0.00552749  0.28389997</code></pre>
+<pre><code>                       x1          x2          x3
+    0.2515144 -0.14854787 -0.15860673 -0.14759946
+x1 -0.1485479  0.32213475  0.01027060 -0.01353928
+x2 -0.1586067  0.01027060  0.30036354  0.00552749
+x3 -0.1475995 -0.01353928  0.00552749  0.28389997</code></pre>
 </div>
 </div>
 <p>El <span class="math inline">\(\mathrm{R^2}\)</span> del modelo es por definición, <span class="math inline">\(\mathrm{R^2} = 1- \frac{\mathrm{SSE}}{\mathrm{SST}}\)</span>. El cálculo directo en <code>R</code> sería</p>
-<div class="cell" data-hash="reg-multiple_cache/html/unnamed-chunk-8_bd47e57b448d82618282b8ee5404ad93">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">sum</span>(res<span class="sc">*</span>res)<span class="sc">/</span><span class="fu">sum</span>((y<span class="sc">-</span><span class="fu">mean</span>(y))<span class="sc">^</span><span class="dv">2</span>)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>r2</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -507,7 +578,7 @@ var3       -0.1475995 -0.01353928  0.00552749  0.28389997</code></pre>
 </div>
 </div>
 <p>Calculemos el error estándar, valor de la distribución <span class="math inline">\(t\)</span> y valor <span class="math inline">\(p\)</span> para alguno de los <span class="math inline">\(\hat\beta_i\)</span></p>
-<div class="cell" data-hash="reg-multiple_cache/html/unnamed-chunk-9_70bf22b024219e521066a49861329dcf">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># para el beta_1 que acompaña a la variable 1</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>s.eb1 <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(cov_beta[<span class="dv">2</span>,<span class="dv">2</span>]) <span class="co"># ¿por qué se elige el segundo valor en la diagonal?</span></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>tb1 <span class="ot">&lt;-</span> beta_est[<span class="dv">2</span>]<span class="sc">/</span>s.eb1</span>
@@ -524,7 +595,7 @@ var3       -0.1475995 -0.01353928  0.00552749  0.28389997</code></pre>
 </div>
 </div>
 <p>El valor de la distribución F para la significancia global es</p>
-<div class="cell" data-hash="reg-multiple_cache/html/unnamed-chunk-10_c6c14ded1992e563c1b571405968efac">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>f_cal <span class="ot">&lt;-</span> (n<span class="dv">-3-1</span>)<span class="sc">*</span>r2<span class="sc">/</span>(<span class="dv">3</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>r2))</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>f_cal</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -532,7 +603,7 @@ var3       -0.1475995 -0.01353928  0.00552749  0.28389997</code></pre>
 </div>
 </div>
 <p>El valor p es</p>
-<div class="cell" data-hash="reg-multiple_cache/html/unnamed-chunk-11_ee33a2b1f8aebe076b3bece45896ea93">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ¿Por qué en este caso no se multiplica por 2?</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>p.sig.global <span class="ot">&lt;-</span> <span class="fu">pf</span>(<span class="at">q =</span> f_cal, <span class="at">df1 =</span> <span class="dv">3</span>, <span class="at">df2 =</span> n<span class="dv">-3-1</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>p.sig.global</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -542,7 +613,7 @@ var3       -0.1475995 -0.01353928  0.00552749  0.28389997</code></pre>
 </div>
 <p>Compare todos los resultados con los entregados de forma directa por la función <code>lm</code></p>
 <p>Algo que se debe señalar, es el valor relativamente bajo del <span class="math inline">\(\mathrm{R}^2\)</span>. Un <span class="math inline">\(\mathrm{R}^2\)</span> bajo no implica necesariamente que el modelo sea errado. En este caso, estamos ajustando sobre la verdadera forma del modelo “real” por lo que el modelo planteado no podría estar equivocado. Simulemos otro conjunto de datos en el que el error tenga una menor varianza o desviación estándar.</p>
-<div class="cell" data-hash="reg-multiple_cache/html/unnamed-chunk-12_b465cbe2efc80cb799bbadf2255d9250">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>x1 <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>x2 <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>x3 <span class="ot">&lt;-</span> <span class="fu">runif</span>(n)</span>
@@ -553,7 +624,7 @@ var3       -0.1475995 -0.01353928  0.00552749  0.28389997</code></pre>
 <span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>modelo2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> var_dep <span class="sc">~</span> var1 <span class="sc">+</span> var2 <span class="sc">+</span> var3, <span class="at">data =</span> datos)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Compare el valor del <span class="math inline">\(\mathrm R^2\)</span> para cada caso. ¿Qué puede concluir?</p>
-<div class="cell" data-hash="reg-multiple_cache/html/unnamed-chunk-13_3e6055ce5080300e1a8e00066d721a94">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo2)<span class="sc">$</span>r.squared</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.9135621</code></pre>
@@ -604,18 +675,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -647,11 +707,50 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -661,8 +760,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -674,7 +782,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -718,6 +949,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -743,6 +975,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -804,17 +1062,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./reg-simple.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Regresión lineal simple</span></span>
+      <a href="./reg-simple.html" class="pagination-link" aria-label="Regresión lineal simple">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Regresión lineal simple</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./references.html" class="pagination-link">
+      <a href="./references.html" class="pagination-link" aria-label="Referencias">
         <span class="nav-page-text">Referencias</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 

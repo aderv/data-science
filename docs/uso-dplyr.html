@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.5.56">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Ciencia de Datos - 3&nbsp; Uso de dplyr</title>
+<title>3&nbsp; Uso de dplyr – Ciencia de Datos</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -33,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -83,7 +83,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "Sin resultados",
     "search-matching-documents-text": "documentos encontrados",
@@ -92,6 +98,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "resultado adicional en este documento",
     "search-more-matches-text": "resultados adicionales en este documento",
     "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancelar",
     "search-submit-button-title": "Enviar",
     "search-label": "Buscar"
@@ -117,13 +124,13 @@ gtag('config', 'G-JBLWWCLEGX', { 'anonymize_ip': true});
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./r-intro.html">Análisis Exploratorio</a></li><li class="breadcrumb-item"><a href="./uso-dplyr.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Uso de `dplyr`</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./r-intro.html">Análisis Exploratorio</a></li><li class="breadcrumb-item"><a href="./uso-dplyr.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Uso de <code>dplyr</code></span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -132,7 +139,7 @@ gtag('config', 'G-JBLWWCLEGX', { 'anonymize_ip': true});
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Ciencia de Datos</a> 
@@ -153,9 +160,9 @@ gtag('config', 'G-JBLWWCLEGX', { 'anonymize_ip': true});
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">Análisis Exploratorio</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -182,9 +189,9 @@ gtag('config', 'G-JBLWWCLEGX', { 'anonymize_ip': true});
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
  <span class="menu-text">Inferencia clásica</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -211,23 +218,29 @@ gtag('config', 'G-JBLWWCLEGX', { 'anonymize_ip': true});
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
- <span class="menu-text">Regresión lineal</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Ciencia de datos</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./ds-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Definiciones</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./reg-simple.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Regresión lineal simple</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Regresión lineal simple</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./reg-multiple.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Regresión lineal múltiple</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Regresión lineal múltiple</span></span></a>
   </div>
 </li>
       </ul>
@@ -241,7 +254,7 @@ gtag('config', 'G-JBLWWCLEGX', { 'anonymize_ip': true});
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -249,13 +262,14 @@ gtag('config', 'G-JBLWWCLEGX', { 'anonymize_ip': true});
    
   <ul>
   <li><a href="#operaciones-sobre-filas" id="toc-operaciones-sobre-filas" class="nav-link active" data-scroll-target="#operaciones-sobre-filas"><span class="header-section-number">3.1</span> Operaciones sobre filas</a></li>
+  <li><a href="#operaciones-sobre-columnas" id="toc-operaciones-sobre-columnas" class="nav-link" data-scroll-target="#operaciones-sobre-columnas"><span class="header-section-number">3.2</span> Operaciones sobre columnas</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content page-columns page-full" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./r-intro.html">Análisis Exploratorio</a></li><li class="breadcrumb-item"><a href="./uso-dplyr.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Uso de <code>dplyr</code></span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Uso de <code>dplyr</code></span></h1>
 </div>
@@ -270,20 +284,22 @@ gtag('config', 'G-JBLWWCLEGX', { 'anonymize_ip': true});
   </div>
   
 
+
 </header>
 
-<div class="page-columns page-full"><p>En el capítulo anterior trabajamos las opciones básicas de <code>ggplot</code> para construir gráficas y explorar los datos.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Esta exploración requiere de unos datos organizados y en este curso trabajaremos con bases de datos estructuradas en formato <em>tidy</em>, donde cada columna es una variable y cada fila es una observación.</p><div class="no-row-height column-margin column-container"><li id="fn1"><p><sup>1</sup>&nbsp;En realidad, nos preocupamos más del cómo hacer las gráficas que en el por qué y para qué, pero al final de este capítulo estaremos en capacidad de orientar nuestras habilidades para hacer un análisis apropiado de datos</p></li></div></div>
+
+<p>En el capítulo anterior trabajamos las opciones básicas de <code>ggplot</code> para construir gráficas y explorar los datos.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Esta exploración requiere de unos datos organizados y en este curso trabajaremos con bases de datos estructuradas en formato <em>tidy</em>, donde cada columna es una variable y cada fila es una observación.</p>
 <!-- colocar ejemplos de datos en formato tidy y no tidy -->
-<p>Este capítulo lo vamos a dedicar a explorar las opciones y funcionalidades de <code>dplyr</code>, un paquete que hace parte del <em>tidyverse</em> y que nos va a ayudar a realizar tareas como: transformar variables, reordenar, filtrar, agrupar, crear nuevas variables, renombrar, hacer resúmenes, etc. Al igual que en la construcción de gráficas, hay varias formas de llevar a cabo este tipo de tareas en <code>R</code> pero seguiremos fieles a la filosofía de elegir una de esas herramientas y procurar adquirir rápidamente la fluidez necesaria para aplicarla en el análisis de datos.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;En realidad, nos preocupamos más del cómo hacer las gráficas que en el por qué y para qué, pero al final de este capítulo estaremos en capacidad de orientar nuestras habilidades para hacer un análisis apropiado de datos</p></div></div><p>Este capítulo lo vamos a dedicar a explorar las opciones y funcionalidades de <code>dplyr</code>, un paquete que hace parte del <em>tidyverse</em> y que nos va a ayudar a realizar tareas como: transformar variables, reordenar, filtrar, agrupar, crear nuevas variables, renombrar, hacer resúmenes, etc. Al igual que en la construcción de gráficas, hay varias formas de llevar a cabo este tipo de tareas en <code>R</code> pero seguiremos fieles a la filosofía de elegir una de esas herramientas y procurar adquirir rápidamente la fluidez necesaria para aplicarla en el análisis de datos.</p>
 <p>Las operaciones de <code>dplyr</code> las podemos clasificar según la forma en que se aplican en la base de datos, distinguiremos los siguientes casos:</p>
 <ol type="1">
 <li>Operaciones por filas</li>
 <li>Operaciones por columnas</li>
 <li>Operaciones por grupos</li>
 </ol>
-<p>De forma similar a <code>ggplot</code>, <code>dplyr</code> funciona en forma gramática, lo que significa que escribir y leer el código es más intuitivo, las operaciones se interpretan de izquierda a derecha en lugar de hacerlo de forma anidada en funciones, así que haremos uso extensivo del operador <em>pipe</em>. A diferencia de <code>ggplot</code>, donde solo se usaba este operador para aplicar la función <code>ggplot</code> a una base de datos y luego se agregaban capas con el signo <kbd>+</kbd>, en <code>dplyr</code> solo usaremos el operador <em>pipe</em>. <code>dplyr</code> opera sobre bases de datos y devuelve como resultado, bases de datos.</p>
+<p>De forma similar a <code>ggplot</code>, <code>dplyr</code> funciona en forma gramática, lo que significa que escribir y leer el código es más intuitivo, las operaciones se interpretan de izquierda a derecha en lugar de hacerlo de forma anidada en funciones, así que haremos uso extensivo del operador <em>pipe</em>. A diferencia de <code>ggplot</code>, donde solo se usaba este operador para aplicar la función <code>ggplot</code> a una base de datos y luego se agregaban capas con el signo <kbd aria-hidden="true">+</kbd><span class="visually-hidden">+</span>, en <code>dplyr</code> solo usaremos el operador <em>pipe</em>. <code>dplyr</code> opera sobre bases de datos y devuelve como resultado, bases de datos.</p>
 <p>Usaremos la base de datos <code>diamonds</code>, instalada con <code>ggplot2</code>, que contiene 53.940 observaciones y 10 variables. Como siempre, lo mínimo es conocer las variables y unidades en el conjunto de datos, podemos ejecutar <code>?diamonds</code> o buscar en internet la información necesaria</p>
-<div class="cell" data-hash="uso-dplyr_cache/html/unnamed-chunk-1_c654ec4925e3bbce472a1e8d231daf1e">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>diamonds</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -319,28 +335,44 @@ $ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39
 </div>
 </div>
 <p>Realice algunas gráficas para explorar relaciones básicas entre algunas de las variables</p>
-<div class="cell" data-hash="uso-dplyr_cache/html/unnamed-chunk-2_175616de75384770fb76c98d367ec36e">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> carat, <span class="at">y =</span> price, <span class="at">color =</span> cut)) <span class="sc">+</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="at">facets =</span> <span class="sc">~</span>cut)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="uso-dplyr_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="uso-dplyr_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> cut, <span class="at">y =</span> price, <span class="at">fill =</span> cut)) <span class="sc">+</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="uso-dplyr_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="uso-dplyr_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> color, <span class="at">y =</span> price, <span class="at">fill =</span> color)) <span class="sc">+</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="uso-dplyr_files/figure-html/unnamed-chunk-2-3.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="uso-dplyr_files/figure-html/unnamed-chunk-2-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggridges)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> price, <span class="at">y =</span> clarity, <span class="at">fill =</span> clarity)) <span class="sc">+</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density_ridges2</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="uso-dplyr_files/figure-html/unnamed-chunk-2-4.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="uso-dplyr_files/figure-html/unnamed-chunk-2-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <section id="operaciones-sobre-filas" class="level2 page-columns page-full" data-number="3.1">
@@ -352,7 +384,7 @@ $ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39
 <li><code>distinct()</code>: Selecciona valores únicos</li>
 </ul>
 <p>Podemos ordenar las filas en <code>diamonds</code> en orden ascendente o descendente según el precio, o cualquier otra variable numérica</p>
-<div class="cell" data-hash="uso-dplyr_cache/html/unnamed-chunk-3_4fabaecffae521d3a44bcbee078eeeda">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">|&gt;</span> <span class="fu">arrange</span>(price)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 53,940 × 10
@@ -388,8 +420,8 @@ $ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39
 # ℹ 53,930 more rows</code></pre>
 </div>
 </div>
-<div class="page-columns page-full"><p>Si queremos ver los valores únicos de las variables que son categóricas<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> (<em>cut</em>, <em>color</em> y <em>clarity</em>) podemos usar <code>distinct(cat1)</code> o combinaciones únicas de varias de ellas con <code>distinct(fact1, fact2)</code></p><div class="no-row-height column-margin column-container"><li id="fn2"><p><sup>2</sup>&nbsp;No tiene mucho sentido hacerlo para variables continuas</p></li></div></div>
-<div class="cell" data-hash="uso-dplyr_cache/html/unnamed-chunk-4_4cf4b0f6dd428ab327a61cd69b8b9cf4">
+<p>Si queremos ver los valores únicos de las variables que son categóricas<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> (<em>cut</em>, <em>color</em> y <em>clarity</em>) podemos usar <code>distinct(cat1)</code> o combinaciones únicas de varias de ellas con <code>distinct(fact1, fact2)</code></p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;No tiene mucho sentido hacerlo para variables continuas</p></div></div><div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">|&gt;</span> <span class="fu">distinct</span>(cut)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 1
@@ -420,63 +452,84 @@ $ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39
 </div>
 </div>
 <p>Note que en el último código, luego de captar las combinaciones únicas de <em>color</em> y <em>clarity</em>, se ordenan los datos de forma ascendente para <em>color</em> y para valores repetidos de <em>color</em> se ordenan de forma descendente para <em>clarity</em>.</p>
-<div class="page-columns page-full"><p>La base de datos <code>diamonds</code> es un <code>tibble</code>. Un <code>tibble</code> es un <em>data.frame</em> pero con algunas características especiales. Su principal diferencia con un <em>data.frame</em> es que al momento de imprimir la base de datos, no se imprimen todos los datos sino solo las primeras 10 observaciones, algo bastante bueno si se está trabajando con bases de datos con muchas observaciones. Si deseamos imprimir todas las observaciones o una cantidad determinada de ellas, debemos solicitarlo<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p><div class="no-row-height column-margin column-container"><li id="fn3"><p><sup>3</sup>&nbsp;Omitimos la salida para facilitar la lectura del documento</p></li></div></div>
-<div class="cell" data-hash="uso-dplyr_cache/html/unnamed-chunk-5_9ab8c97d702948d61017ae5496031bb6">
+<p>La base de datos <code>diamonds</code> es un <code>tibble</code>. Un <code>tibble</code> es un <em>data.frame</em> pero con algunas características especiales. Su principal diferencia con un <em>data.frame</em> es que al momento de imprimir la base de datos, no se imprimen todos los datos sino solo las primeras 10 observaciones, algo bastante bueno si se está trabajando con bases de datos con muchas observaciones. Si deseamos imprimir todas las observaciones o una cantidad determinada de ellas, debemos solicitarlo<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;Omitimos la salida para facilitar la lectura del documento</p></div></div><div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(diamonds, <span class="at">n =</span> <span class="dv">20</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">|&gt;</span> <span class="fu">distinct</span>(color, clarity) <span class="sc">|&gt;</span> </span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(color, <span class="fu">desc</span>(clarity)) <span class="sc">|&gt;</span> <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">56</span>) <span class="co"># todas (mejórelo)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Siempre que aplicamos <code>distinct()</code>, la base de datos resultante, no tendrá todas las variables originales, solo mantendrá aquellas involucradas en la operación (¿por qué eso puede ser deseable?)</p>
+<p>Hay una forma de mantener todas las variables, con el argumento y valor <code>.keep_all = TRUE</code> (¿por qué es necesario poner un punto al inicio?). En este caso, se mantendrá la primera coincidencia para cada combinaicón única encontrada.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">|&gt;</span> <span class="fu">distinct</span>(clarity, color, <span class="at">.keep_all =</span> <span class="cn">TRUE</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 56 × 10
+   carat cut       color clarity depth table price     x     y     z
+   &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1  0.23 Ideal     E     SI2      61.5    55   326  3.95  3.98  2.43
+ 2  0.21 Premium   E     SI1      59.8    61   326  3.89  3.84  2.31
+ 3  0.23 Good      E     VS1      56.9    65   327  4.05  4.07  2.31
+ 4  0.29 Premium   I     VS2      62.4    58   334  4.2   4.23  2.63
+ 5  0.31 Good      J     SI2      63.3    58   335  4.34  4.35  2.75
+ 6  0.24 Very Good J     VVS2     62.8    57   336  3.94  3.96  2.48
+ 7  0.24 Very Good I     VVS1     62.3    57   336  3.95  3.98  2.47
+ 8  0.26 Very Good H     SI1      61.9    55   337  4.07  4.11  2.53
+ 9  0.22 Fair      E     VS2      65.1    61   337  3.87  3.78  2.49
+10  0.23 Very Good H     VS1      59.4    61   338  4     4.05  2.39
+# ℹ 46 more rows</code></pre>
+</div>
+</div>
 <p><code>filter()</code> es quizás, la función más usada en filas. Nos permite seleccionar un subconjunto de los datos que cumplen uno o más criterios. La función requiere una base de datos como primer argumento y luego una serie de condiciones sobre los valores de una o más variables. Estas condiciones deben devolver un vector de valores lógicos que indicarán las filas a seleccionar.</p>
 <p>Es buen momento para recordar algunas operaciones con valores lógicos en <code>R</code>. Los valores lógicos son <code>TRUE</code> y <code>FALSE</code> o <code>T</code> y <code>F</code>. Podemos obtener estos valores al comparar con: <code>&gt;</code>, <code>&gt;=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>==</code>, <code>!=</code></p>
-<div class="cell" data-hash="uso-dplyr_cache/html/unnamed-chunk-6_81d190054be3ca28af6fa8270f625c7f">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">==</span> <span class="dv">5</span> <span class="co"># FALSE</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">==</span> <span class="dv">5</span> <span class="co"># FALSE</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] FALSE</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">&gt;=</span> <span class="dv">0</span> <span class="co"># TRUE</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">&gt;=</span> <span class="dv">0</span> <span class="co"># TRUE</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">3</span> <span class="co"># FALSE</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">&lt;</span> <span class="sc">-</span><span class="dv">3</span> <span class="co"># FALSE</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] FALSE</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">!=</span> <span class="dv">6</span> <span class="co"># TRUE</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">!=</span> <span class="dv">6</span> <span class="co"># TRUE</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
 </div>
 <p>El operador “o” es <code>|</code>, el operador “y” es <code>&amp;</code>, el</p>
-<div class="cell" data-hash="uso-dplyr_cache/html/unnamed-chunk-7_59c0eec06e5477f10d0c73ab21e9573e">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>(<span class="dv">2</span> <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">&amp;</span> (<span class="dv">10</span> <span class="sc">&gt;</span> <span class="dv">20</span>) <span class="co"># TRUE y FALSE es FALSE</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>(<span class="dv">2</span> <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">&amp;</span> (<span class="dv">10</span> <span class="sc">&gt;</span> <span class="dv">20</span>) <span class="co"># TRUE y FALSE es FALSE</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] FALSE</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>(<span class="dv">2</span> <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|</span> (<span class="dv">10</span> <span class="sc">&gt;</span> <span class="dv">20</span>) <span class="co"># TRUE o FALSE es TRUE</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>(<span class="dv">2</span> <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">|</span> (<span class="dv">10</span> <span class="sc">&gt;</span> <span class="dv">20</span>) <span class="co"># TRUE o FALSE es TRUE</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
 </div>
 <p>Claramente, estas operaciones se pueden aplicar sobre vectores</p>
-<div class="cell" data-hash="uso-dplyr_cache/html/unnamed-chunk-8_dc0398b09cafb4a5bc136ffc1083fac9">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">6</span>,<span class="dv">9</span>,<span class="dv">3</span>) <span class="sc">&gt;=</span> <span class="dv">5</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">6</span>,<span class="dv">9</span>,<span class="dv">3</span>) <span class="sc">&gt;=</span> <span class="dv">5</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] FALSE  TRUE  TRUE FALSE</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>(<span class="fu">c</span>(<span class="dv">7</span>, <span class="dv">2</span>, <span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">1</span>) <span class="sc">&lt;</span> <span class="dv">4</span>) <span class="sc">&amp;</span> (<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">8</span>, <span class="dv">2</span>, <span class="dv">0</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>(<span class="fu">c</span>(<span class="dv">7</span>, <span class="dv">2</span>, <span class="dv">9</span>, <span class="dv">3</span>, <span class="dv">1</span>) <span class="sc">&lt;</span> <span class="dv">4</span>) <span class="sc">&amp;</span> (<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">8</span>, <span class="dv">2</span>, <span class="dv">0</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] FALSE  TRUE FALSE  TRUE FALSE</code></pre>
 </div>
 </div>
 <p>Como se mencionó, el primer argumento en <code>dplyr</code> es una base de datos, y podemos pensar lo siguiente como un vector de valores lógicos donde se debe tener un valor de <code>TRUE</code> en cada posición que se quiera filtrar o extraer. Para entender con claridad el funcionamiento de <code>filter()</code>, vamos a crear una pequeña base de datos</p>
-<div class="cell" data-hash="uso-dplyr_cache/html/unnamed-chunk-9_6c966380f0f0af0cf26147cb8a9dc352">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>data_prueba <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">var1 =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>), <span class="dv">10</span>, <span class="at">replace =</span> T),</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">var2 =</span> <span class="fu">runif</span>(<span class="dv">10</span>, <span class="dv">3</span>, <span class="dv">7</span>),</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">var3 =</span> <span class="fu">runif</span>(<span class="dv">10</span>)</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>data_prueba</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>data_prueba <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">var1 =</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>), <span class="dv">10</span>, <span class="at">replace =</span> T),</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">var2 =</span> <span class="fu">runif</span>(<span class="dv">10</span>, <span class="dv">3</span>, <span class="dv">7</span>),</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">var3 =</span> <span class="fu">runif</span>(<span class="dv">10</span>)</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>data_prueba</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 × 3
    var1   var2  var3
@@ -494,8 +547,8 @@ $ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39
 </div>
 </div>
 <p>Supongamos que, de estas 10 filas, queremos seleccionar o filtrar la fila 1 y 4.</p>
-<div class="cell" data-hash="uso-dplyr_cache/html/unnamed-chunk-10_4f5496fc188c7e4c3df7a23cb2bd500e">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>data_prueba <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">c</span>(T,F,F,T,F,F,F,F,F,F))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>data_prueba <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="fu">c</span>(T,F,F,T,F,F,F,F,F,F))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 3
   var1   var2  var3
@@ -505,8 +558,8 @@ $ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39
 </div>
 </div>
 <p>Esta es la forma en que opera <code>filter()</code>, aunque el vector de valores lógicos será resultado de algunas condiciones sobre los valores de las variables. Supongamos que queremos filtrar aquellos datos o filas en los que el valor de <code>var3</code> es mayor a 0.7, lo que debemos escribir es</p>
-<div class="cell" data-hash="uso-dplyr_cache/html/unnamed-chunk-11_6f8b7695fdd6b5983caaaebdcaee705a">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>data_prueba <span class="sc">|&gt;</span> <span class="fu">filter</span>(var3 <span class="sc">&gt;</span> <span class="fl">0.7</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>data_prueba <span class="sc">|&gt;</span> <span class="fu">filter</span>(var3 <span class="sc">&gt;</span> <span class="fl">0.7</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3
   var1   var2  var3
@@ -517,8 +570,8 @@ $ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39
 </div>
 </div>
 <p>Podemos usar tantas combinaciones o condiciones como se requieran sobre las variables. En el siguiente ejemplo, filtramos los datos para los que var1 tiene el valor “c” <strong>y</strong> var3 es menor que 0.65</p>
-<div class="cell" data-hash="uso-dplyr_cache/html/unnamed-chunk-12_66a1a2b4d93c41700574840261cee4a3">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>data_prueba <span class="sc">|&gt;</span> <span class="fu">filter</span>(var1 <span class="sc">==</span> <span class="st">"c"</span> <span class="sc">&amp;</span> var3 <span class="sc">&lt;</span> <span class="fl">0.65</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>data_prueba <span class="sc">|&gt;</span> <span class="fu">filter</span>(var1 <span class="sc">==</span> <span class="st">"c"</span> <span class="sc">&amp;</span> var3 <span class="sc">&lt;</span> <span class="fl">0.65</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 3
   var1   var2  var3
@@ -528,8 +581,8 @@ $ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39
 </div>
 </div>
 <p>Volvamos a trabajar con <code>diamonds</code>, para recordar sus variables volvamos a imprimir los nombres de las columnas</p>
-<div class="cell" data-hash="uso-dplyr_cache/html/unnamed-chunk-13_7aa25a81fcc3e13e4fdbecd421c2f739">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(diamonds)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(diamonds)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 53,940
 Columns: 10
@@ -546,9 +599,9 @@ $ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39
 </div>
 </div>
 <p>Queremos filtrar los datos para los diamantes que tienen las mejores cualidades en términos de <em>cut</em> (“Ideal”), <em>color</em> (“D”) y <em>clarity</em> (“IF”)</p>
-<div class="cell" data-hash="uso-dplyr_cache/html/unnamed-chunk-14_c7fb622ffa89ecd34806b2babfd66fd3">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">|&gt;</span> </span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(cut <span class="sc">==</span> <span class="st">"Ideal"</span> <span class="sc">&amp;</span> color <span class="sc">==</span> <span class="st">"D"</span> <span class="sc">&amp;</span> clarity <span class="sc">==</span> <span class="st">"IF"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">|&gt;</span> </span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(cut <span class="sc">==</span> <span class="st">"Ideal"</span> <span class="sc">&amp;</span> color <span class="sc">==</span> <span class="st">"D"</span> <span class="sc">&amp;</span> clarity <span class="sc">==</span> <span class="st">"IF"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 28 × 10
    carat cut   color clarity depth table price     x     y     z
@@ -567,12 +620,12 @@ $ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39
 </div>
 </div>
 <p>Seleccionamos los diamantes más baratos y más caros (1%), y los ordenamos de forma descendente según su precio</p>
-<div class="cell" data-hash="uso-dplyr_cache/html/unnamed-chunk-15_f354cab17f527013f5b7a573a8703e2d">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>x_inf <span class="ot">&lt;-</span> <span class="fu">quantile</span>(diamonds<span class="sc">$</span>price, <span class="at">probs =</span> <span class="fl">0.01</span>)</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>x_sup <span class="ot">&lt;-</span> <span class="fu">quantile</span>(diamonds<span class="sc">$</span>price, <span class="at">probs =</span> <span class="fl">0.99</span>)</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">|&gt;</span> </span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(price <span class="sc">&lt;</span> x_inf <span class="sc">|</span> price <span class="sc">&gt;</span> x_sup) <span class="sc">|&gt;</span> </span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(price))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>x_inf <span class="ot">&lt;-</span> <span class="fu">quantile</span>(diamonds<span class="sc">$</span>price, <span class="at">probs =</span> <span class="fl">0.01</span>)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>x_sup <span class="ot">&lt;-</span> <span class="fu">quantile</span>(diamonds<span class="sc">$</span>price, <span class="at">probs =</span> <span class="fl">0.99</span>)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">|&gt;</span> </span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(price <span class="sc">&lt;</span> x_inf <span class="sc">|</span> price <span class="sc">&gt;</span> x_sup) <span class="sc">|&gt;</span> </span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(price))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1,069 × 10
    carat cut       color clarity depth table price     x     y     z
@@ -592,9 +645,9 @@ $ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39
 </div>
 <p>Al pasar las condiciones con las que queremos filtrar los datos, el operador <code>&amp;</code> puede ser reemplazado por una <code>,</code> o dicho de otra forma, las condiciones separadas por <code>,</code> se interpretarán como <code>&amp;</code>.</p>
 <p>Si queremos seleccionar los diamantes que tienen el atributo <em>clarity</em> más pobre (los 3 peores): “I1”, “SI2”, “SI1”</p>
-<div class="cell" data-hash="uso-dplyr_cache/html/unnamed-chunk-16_b25e616cc8691f6209392c92e479eff0">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">|&gt;</span> </span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(clarity <span class="sc">==</span> <span class="st">"I1"</span> <span class="sc">|</span> clarity <span class="sc">==</span> <span class="st">"SI2"</span> <span class="sc">|</span> clarity <span class="sc">==</span> <span class="st">"SI1"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">|&gt;</span> </span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(clarity <span class="sc">==</span> <span class="st">"I1"</span> <span class="sc">|</span> clarity <span class="sc">==</span> <span class="st">"SI2"</span> <span class="sc">|</span> clarity <span class="sc">==</span> <span class="st">"SI1"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 23,000 × 10
    carat cut       color clarity depth table price     x     y     z
@@ -613,8 +666,8 @@ $ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39
 </div>
 </div>
 <p>Cuando estamos evaluando la condición de que una variable tome alguno entre 2 o más valores, es más sencillo usar <code>var %in% c(valor1, ..., valorn)</code> en lugar de <code>var == valor1 | var == "valor2" | ... var == "valorn"</code>. El siguiente código hace la misma operación que el anterior</p>
-<div class="cell" data-hash="uso-dplyr_cache/html/unnamed-chunk-17_14bf31d0a363a83b0c15d05a2561785a">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">|&gt;</span> <span class="fu">filter</span>(clarity <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"I1"</span>, <span class="st">"SI2"</span>, <span class="st">"SI1"</span>, <span class="st">"VS2"</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">|&gt;</span> <span class="fu">filter</span>(clarity <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"I1"</span>, <span class="st">"SI2"</span>, <span class="st">"SI1"</span>, <span class="st">"VS2"</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 35,258 × 10
    carat cut       color clarity depth table price     x     y     z
@@ -632,6 +685,95 @@ $ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39
 # ℹ 35,248 more rows</code></pre>
 </div>
 </div>
+</section>
+<section id="operaciones-sobre-columnas" class="level2 page-columns page-full" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="operaciones-sobre-columnas"><span class="header-section-number">3.2</span> Operaciones sobre columnas</h2>
+<p>Para agregar nuevas variables a la base de datos se usa <code>mutate()</code>, estas pueden ser variables externas o creadas en el momento o resultado de cálculo de variables dentro de la base de datos misma<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp;esto es algo bastante bueno, normalmente no podríamos hacerlo ya que las variables en la base de datos no están guardadas directamente en el entorno de variables de la sesión de trabajo</p></div></div><div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>var_inventada <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"c1"</span>, <span class="st">"c2"</span>, <span class="st">"c3"</span>), <span class="at">size =</span> <span class="fu">nrow</span>(diamonds), <span class="at">replace =</span> T)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">|&gt;</span> </span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">var_nueva =</span> var_inventada, <span class="co"># una variable externa</span></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">var_nueva2 =</span> <span class="fu">runif</span>(<span class="fu">nrow</span>(diamonds)), <span class="co"># una creada en el momento</span></span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">var_nueva3 =</span> x <span class="sc">+</span> y <span class="sc">+</span> y <span class="co"># una con las variables existentes en la base de datos</span></span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 53,940
+Columns: 13
+$ carat      &lt;dbl&gt; 0.23, 0.21, 0.23, 0.29, 0.31, 0.24, 0.24, 0.26, 0.22, 0.23,…
+$ cut        &lt;ord&gt; Ideal, Premium, Good, Premium, Good, Very Good, Very Good, …
+$ color      &lt;ord&gt; E, E, E, I, J, J, I, H, E, H, J, J, F, J, E, E, I, J, J, J,…
+$ clarity    &lt;ord&gt; SI2, SI1, VS1, VS2, SI2, VVS2, VVS1, SI1, VS2, VS1, SI1, VS…
+$ depth      &lt;dbl&gt; 61.5, 59.8, 56.9, 62.4, 63.3, 62.8, 62.3, 61.9, 65.1, 59.4,…
+$ table      &lt;dbl&gt; 55, 61, 65, 58, 58, 57, 57, 55, 61, 61, 55, 56, 61, 54, 62,…
+$ price      &lt;int&gt; 326, 326, 327, 334, 335, 336, 336, 337, 337, 338, 339, 340,…
+$ x          &lt;dbl&gt; 3.95, 3.89, 4.05, 4.20, 4.34, 3.94, 3.95, 4.07, 3.87, 4.00,…
+$ y          &lt;dbl&gt; 3.98, 3.84, 4.07, 4.23, 4.35, 3.96, 3.98, 4.11, 3.78, 4.05,…
+$ z          &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39,…
+$ var_nueva  &lt;chr&gt; "c1", "c2", "c3", "c2", "c1", "c3", "c3", "c1", "c3", "c2",…
+$ var_nueva2 &lt;dbl&gt; 0.50870149, 0.09304586, 0.52525136, 0.24570402, 0.92814596,…
+$ var_nueva3 &lt;dbl&gt; 11.91, 11.57, 12.19, 12.66, 13.04, 11.86, 11.91, 12.29, 11.…</code></pre>
+</div>
+</div>
+<p>Por defecto, las variables creadas serán agregadas “a la derecha” de la base de datos. Esto se puede controlar con:</p>
+<ul>
+<li><code>.before</code>: El valor debe ser un número entero o nombre de variable, las nuevas variables se colocarán antes de ese número de columna o variable</li>
+<li><code>.after</code>: 🧠</li>
+</ul>
+<p>También es posible especificar las variables que se quieren mantener con el argumento <code>.keep</code>, las opciones son: <code>all</code> (por defecto), <code>used</code> (solo las usadas), <code>unused</code>, <code>none</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">|&gt;</span> </span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">var_nueva =</span> var_inventada,</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">var_nueva2 =</span> <span class="fu">runif</span>(<span class="fu">nrow</span>(diamonds)),</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">var_nueva3 =</span> x <span class="sc">+</span> y <span class="sc">+</span> z,</span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">.keep =</span> <span class="st">"used"</span>,</span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">.after =</span> x</span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 53,940 × 6
+       x var_nueva var_nueva2 var_nueva3     y     z
+   &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1  3.95 c1            0.0301       10.4  3.98  2.43
+ 2  3.89 c2            0.343        10.0  3.84  2.31
+ 3  4.05 c3            0.561        10.4  4.07  2.31
+ 4  4.2  c2            0.620        11.1  4.23  2.63
+ 5  4.34 c1            0.0352       11.4  4.35  2.75
+ 6  3.94 c3            0.170        10.4  3.96  2.48
+ 7  3.95 c3            0.864        10.4  3.98  2.47
+ 8  4.07 c1            0.469        10.7  4.11  2.53
+ 9  3.87 c3            0.738        10.1  3.78  2.49
+10  4    c2            0.217        10.4  4.05  2.39
+# ℹ 53,930 more rows</code></pre>
+</div>
+</div>
+<p>Es posible renombrar las variables con <code>rename()</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>diamonds <span class="sc">|&gt;</span> </span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">precio =</span> price,</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">peso =</span> carat,</span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">corte =</span> cut, </span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">claridad =</span> clarity</span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 53,940 × 10
+    peso corte     color claridad depth table precio     x     y     z
+   &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+ 1  0.23 Ideal     E     SI2       61.5    55    326  3.95  3.98  2.43
+ 2  0.21 Premium   E     SI1       59.8    61    326  3.89  3.84  2.31
+ 3  0.23 Good      E     VS1       56.9    65    327  4.05  4.07  2.31
+ 4  0.29 Premium   I     VS2       62.4    58    334  4.2   4.23  2.63
+ 5  0.31 Good      J     SI2       63.3    58    335  4.34  4.35  2.75
+ 6  0.24 Very Good J     VVS2      62.8    57    336  3.94  3.96  2.48
+ 7  0.24 Very Good I     VVS1      62.3    57    336  3.95  3.98  2.47
+ 8  0.26 Very Good H     SI1       61.9    55    337  4.07  4.11  2.53
+ 9  0.22 Fair      E     VS2       65.1    61    337  3.87  3.78  2.49
+10  0.23 Very Good H     VS1       59.4    61    338  4     4.05  2.39
+# ℹ 53,930 more rows</code></pre>
+</div>
+</div>
+<p>Podemos seleccionar un subconjunto de variables con <code>select()</code></p>
 
 
 </section>
@@ -673,18 +815,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -716,11 +847,50 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -730,8 +900,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -743,7 +922,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -787,6 +1089,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -812,6 +1115,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -873,17 +1202,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./uso-ggplot2.html" class="pagination-link">
+      <a href="./uso-ggplot2.html" class="pagination-link" aria-label="Uso de `ggplot2`">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uso de <code>ggplot2</code></span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./r-prob.html" class="pagination-link">
+      <a href="./r-prob.html" class="pagination-link" aria-label="Probabilidad">
         <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Probabilidad</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 

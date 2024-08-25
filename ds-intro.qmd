@@ -1,0 +1,141 @@
+# Definiciones
+
+
+Hay muchos términos relacionados a ciencia de datos, cada uno derivado de la definición general de "extraer información de los datos"
+
++ Inteligencia de negocios (_Business Intelligence_)
++ Analítica (análisis) de datos (_Data Analytics (Data Analysis)_)
++ Aprendizaje automático (_Machine Learning_)
++ Aprendizaje Profundo (_Deep Learning_)
++ Ingeniería de datos (_Data Engineering_)
++ Grandes volúmenes de datos (_Big Data_)
++ **Ciencia de datos (_Data Science_)**
++ **Aprendizaje Estadístico (_Statistical Learning_)**
+
+## Ejemplo para discusión
+
+¿Cómo funcionaría un grupo de ciencia de datos en una empresa? Suponga un caso en el que una empresa pública quiere aplicar ciencia de datos a las PQR de los usuarios
+
+<!-- ## Definición de ciencia de datos -->
+
+<!-- Aplicación de algoritmos de aprendizaje automático para la construcción de modelos predictivos con [_buenas propiedades_]{.mark} estadísticas ([_Statistical Machine Learning_]{.mark}) -->
+
+## Modelo predictivo
+
+Dadas unas condiciones particulares (valores de las variables predictoras $\textbf{X}$), un modelo predictivo intenta determinar (pronosticar) de [_la mejor manera posible_] el valor de la variable de interés $Y$ (aprendizaje supervisado). No todas las técnicas de ciencia de datos tienen como objetivo la predicción.
+
+
+## Metodología
+
+Siempre que sea posible, los temas del curso se desarrollarán bajo el siguiente orden lógico
+
+1. Desarrollo teórico y conceptual (a mano)
+2. Método Montecarlo (bases de datos simuladas en `R`)
+3. Aplicación de los métodos en bases de datos reales (en `R`)
+
+
+## Aplicaciones
+
+> Dadas unas condiciones particulares, ¿cuál es la mejor aproximación
+> para la variable de respuesta?
+
++ Dado el historial de compras y de navegación de un cliente en el portal de un comercio electrónico, ¿cuál es la probabilidad de que compre un producto si se ofrece en promoción?
+
++ Dado el historial familiar, ¿cuál es la probabilidad que tiene un individuo de sufrir de diabetes en su edad adulta?
+
++ Dado el valor histórico de las acciones de una compañía en la bolsa de valores en los últimos años, ¿El valor de la acción subirá o bajará?
+
++ Dado un mapa de bits de un caracter numérico escrito a mano, ¿qué número es?
+
+<!-- # Abstracción  -->
+
+<!-- Construcción conceptual del modelo  general (en el tablero) -->
+
+## Flexibilidad del modelo
+
+El concepto de flexibilidad será de vital importancia para nosotros, miremos qué podemos decir de forma sencilla. 
+Supongamos que la demanda de un producto varía de forma inversa a su precio con la siguiente ecuación:
+
+$$f(x)=20-x+100e^{-x}$$
+Al considerar la parte aleatoria del problema (¿por qué es esto más realista?) podemos escribir
+
+$$
+y_i=f(x_i)+\epsilon_i
+\\ \epsilon_i \sim N (\mu=0, \ \sigma=8)
+$$
+
+Generamos una muestra aleatoria de `r n=200` $n=200$ datos (método Montecarlo). A partir de los datos, ajustamos un modelo de regresión local de segundo orden, cuyo parámetro de calibración se encuentra con el método de validación cruzada.
+
+### Casos a considerar
+
+- Modelo real
+- Modelo muy flexible
+- Modelo poco flexible
+- Modelo Calibrado
+
+### Modelo predictivo para la demanda usando regresión local
+`Puede hacer zoom o seleccionar los modelos a mostrar en la gráfica`
+
+
+```{r}
+#| message: false
+#| warning: false
+#| cache: true
+
+library(plotly)
+library(stats)  # Función loess
+
+f <- function(x){100*exp(-x)+20-x}
+n <- 200 # tamaño de la muestra
+x <- sort(runif(n, 0.1, 8))
+y <- f(x)
+e <- rnorm(n, 0, 8)
+y0 <- y + e
+xy <- data.frame(Precio=x,Demanda=y,y0)
+
+# Haciendo LOOCV (Leave One Out CV)
+flex <- seq(from=0.1, to=1.3, length.out=20)
+v_cv <- rep(0, length(flex))
+
+for(j in 1:length(flex)){
+  cvs <- rep(0, n)
+  for(i in 1:n){
+    xi <- x[-i]
+    yi <- y0[-i]
+    xiyi <- data.frame(xi=xi, yi=yi)
+    d <- loess(formula = yi~xi, data = xiyi,
+                           span=flex[j], degree = 2)
+    cvs[i] <- (y0[i] - stats::predict(d, newdata=data.frame(xi=x[i])))^2
+  }
+  v_cv[j] <- mean(cvs,na.rm=T)
+}
+
+bd_opt <- flex[which.min(v_cv)]
+
+fit_1 <- loess(formula = y0~x, span=0.09, degree = 2)  # Modelo muy flexible
+fit_2 <- loess(formula = y0~x, span=9, degree = 2)  # Modelo poco flexible
+fit_opt <- loess(formula = y0~x, span=bd_opt, degree = 2)  # Modelo calibrado con LOOCV
+
+ypred_1 <- predict(fit_1)
+ypred_2 <- predict(fit_2)
+ypred_opt <- predict(fit_opt)
+
+
+inf=-10; sup=120
+fig <- plot_ly(xy, x=~Precio)
+fig <- fig %>% layout(yaxis=list(range=c(inf,sup)), xaxis=list(range=c(0,9)))
+fig <- fig %>% add_trace(y=~Demanda, type = "scatter", mode="lines", name = "Real")
+fig <- fig %>% add_trace(y=~y0, type="scatter", mode="markers", 
+                         marker=list(color="#ff7f0e"), name="Datos")
+fig <- fig %>% add_trace(y=~ypred_1, type = "scatter", mode="lines", 
+                         name = "Modelo muy flexible")
+fig <- fig %>% add_trace(y=~ypred_2, type = "scatter", mode="lines", 
+                         name = "Modelo poco flexible")
+fig <- fig %>% add_trace(y=~ypred_opt, type = "scatter", mode="lines", 
+                         name = "Modelo calibrado")
+
+
+fig
+
+```
+

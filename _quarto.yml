@@ -23,8 +23,9 @@ book:
         - r-prob.qmd
         - r-estimacion.qmd
         - r-hipotesis.qmd
-    - part: "Regresión lineal"
+    - part: "Ciencia de datos"
       chapters:
+        - ds-intro.qmd
         - reg-simple.qmd
         - reg-multiple.qmd
     - references.qmd

@@ -10,11 +10,11 @@
     ]
   },
   {
-    "objectID": "index.html#descripción-del-curso",
-    "href": "index.html#descripción-del-curso",
+    "objectID": "index.html#presentación-del-curso",
+    "href": "index.html#presentación-del-curso",
     "title": "Ciencia de Datos",
-    "section": "Descripción del curso",
-    "text": "Descripción del curso\nEl curso de ciencia de datos presenta una introducción a la teoría e implementación de métodos estadísticos para el análisis de datos. Se hace énfasis en los modelos predictivos que buscan aproximar una variable de interés \\(Y\\) (métodos supervisados) en términos de un conjunto de variables predictoras \\((\\textbf{X})\\), usando una función f que debe ser aprendida a través de un conjunto de datos \\((x_i, y_i)\\ i=1,2,...,n\\).\n\n\n\n\n\n\n\nFigura 1: Habilidades necesarias para ciencia de datos\n\n\n\n\nSe estudian las bases conceptuales y matemáticas de los modelos y se evalúan a partir de sus propiedades estadísticas y capacidad de predecir la variable \\(Y\\). Se estudia también la parte práctica de los temas mediante la aplicación y validación de los métodos en bases de datos sintéticas y reales, usando el lenguaje R como software estadístico y de programación.\nLa ciencia de datos requiere de disciplinas y habilidades diversas, pero puede resumirse en 3 grandes aspectos (Figura 1):\n\nConocimiento en estadística y modelos matemáticos\nManejo de algoritmos y lenguajes de programación\nExperticia en algún campo específico de aplicación\n\nEl objetivo principal de este curso es desarrollar de manera formal, pero sin exceso en la teoría matemática, los modelos estadísticos en ciencia de datos. Las habilidades de programación y conocimientos básicos en los campos de aplicación se desarrollarán en la medida de lo necesario.\nResolver problemas de ciencia de datos no es un proceso lineal, pero sí se puede enmarcar en una serie de etapas que ayudan a desarrollar de manera consistente el trabajo o flujo de trabajo.\nEn la Figura 2 se muestra un esquema de este proceso sistemático. La primera etapa se conoce como disputa de datos (data wrangling)1 y consiste en la obtención y puesta a punto de los datos que se van a utilizar. Esta fase requiere importar, ordenar y transformar los datos, y necesita habilidades específicas en manejo de bases de datos. Las personas con alta especialización en esta área se conocen somo Ingenieros de Datos (Data Engineers).\n1 Algunos autores lo definen como una pelea con los datos\n\n\n\n\n\n\n\nflowchart LR\nsubgraph DW[Data Wrangling]\n  direction LR\n  A(Importar) --&gt; B(Ordenar)\n  B --&gt; C(Transformar)\nend\nsubgraph EDA[\"Exploratory Data Analysis (EDA)\"]\n  direction RL\n  C2(Transformar) --&gt; D(Visualizar)\n  D --&gt; C2\nend\nsubgraph MO[Modeling]\n  direction RL\n  E(Modelar) --&gt; F(Evaluar)\n  F --&gt; E\nend\nsubgraph CO[Communicate]\n  G(comunicar)\nend\n\nDW --&gt; EDA\nEDA --&gt; MO\nMO --&gt; EDA\nMO --&gt; CO\n\n\n\n\n\n\n\n\nFigura 2: Flujo de trabajo en ciencia de datos\n\n\n\nLa segunda fase es el análisis exploratorio de datos (Exploratory Data Analysis (EDA)) y consiste principalmente en la visualización a través de tablas, resúmenes y gráficas de la información que se tiene en las bases de datos que han sido previamente organizadas. Esta fase puede requerir iterar entre los procesos de transformación y visualización. No todos los problemas de ciencia de datos requieren de técnicas de machine learning y muchos de estos problemas pueden resolverse en esta fase. Las personas que se especializan en esta área se conocen como Analistas de Datos (Data Analysts).\nLa tercera fase (y la que más desarrollaremos en este curso) es la Modelación y se trata de aplicar modelos estadísticos y de machine learning para obtener ideas e información a partir de los datos. Este proceso también es iterativo y puede requerir aplicar varios tipos de modelos, evaluarlos y compararlos para obtener buenos resultados. Los especialistas en esta área son los Científicos de Datos (Data Scientists).\nLa última fase del proceso es la comunicación de los resultados y hallazgos. Es importante aprender a presentar los resultados y veremos algunas herramientas básicas para lograrlo.",
+    "section": "Presentación del curso",
+    "text": "Presentación del curso\nEl curso de ciencia de datos presenta una introducción a la teoría e implementación de métodos estadísticos para el análisis de datos. Se hace énfasis en los modelos predictivos que buscan aproximar una variable de interés \\(Y\\) (métodos supervisados) en términos de un conjunto de variables predictoras \\((\\textbf{X})\\), usando una función f que debe ser aprendida a través de un conjunto de datos \\((x_i, y_i)\\ i=1,2,...,n\\).\n\n\n\n\n\n\n\nFigura 1: Habilidades necesarias para la Ciencia de Datos\n\n\n\n\n\n\n\nSe estudian las bases conceptuales y matemáticas de los modelos y se evalúan a partir de sus propiedades estadísticas y capacidad de predecir la variable \\(Y\\). Se estudia también la parte práctica de los temas mediante la aplicación y validación de los métodos en bases de datos sintéticas y reales, usando el lenguaje R como software estadístico y de programación.\nLa ciencia de datos requiere de disciplinas y habilidades diversas, pero puede resumirse en 3 grandes aspectos (Figura 1):\n\nConocimiento en estadística y modelos matemáticos\nManejo de algoritmos y lenguajes de programación\nExperticia en algún campo específico de aplicación\n\nEl objetivo principal de este curso es desarrollar de manera formal, pero sin exceso en la teoría matemática, los modelos estadísticos en ciencia de datos. Las habilidades de programación y conocimientos básicos en los campos de aplicación se desarrollarán en la medida de lo necesario.\nResolver problemas de ciencia de datos no es un proceso lineal, pero sí se puede enmarcar en una serie de etapas que ayudan a desarrollar de manera consistente el trabajo o flujo de trabajo.\nEn la Figura 2.1 se muestra un esquema de este proceso sistemático. La primera etapa se conoce como disputa de datos (data wrangling)1 y consiste en la obtención y puesta a punto de los datos que se van a utilizar. Esta fase requiere importar, ordenar y transformar los datos, y necesita habilidades específicas en manejo de bases de datos. Las personas con alta especialización en esta área se conocen somo Ingenieros de Datos (Data Engineers).\n1 Algunos autores lo definen como una pelea con los datos\n\n\n\n\n\n\n\nflowchart LR\nsubgraph DW[Data Wrangling]\n  direction LR\n  A(Importar) --&gt; B(Ordenar)\n  B --&gt; C(Transformar)\nend\nsubgraph EDA[\"Exploratory Data Analysis (EDA)\"]\n  direction RL\n  C2(Transformar) --&gt; D(Visualizar)\n  D --&gt; C2\nend\nsubgraph MO[Modeling]\n  direction RL\n  E(Modelar) --&gt; F(Evaluar)\n  F --&gt; E\nend\nsubgraph CO[Communicate]\n  G(comunicar)\nend\n\nDW --&gt; EDA\nEDA --&gt; MO\nMO --&gt; EDA\nMO --&gt; CO\n\n\n\n\n\n\n\n\nFigura 2: Flujo de trabajo en ciencia de datos\n\n\n\nLa segunda fase es el análisis exploratorio de datos (Exploratory Data Analysis (EDA)) y consiste principalmente en la visualización a través de tablas, resúmenes y gráficas de la información que se tiene en las bases de datos que han sido previamente organizadas. Esta fase puede requerir iterar entre los procesos de transformación y visualización. No todos los problemas de ciencia de datos requieren de técnicas de machine learning y muchos de estos problemas pueden resolverse en esta fase. Las personas que se especializan en esta área se conocen como Analistas de Datos (Data Analysts).\nLa tercera fase es la Modelación y se trata de aplicar modelos estadísticos y de machine learning para obtener ideas e información a partir de los datos. Este proceso también es iterativo y puede requerir aplicar varios tipos de modelos, evaluarlos y compararlos para obtener buenos resultados. Los especialistas en esta área son los Científicos de Datos (Data Scientists).\nLa última fase del proceso es la comunicación de los resultados y hallazgos. Es importante aprender a presentar los resultados y veremos algunas herramientas básicas para lograrlo.",
     "crumbs": [
       "Presentación"
     ]
@@ -398,13 +398,321 @@
     ]
   },
   {
-    "objectID": "index.html#presentación-del-curso",
-    "href": "index.html#presentación-del-curso",
-    "title": "Ciencia de Datos",
-    "section": "Presentación del curso",
-    "text": "Presentación del curso\nEl curso de ciencia de datos presenta una introducción a la teoría e implementación de métodos estadísticos para el análisis de datos. Se hace énfasis en los modelos predictivos que buscan aproximar una variable de interés \\(Y\\) (métodos supervisados) en términos de un conjunto de variables predictoras \\((\\textbf{X})\\), usando una función f que debe ser aprendida a través de un conjunto de datos \\((x_i, y_i)\\ i=1,2,...,n\\).\n\n\n\n\n\n\n\nFigura 1: Habilidades necesarias para la Ciencia de Datos\n\n\n\n\n\n\n\nSe estudian las bases conceptuales y matemáticas de los modelos y se evalúan a partir de sus propiedades estadísticas y capacidad de predecir la variable \\(Y\\). Se estudia también la parte práctica de los temas mediante la aplicación y validación de los métodos en bases de datos sintéticas y reales, usando el lenguaje R como software estadístico y de programación.\nLa ciencia de datos requiere de disciplinas y habilidades diversas, pero puede resumirse en 3 grandes aspectos (Figura 1):\n\nConocimiento en estadística y modelos matemáticos\nManejo de algoritmos y lenguajes de programación\nExperticia en algún campo específico de aplicación\n\nEl objetivo principal de este curso es desarrollar de manera formal, pero sin exceso en la teoría matemática, los modelos estadísticos en ciencia de datos. Las habilidades de programación y conocimientos básicos en los campos de aplicación se desarrollarán en la medida de lo necesario.\nResolver problemas de ciencia de datos no es un proceso lineal, pero sí se puede enmarcar en una serie de etapas que ayudan a desarrollar de manera consistente el trabajo o flujo de trabajo.\nEn la Figura 2.1 se muestra un esquema de este proceso sistemático. La primera etapa se conoce como disputa de datos (data wrangling)1 y consiste en la obtención y puesta a punto de los datos que se van a utilizar. Esta fase requiere importar, ordenar y transformar los datos, y necesita habilidades específicas en manejo de bases de datos. Las personas con alta especialización en esta área se conocen somo Ingenieros de Datos (Data Engineers).\n1 Algunos autores lo definen como una pelea con los datos\n\n\n\n\n\n\n\nflowchart LR\nsubgraph DW[Data Wrangling]\n  direction LR\n  A(Importar) --&gt; B(Ordenar)\n  B --&gt; C(Transformar)\nend\nsubgraph EDA[\"Exploratory Data Analysis (EDA)\"]\n  direction RL\n  C2(Transformar) --&gt; D(Visualizar)\n  D --&gt; C2\nend\nsubgraph MO[Modeling]\n  direction RL\n  E(Modelar) --&gt; F(Evaluar)\n  F --&gt; E\nend\nsubgraph CO[Communicate]\n  G(comunicar)\nend\n\nDW --&gt; EDA\nEDA --&gt; MO\nMO --&gt; EDA\nMO --&gt; CO\n\n\n\n\n\n\n\n\nFigura 2: Flujo de trabajo en ciencia de datos\n\n\n\nLa segunda fase es el análisis exploratorio de datos (Exploratory Data Analysis (EDA)) y consiste principalmente en la visualización a través de tablas, resúmenes y gráficas de la información que se tiene en las bases de datos que han sido previamente organizadas. Esta fase puede requerir iterar entre los procesos de transformación y visualización. No todos los problemas de ciencia de datos requieren de técnicas de machine learning y muchos de estos problemas pueden resolverse en esta fase. Las personas que se especializan en esta área se conocen como Analistas de Datos (Data Analysts).\nLa tercera fase es la Modelación y se trata de aplicar modelos estadísticos y de machine learning para obtener ideas e información a partir de los datos. Este proceso también es iterativo y puede requerir aplicar varios tipos de modelos, evaluarlos y compararlos para obtener buenos resultados. Los especialistas en esta área son los Científicos de Datos (Data Scientists).\nLa última fase del proceso es la comunicación de los resultados y hallazgos. Es importante aprender a presentar los resultados y veremos algunas herramientas básicas para lograrlo.",
+    "objectID": "uso-dplyr.html",
+    "href": "uso-dplyr.html",
+    "title": "3  Uso de dplyr",
+    "section": "",
+    "text": "3.1 Operaciones sobre filas\nNada que agregar, son operaciones o funciones que modifican de alguna forma las filas u observaciones en la base de datos. Dentro de estas funciones tenemos operaciones como filtrar y ordenar. Las funciones principales en este grupo son:\nPodemos ordenar las filas en diamonds en orden ascendente o descendente según el precio, o cualquier otra variable numérica\ndiamonds |&gt; arrange(price)\n\n# A tibble: 53,940 × 10\n   carat cut       color clarity depth table price     x     y     z\n   &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n 1  0.23 Ideal     E     SI2      61.5    55   326  3.95  3.98  2.43\n 2  0.21 Premium   E     SI1      59.8    61   326  3.89  3.84  2.31\n 3  0.23 Good      E     VS1      56.9    65   327  4.05  4.07  2.31\n 4  0.29 Premium   I     VS2      62.4    58   334  4.2   4.23  2.63\n 5  0.31 Good      J     SI2      63.3    58   335  4.34  4.35  2.75\n 6  0.24 Very Good J     VVS2     62.8    57   336  3.94  3.96  2.48\n 7  0.24 Very Good I     VVS1     62.3    57   336  3.95  3.98  2.47\n 8  0.26 Very Good H     SI1      61.9    55   337  4.07  4.11  2.53\n 9  0.22 Fair      E     VS2      65.1    61   337  3.87  3.78  2.49\n10  0.23 Very Good H     VS1      59.4    61   338  4     4.05  2.39\n# ℹ 53,930 more rows\n\ndiamonds |&gt; arrange(desc(price))\n\n# A tibble: 53,940 × 10\n   carat cut       color clarity depth table price     x     y     z\n   &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n 1  2.29 Premium   I     VS2      60.8    60 18823  8.5   8.47  5.16\n 2  2    Very Good G     SI1      63.5    56 18818  7.9   7.97  5.04\n 3  1.51 Ideal     G     IF       61.7    55 18806  7.37  7.41  4.56\n 4  2.07 Ideal     G     SI2      62.5    55 18804  8.2   8.13  5.11\n 5  2    Very Good H     SI1      62.8    57 18803  7.95  8     5.01\n 6  2.29 Premium   I     SI1      61.8    59 18797  8.52  8.45  5.24\n 7  2.04 Premium   H     SI1      58.1    60 18795  8.37  8.28  4.84\n 8  2    Premium   I     VS1      60.8    59 18795  8.13  8.02  4.91\n 9  1.71 Premium   F     VS2      62.3    59 18791  7.57  7.53  4.7 \n10  2.15 Ideal     G     SI2      62.6    54 18791  8.29  8.35  5.21\n# ℹ 53,930 more rows\nSi queremos ver los valores únicos de las variables que son categóricas2 (cut, color y clarity) podemos usar distinct(cat1) o combinaciones únicas de varias de ellas con distinct(fact1, fact2)\ndiamonds |&gt; distinct(cut)\n\n# A tibble: 5 × 1\n  cut      \n  &lt;ord&gt;    \n1 Ideal    \n2 Premium  \n3 Good     \n4 Very Good\n5 Fair     \n\ndiamonds |&gt; distinct(color, clarity) |&gt; arrange(color, desc(clarity))\n\n# A tibble: 56 × 2\n   color clarity\n   &lt;ord&gt; &lt;ord&gt;  \n 1 D     IF     \n 2 D     VVS1   \n 3 D     VVS2   \n 4 D     VS1    \n 5 D     VS2    \n 6 D     SI1    \n 7 D     SI2    \n 8 D     I1     \n 9 E     IF     \n10 E     VVS1   \n# ℹ 46 more rows\nNote que en el último código, luego de captar las combinaciones únicas de color y clarity, se ordenan los datos de forma ascendente para color y para valores repetidos de color se ordenan de forma descendente para clarity.\nLa base de datos diamonds es un tibble. Un tibble es un data.frame pero con algunas características especiales. Su principal diferencia con un data.frame es que al momento de imprimir la base de datos, no se imprimen todos los datos sino solo las primeras 10 observaciones, algo bastante bueno si se está trabajando con bases de datos con muchas observaciones. Si deseamos imprimir todas las observaciones o una cantidad determinada de ellas, debemos solicitarlo3\nprint(diamonds, n = 20)\ndiamonds |&gt; distinct(color, clarity) |&gt; \n  arrange(color, desc(clarity)) |&gt; print(n = 56) # todas (mejórelo)\nSiempre que aplicamos distinct(), la base de datos resultante, no tendrá todas las variables originales, solo mantendrá aquellas involucradas en la operación (¿por qué eso puede ser deseable?)\nHay una forma de mantener todas las variables, con el argumento y valor .keep_all = TRUE (¿por qué es necesario poner un punto al inicio?). En este caso, se mantendrá la primera coincidencia para cada combinaicón única encontrada.\ndiamonds |&gt; distinct(clarity, color, .keep_all = TRUE)\n\n# A tibble: 56 × 10\n   carat cut       color clarity depth table price     x     y     z\n   &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n 1  0.23 Ideal     E     SI2      61.5    55   326  3.95  3.98  2.43\n 2  0.21 Premium   E     SI1      59.8    61   326  3.89  3.84  2.31\n 3  0.23 Good      E     VS1      56.9    65   327  4.05  4.07  2.31\n 4  0.29 Premium   I     VS2      62.4    58   334  4.2   4.23  2.63\n 5  0.31 Good      J     SI2      63.3    58   335  4.34  4.35  2.75\n 6  0.24 Very Good J     VVS2     62.8    57   336  3.94  3.96  2.48\n 7  0.24 Very Good I     VVS1     62.3    57   336  3.95  3.98  2.47\n 8  0.26 Very Good H     SI1      61.9    55   337  4.07  4.11  2.53\n 9  0.22 Fair      E     VS2      65.1    61   337  3.87  3.78  2.49\n10  0.23 Very Good H     VS1      59.4    61   338  4     4.05  2.39\n# ℹ 46 more rows\nfilter() es quizás, la función más usada en filas. Nos permite seleccionar un subconjunto de los datos que cumplen uno o más criterios. La función requiere una base de datos como primer argumento y luego una serie de condiciones sobre los valores de una o más variables. Estas condiciones deben devolver un vector de valores lógicos que indicarán las filas a seleccionar.\nEs buen momento para recordar algunas operaciones con valores lógicos en R. Los valores lógicos son TRUE y FALSE o T y F. Podemos obtener estos valores al comparar con: &gt;, &gt;=, &lt;, &lt;=, ==, !=\n2 == 5 # FALSE\n\n[1] FALSE\n\n3 &gt;= 0 # TRUE\n\n[1] TRUE\n\n2 &lt; -3 # FALSE\n\n[1] FALSE\n\n3 != 6 # TRUE\n\n[1] TRUE\nEl operador “o” es |, el operador “y” es &, el\n(2 &gt; 0) & (10 &gt; 20) # TRUE y FALSE es FALSE\n\n[1] FALSE\n\n(2 &gt; 0) | (10 &gt; 20) # TRUE o FALSE es TRUE\n\n[1] TRUE\nClaramente, estas operaciones se pueden aplicar sobre vectores\nc(2,6,9,3) &gt;= 5\n\n[1] FALSE  TRUE  TRUE FALSE\n\n(c(7, 2, 9, 3, 1) &lt; 4) & (c(1, 2, 8, 2, 0))\n\n[1] FALSE  TRUE FALSE  TRUE FALSE\nComo se mencionó, el primer argumento en dplyr es una base de datos, y podemos pensar lo siguiente como un vector de valores lógicos donde se debe tener un valor de TRUE en cada posición que se quiera filtrar o extraer. Para entender con claridad el funcionamiento de filter(), vamos a crear una pequeña base de datos\nset.seed(123)\ndata_prueba &lt;- tibble(\n  var1 = sample(c(\"a\", \"b\", \"c\"), 10, replace = T),\n  var2 = runif(10, 3, 7),\n  var3 = runif(10)\n)\ndata_prueba\n\n# A tibble: 10 × 3\n   var1   var2  var3\n   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;\n 1 c      6.83 0.890\n 2 c      4.81 0.693\n 3 c      5.71 0.641\n 4 b      5.29 0.994\n 5 c      3.41 0.656\n 6 b      6.60 0.709\n 7 b      3.98 0.544\n 8 b      3.17 0.594\n 9 c      4.31 0.289\n10 a      6.82 0.147\nSupongamos que, de estas 10 filas, queremos seleccionar o filtrar la fila 1 y 4.\ndata_prueba |&gt; filter(c(T,F,F,T,F,F,F,F,F,F))\n\n# A tibble: 2 × 3\n  var1   var2  var3\n  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;\n1 c      6.83 0.890\n2 b      5.29 0.994\nEsta es la forma en que opera filter(), aunque el vector de valores lógicos será resultado de algunas condiciones sobre los valores de las variables. Supongamos que queremos filtrar aquellos datos o filas en los que el valor de var3 es mayor a 0.7, lo que debemos escribir es\ndata_prueba |&gt; filter(var3 &gt; 0.7)\n\n# A tibble: 3 × 3\n  var1   var2  var3\n  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;\n1 c      6.83 0.890\n2 b      5.29 0.994\n3 b      6.60 0.709\nPodemos usar tantas combinaciones o condiciones como se requieran sobre las variables. En el siguiente ejemplo, filtramos los datos para los que var1 tiene el valor “c” y var3 es menor que 0.65\ndata_prueba |&gt; filter(var1 == \"c\" & var3 &lt; 0.65)\n\n# A tibble: 2 × 3\n  var1   var2  var3\n  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;\n1 c      5.71 0.641\n2 c      4.31 0.289\nVolvamos a trabajar con diamonds, para recordar sus variables volvamos a imprimir los nombres de las columnas\nglimpse(diamonds)\n\nRows: 53,940\nColumns: 10\n$ carat   &lt;dbl&gt; 0.23, 0.21, 0.23, 0.29, 0.31, 0.24, 0.24, 0.26, 0.22, 0.23, 0.…\n$ cut     &lt;ord&gt; Ideal, Premium, Good, Premium, Good, Very Good, Very Good, Ver…\n$ color   &lt;ord&gt; E, E, E, I, J, J, I, H, E, H, J, J, F, J, E, E, I, J, J, J, I,…\n$ clarity &lt;ord&gt; SI2, SI1, VS1, VS2, SI2, VVS2, VVS1, SI1, VS2, VS1, SI1, VS1, …\n$ depth   &lt;dbl&gt; 61.5, 59.8, 56.9, 62.4, 63.3, 62.8, 62.3, 61.9, 65.1, 59.4, 64…\n$ table   &lt;dbl&gt; 55, 61, 65, 58, 58, 57, 57, 55, 61, 61, 55, 56, 61, 54, 62, 58…\n$ price   &lt;int&gt; 326, 326, 327, 334, 335, 336, 336, 337, 337, 338, 339, 340, 34…\n$ x       &lt;dbl&gt; 3.95, 3.89, 4.05, 4.20, 4.34, 3.94, 3.95, 4.07, 3.87, 4.00, 4.…\n$ y       &lt;dbl&gt; 3.98, 3.84, 4.07, 4.23, 4.35, 3.96, 3.98, 4.11, 3.78, 4.05, 4.…\n$ z       &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39, 2.…\nQueremos filtrar los datos para los diamantes que tienen las mejores cualidades en términos de cut (“Ideal”), color (“D”) y clarity (“IF”)\ndiamonds |&gt; \n  filter(cut == \"Ideal\" & color == \"D\" & clarity == \"IF\")\n\n# A tibble: 28 × 10\n   carat cut   color clarity depth table price     x     y     z\n   &lt;dbl&gt; &lt;ord&gt; &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n 1  0.51 Ideal D     IF       62      56  3446  5.14  5.18  3.2 \n 2  0.51 Ideal D     IF       62.1    55  3446  5.12  5.13  3.19\n 3  0.53 Ideal D     IF       61.5    54  3517  5.27  5.21  3.22\n 4  0.53 Ideal D     IF       62.2    55  3812  5.17  5.19  3.22\n 5  0.63 Ideal D     IF       61.2    53  3832  5.55  5.6   3.41\n 6  0.59 Ideal D     IF       60.7    58  4161  5.45  5.49  3.32\n 7  0.59 Ideal D     IF       60.9    57  4208  5.4   5.43  3.3 \n 8  0.56 Ideal D     IF       62.4    56  4216  5.24  5.28  3.28\n 9  0.56 Ideal D     IF       61.9    57  4293  5.28  5.31  3.28\n10  0.56 Ideal D     IF       60.8    58  4632  5.35  5.31  3.24\n# ℹ 18 more rows\nSeleccionamos los diamantes más baratos y más caros (1%), y los ordenamos de forma descendente según su precio\nx_inf &lt;- quantile(diamonds$price, probs = 0.01)\nx_sup &lt;- quantile(diamonds$price, probs = 0.99)\ndiamonds |&gt; \n  filter(price &lt; x_inf | price &gt; x_sup) |&gt; \n  arrange(desc(price))\n\n# A tibble: 1,069 × 10\n   carat cut       color clarity depth table price     x     y     z\n   &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n 1  2.29 Premium   I     VS2      60.8    60 18823  8.5   8.47  5.16\n 2  2    Very Good G     SI1      63.5    56 18818  7.9   7.97  5.04\n 3  1.51 Ideal     G     IF       61.7    55 18806  7.37  7.41  4.56\n 4  2.07 Ideal     G     SI2      62.5    55 18804  8.2   8.13  5.11\n 5  2    Very Good H     SI1      62.8    57 18803  7.95  8     5.01\n 6  2.29 Premium   I     SI1      61.8    59 18797  8.52  8.45  5.24\n 7  2.04 Premium   H     SI1      58.1    60 18795  8.37  8.28  4.84\n 8  2    Premium   I     VS1      60.8    59 18795  8.13  8.02  4.91\n 9  1.71 Premium   F     VS2      62.3    59 18791  7.57  7.53  4.7 \n10  2.15 Ideal     G     SI2      62.6    54 18791  8.29  8.35  5.21\n# ℹ 1,059 more rows\nAl pasar las condiciones con las que queremos filtrar los datos, el operador & puede ser reemplazado por una , o dicho de otra forma, las condiciones separadas por , se interpretarán como &.\nSi queremos seleccionar los diamantes que tienen el atributo clarity más pobre (los 3 peores): “I1”, “SI2”, “SI1”\ndiamonds |&gt; \n  filter(clarity == \"I1\" | clarity == \"SI2\" | clarity == \"SI1\")\n\n# A tibble: 23,000 × 10\n   carat cut       color clarity depth table price     x     y     z\n   &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n 1  0.23 Ideal     E     SI2      61.5    55   326  3.95  3.98  2.43\n 2  0.21 Premium   E     SI1      59.8    61   326  3.89  3.84  2.31\n 3  0.31 Good      J     SI2      63.3    58   335  4.34  4.35  2.75\n 4  0.26 Very Good H     SI1      61.9    55   337  4.07  4.11  2.53\n 5  0.3  Good      J     SI1      64      55   339  4.25  4.28  2.73\n 6  0.22 Premium   F     SI1      60.4    61   342  3.88  3.84  2.33\n 7  0.31 Ideal     J     SI2      62.2    54   344  4.35  4.37  2.71\n 8  0.2  Premium   E     SI2      60.2    62   345  3.79  3.75  2.27\n 9  0.32 Premium   E     I1       60.9    58   345  4.38  4.42  2.68\n10  0.3  Ideal     I     SI2      62      54   348  4.31  4.34  2.68\n# ℹ 22,990 more rows\nCuando estamos evaluando la condición de que una variable tome alguno entre 2 o más valores, es más sencillo usar var %in% c(valor1, ..., valorn) en lugar de var == valor1 | var == \"valor2\" | ... var == \"valorn\". El siguiente código hace la misma operación que el anterior\ndiamonds |&gt; filter(clarity %in% c(\"I1\", \"SI2\", \"SI1\", \"VS2\"))\n\n# A tibble: 35,258 × 10\n   carat cut       color clarity depth table price     x     y     z\n   &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n 1  0.23 Ideal     E     SI2      61.5    55   326  3.95  3.98  2.43\n 2  0.21 Premium   E     SI1      59.8    61   326  3.89  3.84  2.31\n 3  0.29 Premium   I     VS2      62.4    58   334  4.2   4.23  2.63\n 4  0.31 Good      J     SI2      63.3    58   335  4.34  4.35  2.75\n 5  0.26 Very Good H     SI1      61.9    55   337  4.07  4.11  2.53\n 6  0.22 Fair      E     VS2      65.1    61   337  3.87  3.78  2.49\n 7  0.3  Good      J     SI1      64      55   339  4.25  4.28  2.73\n 8  0.22 Premium   F     SI1      60.4    61   342  3.88  3.84  2.33\n 9  0.31 Ideal     J     SI2      62.2    54   344  4.35  4.37  2.71\n10  0.2  Premium   E     SI2      60.2    62   345  3.79  3.75  2.27\n# ℹ 35,248 more rows",
     "crumbs": [
-      "Presentación"
+      "Análisis Exploratorio",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Uso de `dplyr`</span>"
+    ]
+  },
+  {
+    "objectID": "uso-dplyr.html#operaciones-sobre-filas",
+    "href": "uso-dplyr.html#operaciones-sobre-filas",
+    "title": "3  Uso de dplyr",
+    "section": "",
+    "text": "arrange(): Ordena las filas de forma ascendente o descendente para valores de una o más variables\nfilter(): Selecciona o filtra los datos que cumplen una o más condiciones\ndistinct(): Selecciona valores únicos\n\n\n\n\n2 No tiene mucho sentido hacerlo para variables continuas\n\n\n3 Omitimos la salida para facilitar la lectura del documento",
+    "crumbs": [
+      "Análisis Exploratorio",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Uso de `dplyr`</span>"
+    ]
+  },
+  {
+    "objectID": "uso-dplyr.html#operaciones-sobre-columnas",
+    "href": "uso-dplyr.html#operaciones-sobre-columnas",
+    "title": "3  Uso de dplyr",
+    "section": "3.2 Operaciones sobre columnas",
+    "text": "3.2 Operaciones sobre columnas\nPara agregar nuevas variables a la base de datos se usa mutate(), estas pueden ser variables externas o creadas en el momento o resultado de cálculo de variables dentro de la base de datos misma4\n4 esto es algo bastante bueno, normalmente no podríamos hacerlo ya que las variables en la base de datos no están guardadas directamente en el entorno de variables de la sesión de trabajo\nvar_inventada &lt;- sample(c(\"c1\", \"c2\", \"c3\"), size = nrow(diamonds), replace = T)\ndiamonds |&gt; \n  mutate(\n    var_nueva = var_inventada, # una variable externa\n    var_nueva2 = runif(nrow(diamonds)), # una creada en el momento\n    var_nueva3 = x + y + y # una con las variables existentes en la base de datos\n  ) |&gt; glimpse()\n\nRows: 53,940\nColumns: 13\n$ carat      &lt;dbl&gt; 0.23, 0.21, 0.23, 0.29, 0.31, 0.24, 0.24, 0.26, 0.22, 0.23,…\n$ cut        &lt;ord&gt; Ideal, Premium, Good, Premium, Good, Very Good, Very Good, …\n$ color      &lt;ord&gt; E, E, E, I, J, J, I, H, E, H, J, J, F, J, E, E, I, J, J, J,…\n$ clarity    &lt;ord&gt; SI2, SI1, VS1, VS2, SI2, VVS2, VVS1, SI1, VS2, VS1, SI1, VS…\n$ depth      &lt;dbl&gt; 61.5, 59.8, 56.9, 62.4, 63.3, 62.8, 62.3, 61.9, 65.1, 59.4,…\n$ table      &lt;dbl&gt; 55, 61, 65, 58, 58, 57, 57, 55, 61, 61, 55, 56, 61, 54, 62,…\n$ price      &lt;int&gt; 326, 326, 327, 334, 335, 336, 336, 337, 337, 338, 339, 340,…\n$ x          &lt;dbl&gt; 3.95, 3.89, 4.05, 4.20, 4.34, 3.94, 3.95, 4.07, 3.87, 4.00,…\n$ y          &lt;dbl&gt; 3.98, 3.84, 4.07, 4.23, 4.35, 3.96, 3.98, 4.11, 3.78, 4.05,…\n$ z          &lt;dbl&gt; 2.43, 2.31, 2.31, 2.63, 2.75, 2.48, 2.47, 2.53, 2.49, 2.39,…\n$ var_nueva  &lt;chr&gt; \"c1\", \"c2\", \"c3\", \"c2\", \"c1\", \"c3\", \"c3\", \"c1\", \"c3\", \"c2\",…\n$ var_nueva2 &lt;dbl&gt; 0.50870149, 0.09304586, 0.52525136, 0.24570402, 0.92814596,…\n$ var_nueva3 &lt;dbl&gt; 11.91, 11.57, 12.19, 12.66, 13.04, 11.86, 11.91, 12.29, 11.…\n\n\nPor defecto, las variables creadas serán agregadas “a la derecha” de la base de datos. Esto se puede controlar con:\n\n.before: El valor debe ser un número entero o nombre de variable, las nuevas variables se colocarán antes de ese número de columna o variable\n.after: 🧠\n\nTambién es posible especificar las variables que se quieren mantener con el argumento .keep, las opciones son: all (por defecto), used (solo las usadas), unused, none\n\ndiamonds |&gt; \n  mutate(\n    var_nueva = var_inventada,\n    var_nueva2 = runif(nrow(diamonds)),\n    var_nueva3 = x + y + z,\n    .keep = \"used\",\n    .after = x\n  )\n\n# A tibble: 53,940 × 6\n       x var_nueva var_nueva2 var_nueva3     y     z\n   &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n 1  3.95 c1            0.0301       10.4  3.98  2.43\n 2  3.89 c2            0.343        10.0  3.84  2.31\n 3  4.05 c3            0.561        10.4  4.07  2.31\n 4  4.2  c2            0.620        11.1  4.23  2.63\n 5  4.34 c1            0.0352       11.4  4.35  2.75\n 6  3.94 c3            0.170        10.4  3.96  2.48\n 7  3.95 c3            0.864        10.4  3.98  2.47\n 8  4.07 c1            0.469        10.7  4.11  2.53\n 9  3.87 c3            0.738        10.1  3.78  2.49\n10  4    c2            0.217        10.4  4.05  2.39\n# ℹ 53,930 more rows\n\n\nEs posible renombrar las variables con rename()\n\ndiamonds |&gt; \n  rename(\n    precio = price,\n    peso = carat,\n    corte = cut, \n    claridad = clarity\n  )\n\n# A tibble: 53,940 × 10\n    peso corte     color claridad depth table precio     x     y     z\n   &lt;dbl&gt; &lt;ord&gt;     &lt;ord&gt; &lt;ord&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;\n 1  0.23 Ideal     E     SI2       61.5    55    326  3.95  3.98  2.43\n 2  0.21 Premium   E     SI1       59.8    61    326  3.89  3.84  2.31\n 3  0.23 Good      E     VS1       56.9    65    327  4.05  4.07  2.31\n 4  0.29 Premium   I     VS2       62.4    58    334  4.2   4.23  2.63\n 5  0.31 Good      J     SI2       63.3    58    335  4.34  4.35  2.75\n 6  0.24 Very Good J     VVS2      62.8    57    336  3.94  3.96  2.48\n 7  0.24 Very Good I     VVS1      62.3    57    336  3.95  3.98  2.47\n 8  0.26 Very Good H     SI1       61.9    55    337  4.07  4.11  2.53\n 9  0.22 Fair      E     VS2       65.1    61    337  3.87  3.78  2.49\n10  0.23 Very Good H     VS1       59.4    61    338  4     4.05  2.39\n# ℹ 53,930 more rows\n\n\nPodemos seleccionar un subconjunto de variables con select()",
+    "crumbs": [
+      "Análisis Exploratorio",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Uso de `dplyr`</span>"
+    ]
+  },
+  {
+    "objectID": "r-prob.html",
+    "href": "r-prob.html",
+    "title": "4  Probabilidad",
+    "section": "",
+    "text": "4.1 Definiciones básicas",
+    "crumbs": [
+      "Inferencia clásica",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Probabilidad</span>"
+    ]
+  },
+  {
+    "objectID": "r-prob.html#probabilidad-de-eventos",
+    "href": "r-prob.html#probabilidad-de-eventos",
+    "title": "4  Probabilidad",
+    "section": "4.2 Probabilidad de eventos",
+    "text": "4.2 Probabilidad de eventos",
+    "crumbs": [
+      "Inferencia clásica",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Probabilidad</span>"
+    ]
+  },
+  {
+    "objectID": "r-prob.html#variables-aleatorias",
+    "href": "r-prob.html#variables-aleatorias",
+    "title": "4  Probabilidad",
+    "section": "4.3 Variables aleatorias",
+    "text": "4.3 Variables aleatorias",
+    "crumbs": [
+      "Inferencia clásica",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Probabilidad</span>"
+    ]
+  },
+  {
+    "objectID": "r-prob.html#distribuciones-de-la-muestra",
+    "href": "r-prob.html#distribuciones-de-la-muestra",
+    "title": "4  Probabilidad",
+    "section": "4.4 Distribuciones de la muestra",
+    "text": "4.4 Distribuciones de la muestra",
+    "crumbs": [
+      "Inferencia clásica",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Probabilidad</span>"
+    ]
+  },
+  {
+    "objectID": "r-estimacion.html",
+    "href": "r-estimacion.html",
+    "title": "5  Estimación",
+    "section": "",
+    "text": "5.1 Estimacicón puntual",
+    "crumbs": [
+      "Inferencia clásica",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Estimación</span>"
+    ]
+  },
+  {
+    "objectID": "r-estimacion.html#estimacicón-puntual",
+    "href": "r-estimacion.html#estimacicón-puntual",
+    "title": "5  Estimación",
+    "section": "",
+    "text": "5.1.1 Estimación para la media\n\n\n5.1.2 Estimación para la varianza",
+    "crumbs": [
+      "Inferencia clásica",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Estimación</span>"
+    ]
+  },
+  {
+    "objectID": "r-estimacion.html#construcción-de-intervalos-de-confianza",
+    "href": "r-estimacion.html#construcción-de-intervalos-de-confianza",
+    "title": "5  Estimación",
+    "section": "5.2 Construcción de intervalos de confianza",
+    "text": "5.2 Construcción de intervalos de confianza",
+    "crumbs": [
+      "Inferencia clásica",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Estimación</span>"
+    ]
+  },
+  {
+    "objectID": "r-hipotesis.html",
+    "href": "r-hipotesis.html",
+    "title": "6  Pruebas de hipótesis",
+    "section": "",
+    "text": "6.1 Aspectos básicos, tipos de error",
+    "crumbs": [
+      "Inferencia clásica",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Pruebas de hipótesis</span>"
+    ]
+  },
+  {
+    "objectID": "r-hipotesis.html#prueba-de-hipótesis-sobre-la-media",
+    "href": "r-hipotesis.html#prueba-de-hipótesis-sobre-la-media",
+    "title": "6  Pruebas de hipótesis",
+    "section": "6.2 Prueba de hipótesis sobre la media",
+    "text": "6.2 Prueba de hipótesis sobre la media",
+    "crumbs": [
+      "Inferencia clásica",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Pruebas de hipótesis</span>"
+    ]
+  },
+  {
+    "objectID": "r-hipotesis.html#pruebas-sobre-la-varianza",
+    "href": "r-hipotesis.html#pruebas-sobre-la-varianza",
+    "title": "6  Pruebas de hipótesis",
+    "section": "6.3 Pruebas sobre la varianza",
+    "text": "6.3 Pruebas sobre la varianza",
+    "crumbs": [
+      "Inferencia clásica",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Pruebas de hipótesis</span>"
+    ]
+  },
+  {
+    "objectID": "ds-intro.html",
+    "href": "ds-intro.html",
+    "title": "7  Definiciones",
+    "section": "",
+    "text": "7.1 Ejemplo para discusión\n¿Cómo funcionaría un grupo de ciencia de datos en una empresa? Suponga un caso en el que una empresa pública quiere aplicar ciencia de datos a las PQR de los usuarios",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Definiciones</span>"
+    ]
+  },
+  {
+    "objectID": "ds-intro.html#modelo-predictivo",
+    "href": "ds-intro.html#modelo-predictivo",
+    "title": "7  Definiciones",
+    "section": "7.2 Modelo predictivo",
+    "text": "7.2 Modelo predictivo\nDadas unas condiciones particulares (valores de las variables predictoras \\(\\textbf{X}\\)), un modelo predictivo intenta determinar (pronosticar) de [la mejor manera posible] el valor de la variable de interés \\(Y\\) (aprendizaje supervisado). No todas las técnicas de ciencia de datos tienen como objetivo la predicción.",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Definiciones</span>"
+    ]
+  },
+  {
+    "objectID": "ds-intro.html#metodología",
+    "href": "ds-intro.html#metodología",
+    "title": "7  Definiciones",
+    "section": "7.3 Metodología",
+    "text": "7.3 Metodología\nSiempre que sea posible, los temas del curso se desarrollarán bajo el siguiente orden lógico\n\nDesarrollo teórico y conceptual (a mano)\nMétodo Montecarlo (bases de datos simuladas en R)\nAplicación de los métodos en bases de datos reales (en R)",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Definiciones</span>"
+    ]
+  },
+  {
+    "objectID": "ds-intro.html#aplicaciones",
+    "href": "ds-intro.html#aplicaciones",
+    "title": "7  Definiciones",
+    "section": "7.4 Aplicaciones",
+    "text": "7.4 Aplicaciones\n\nDadas unas condiciones particulares, ¿cuál es la mejor aproximación para la variable de respuesta?\n\n\nDado el historial de compras y de navegación de un cliente en el portal de un comercio electrónico, ¿cuál es la probabilidad de que compre un producto si se ofrece en promoción?\nDado el historial familiar, ¿cuál es la probabilidad que tiene un individuo de sufrir de diabetes en su edad adulta?\nDado el valor histórico de las acciones de una compañía en la bolsa de valores en los últimos años, ¿El valor de la acción subirá o bajará?\nDado un mapa de bits de un caracter numérico escrito a mano, ¿qué número es?",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Definiciones</span>"
+    ]
+  },
+  {
+    "objectID": "ds-intro.html#flexibilidad-del-modelo",
+    "href": "ds-intro.html#flexibilidad-del-modelo",
+    "title": "7  Definiciones",
+    "section": "7.5 Flexibilidad del modelo",
+    "text": "7.5 Flexibilidad del modelo\nEl concepto de flexibilidad será de vital importancia para nosotros, miremos qué podemos decir de forma sencilla. Supongamos que la demanda de un producto varía de forma inversa a su precio con la siguiente ecuación:\n\\[f(x)=20-x+100e^{-x}\\] Al considerar la parte aleatoria del problema (¿por qué es esto más realista?) podemos escribir\n\\[\ny_i=f(x_i)+\\epsilon_i\n\\\\ \\epsilon_i \\sim N (\\mu=0, \\ \\sigma=8)\n\\]\nGeneramos una muestra aleatoria de \\(n=200\\) datos (método Montecarlo). A partir de los datos, ajustamos un modelo de regresión local de segundo orden, cuyo parámetro de calibración se encuentra con el método de validación cruzada.\n\n7.5.1 Casos a considerar\n\nModelo real\nModelo muy flexible\nModelo poco flexible\nModelo Calibrado\n\n\n\n7.5.2 Modelo predictivo para la demanda usando regresión local\nPuede hacer zoom o seleccionar los modelos a mostrar en la gráfica\n\nlibrary(plotly)\nlibrary(stats)  # Función loess\n\nf &lt;- function(x){100*exp(-x)+20-x}\nn &lt;- 200 # tamaño de la muestra\nx &lt;- sort(runif(n, 0.1, 8))\ny &lt;- f(x)\ne &lt;- rnorm(n, 0, 8)\ny0 &lt;- y + e\nxy &lt;- data.frame(Precio=x,Demanda=y,y0)\n\n# Haciendo LOOCV (Leave One Out CV)\nflex &lt;- seq(from=0.1, to=1.3, length.out=20)\nv_cv &lt;- rep(0, length(flex))\n\nfor(j in 1:length(flex)){\n  cvs &lt;- rep(0, n)\n  for(i in 1:n){\n    xi &lt;- x[-i]\n    yi &lt;- y0[-i]\n    xiyi &lt;- data.frame(xi=xi, yi=yi)\n    d &lt;- loess(formula = yi~xi, data = xiyi,\n                           span=flex[j], degree = 2)\n    cvs[i] &lt;- (y0[i] - stats::predict(d, newdata=data.frame(xi=x[i])))^2\n  }\n  v_cv[j] &lt;- mean(cvs,na.rm=T)\n}\n\nbd_opt &lt;- flex[which.min(v_cv)]\n\nfit_1 &lt;- loess(formula = y0~x, span=0.09, degree = 2)  # Modelo muy flexible\nfit_2 &lt;- loess(formula = y0~x, span=9, degree = 2)  # Modelo poco flexible\nfit_opt &lt;- loess(formula = y0~x, span=bd_opt, degree = 2)  # Modelo calibrado con LOOCV\n\nypred_1 &lt;- predict(fit_1)\nypred_2 &lt;- predict(fit_2)\nypred_opt &lt;- predict(fit_opt)\n\n\ninf=-10; sup=120\nfig &lt;- plot_ly(xy, x=~Precio)\nfig &lt;- fig %&gt;% layout(yaxis=list(range=c(inf,sup)), xaxis=list(range=c(0,9)))\nfig &lt;- fig %&gt;% add_trace(y=~Demanda, type = \"scatter\", mode=\"lines\", name = \"Real\")\nfig &lt;- fig %&gt;% add_trace(y=~y0, type=\"scatter\", mode=\"markers\", \n                         marker=list(color=\"#ff7f0e\"), name=\"Datos\")\nfig &lt;- fig %&gt;% add_trace(y=~ypred_1, type = \"scatter\", mode=\"lines\", \n                         name = \"Modelo muy flexible\")\nfig &lt;- fig %&gt;% add_trace(y=~ypred_2, type = \"scatter\", mode=\"lines\", \n                         name = \"Modelo poco flexible\")\nfig &lt;- fig %&gt;% add_trace(y=~ypred_opt, type = \"scatter\", mode=\"lines\", \n                         name = \"Modelo calibrado\")\n\n\nfig",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Definiciones</span>"
+    ]
+  },
+  {
+    "objectID": "reg-simple.html",
+    "href": "reg-simple.html",
+    "title": "8  Regresión lineal simple",
+    "section": "",
+    "text": "8.1 Estimación de los parámetros",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Regresión lineal simple</span>"
+    ]
+  },
+  {
+    "objectID": "reg-simple.html#propiedades-de-los-estimadores",
+    "href": "reg-simple.html#propiedades-de-los-estimadores",
+    "title": "8  Regresión lineal simple",
+    "section": "8.2 Propiedades de los estimadores",
+    "text": "8.2 Propiedades de los estimadores",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Regresión lineal simple</span>"
+    ]
+  },
+  {
+    "objectID": "reg-simple.html#prueba-de-significancia",
+    "href": "reg-simple.html#prueba-de-significancia",
+    "title": "8  Regresión lineal simple",
+    "section": "8.3 Prueba de significancia",
+    "text": "8.3 Prueba de significancia",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Regresión lineal simple</span>"
+    ]
+  },
+  {
+    "objectID": "reg-multiple.html",
+    "href": "reg-multiple.html",
+    "title": "9  Regresión lineal múltiple",
+    "section": "",
+    "text": "9.1 Estimación de los parámetros\nRecuerde que el modelo general es \\[y_i = f(x_i) + \\varepsilon_i\\] Y lo hemos reducido al caso muy especial de regresión lineal simple \\[y_i = \\beta_0 + \\beta_1 x_i + \\varepsilon_i\\] La generalización natural de este modelo es \\[y_i = \\beta_0 + \\beta_1 x_{i1} + \\beta_2 x_{i2} +...+ \\beta_p x_{ip} + \\varepsilon_i\\] que se llama modelo de regresión lineal múltiple. En este caso, tenemos \\(p\\) variables y \\(p+1\\) parámetros1\nEl modelo con múltiples variables se puede escribir de forma concisa usando notación matricial\n\\[\\bf{y} = \\bf{X} \\boldsymbol{\\beta} + \\boldsymbol{\\varepsilon}\\] Donde \\[\\bf{y} = \\begin{bmatrix}\ny_1 \\\\ y_2 \\\\ \\vdots \\\\ y_n\n\\end{bmatrix}, \\hspace{10pt}\n\\bf{X} = \\begin{bmatrix}\n1 & x_{11} & \\dots & x_{1p} \\\\\n1 & x_{21} & \\dots & x_{2p} \\\\\n\\vdots & \\vdots & \\ddots & \\vdots \\\\\n1 & x_{n1} & \\dots & x_{np} \\\\\n\\end{bmatrix}, \\hspace{10pt}\n\\boldsymbol{\\beta} = \\begin{bmatrix}\n\\beta_0 \\\\ \\beta_1 \\\\ \\vdots \\\\ \\beta_p\n\\end{bmatrix}, \\hspace{10pt}\n\\boldsymbol{\\varepsilon} = \\begin{bmatrix}\n\\varepsilon_1 \\\\ \\varepsilon_2 \\\\ \\vdots \\\\ \\varepsilon_n\n\\end{bmatrix}\n\\] Desde este punto de vista, podemos plantear la suma de residuales al cuadrado como \\[\\mathrm{RSS} = \\boldsymbol{\\varepsilon}^T\\boldsymbol{\\varepsilon}\\] Y la estimación se hace a través del método de mínimos cuadrados \\[\n\\begin{equation}\n\\begin{split}\n\\boldsymbol{\\hat{\\beta}} & = \\arg\\min \\boldsymbol{\\varepsilon}^T\\boldsymbol{\\varepsilon} \\\\\n& = \\arg\\min \\left( \\bf{Y} - \\bf{X} \\boldsymbol{\\beta} \\right)^T \\left( \\bf{Y} - \\bf{X} \\boldsymbol{\\beta} \\right) \\\\\n\\end{split}\n\\end{equation}\n\\] Al tomar la derivada de \\(\\mathrm{RSS}\\) con respecto a \\(\\boldsymbol{\\hat{\\beta}}\\) e igualar a cero, obtenemos la solución \\[\n\\boldsymbol{\\hat{\\beta}} = \\left( \\textbf{X}^T\\bf{X}  \\right)^{-1}\\textbf{X}^T\\bf{y}\n\\]",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Regresión lineal múltiple</span>"
+    ]
+  },
+  {
+    "objectID": "reg-multiple.html#estimación-de-los-parámetros",
+    "href": "reg-multiple.html#estimación-de-los-parámetros",
+    "title": "9  Regresión lineal múltiple",
+    "section": "",
+    "text": "1 algunos textos consideran \\(p\\) como el número de parámetros",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Regresión lineal múltiple</span>"
+    ]
+  },
+  {
+    "objectID": "reg-multiple.html#valor-esperado-y-varianza",
+    "href": "reg-multiple.html#valor-esperado-y-varianza",
+    "title": "9  Regresión lineal múltiple",
+    "section": "9.2 Valor esperado y Varianza",
+    "text": "9.2 Valor esperado y Varianza\nLos supuestos de homocedasticidad y no autocorrelación para los términos del error en el modelo, se pueden resumir estableciendo la matriz de varianzas y covarianzas del error como \\[\\mathrm{Cov} \\left( \\boldsymbol{\\varepsilon}\\right) = \\sigma^2 \\mathbb{I}\\] Además, \\(\\mathrm{E}\\left( \\boldsymbol{\\varepsilon}\\right) = \\bf{0}\\) y se asume que la matriz \\(\\bf{X}\\) no es estocástica.\nComo consecuencia tenemos que\n\\[\\mathrm{E} \\left( \\bf{{y}} \\right) = \\mathrm{E}\\left( \\boldsymbol{{\\bf{X} \\boldsymbol{\\beta} + \\boldsymbol{\\varepsilon}}}\\right) = \\mathrm{E} \\left( \\bf{X} \\boldsymbol{\\beta} \\right) + \\mathrm{E} \\left( \\boldsymbol{\\varepsilon} \\right)= \\bf{X}\\boldsymbol{\\beta} + \\bf{0} = \\bf{X}\\boldsymbol{\\beta}\\\\\n\\] \\[\n\\mathrm{Cov}\\left( \\bf{{y}}\\right) = \\mathrm{Cov}\\left( \\boldsymbol{{\\bf{X} \\boldsymbol{\\beta} + \\boldsymbol{\\varepsilon}}}\\right) = \\bf{0} + \\mathrm{Cov} \\left( \\boldsymbol{\\varepsilon} \\right)= \\sigma^2\\mathbb{I}\\\\\\] Al aplicar propiedades del valor esperado y la varianza al vector de parámetros estimados (vector aleatorio) obtenemos\n\\[\n\\begin{equation}\n\\begin{split}\n\\mathrm{E} \\left( \\boldsymbol{\\hat\\beta}\\right)\n& = \\mathrm{E} \\left( \\left( \\textbf{X}^T\\bf{X}\\right)^{-1} \\textbf{X}^T\\bf{y} \\right) \\\\\n& = \\left( \\textbf{X}^T\\bf{X}\\right)^{-1} \\textbf{X}^T \\mathrm{E} \\left( \\bf{y} \\right) \\\\\n& = \\left( \\textbf{X}^T \\textbf{X}\\right)^{-1} \\textbf{X}^T \\textbf{X} \\boldsymbol{\\beta} \\\\\n& = \\mathbb{I}\\boldsymbol{\\beta} = \\boldsymbol{\\beta}\n\\end{split}\n\\end{equation}\n\\] \\[\n\\begin{equation}\n\\begin{split}\n\\mathrm{Cov} \\left( \\boldsymbol{\\hat\\beta}\\right)\n& = \\mathrm{Cov} \\left( \\left( \\textbf{X}^T\\bf{X}\\right)^{-1} \\textbf{X}^T\\bf{y} \\right) \\\\\n& = \\left( \\textbf{X}^T\\bf{X}\\right)^{-1} \\textbf{X}^T \\mathrm{Cov} \\left( \\bf{y} \\right)\n\\left( \\left( \\textbf{X}^T\\bf{X}\\right)^{-1} \\textbf{X}^T \\right)^T\\\\\n& = \\left( \\textbf{X}^T \\textbf{X}\\right)^{-1} \\textbf{X}^T \\left(\\sigma^2 \\mathbb{I}\\right)\n\\textbf{X} \\left( \\textbf{X}^T\\bf{X}\\right)^{-1} \\\\\n& = \\left( \\textbf{X}^T \\textbf{X}\\right)^{-1} \\textbf{X}^T\n\\textbf{X} \\left( \\textbf{X}^T\\bf{X}\\right)^{-1} \\sigma^2 \\\\\n& = \\left( \\textbf{X}^T \\textbf{X}\\right)^{-1} \\mathbb{I} \\sigma^2 \\\\\n& = \\left( \\textbf{X}^T \\textbf{X}\\right)^{-1} \\sigma^2 \\\\\n\\end{split}\n\\end{equation}\n\\] Nota: Bajo los supuestos indicados (valor esperado cero, varianza constante y no autocorrelación), los estimadores de mínmios cuadrados son los de menor varianza entre todos los estimadores lineales insesgados (Teorema de Gauss-Markov)\nSi queremos estimar la matriz de varianzas y covarianzas, debemos estimar la varianza del modelo, lo hacemos usando el estimador de mínimos cuadrados\n\\[\\hat\\sigma^2 = \\frac{\\boldsymbol{\\varepsilon}^T \\boldsymbol{\\varepsilon}}{n-p-1}\\]",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Regresión lineal múltiple</span>"
+    ]
+  },
+  {
+    "objectID": "reg-multiple.html#predicción",
+    "href": "reg-multiple.html#predicción",
+    "title": "9  Regresión lineal múltiple",
+    "section": "9.3 Predicción",
+    "text": "9.3 Predicción\nAl igual que en modelo de regresión lineal simple, una predicción para un conjunto de datos nuevos de las variables independientes, se obtiene al reemplezar dichos valores en la ecuación lineal.\nSea \\(\\textbf{x}_0\\) el vector que contiene los valores para los cuáles se quiere predecir la variable \\(y\\). en notación matricial tenemos\n\\[\\hat{y} = \\textbf{x}_0^T \\boldsymbol{\\hat \\beta}\\] siendo, \\(\\textbf{x}_0^T = \\begin{bmatrix} 1 & x_{01} & x_{02} & \\dots & x_{0p} \\end{bmatrix}\\)\nSi calculamos el valor de \\(\\hat{y}\\) para cada observación en el conjunto de datos \\(\\bf{X}\\)\n\\[\\hat{\\bf{y}} = \\textbf{X}\\boldsymbol{\\hat \\beta} = \\textbf{X}\\left( \\textbf{X}^T \\textbf{X}\\right)^{-1} \\textbf{X}^T \\bf{y} = \\textbf{H}\\bf{y}\\] La matriz \\(\\textbf{H} = \\textbf{X}\\left( \\textbf{X}^T \\textbf{X}\\right)^{-1} \\textbf{X}^T\\) se suele llamar matriz sombrero, ya que le “pone” un sombrero al vector \\(\\bf{y}\\)\nCon el último resultado, salta a la vista un hecho importante, las predicciones son combinaciones lineales de los datos observados. El modelo de regresión lineal es un caso particular de una clase de modelos más generales que son suavizadores lineales (hay otros modelos diferentes a los de regresión lineal que son suavizadores lineales)",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Regresión lineal múltiple</span>"
+    ]
+  },
+  {
+    "objectID": "reg-multiple.html#inferencia",
+    "href": "reg-multiple.html#inferencia",
+    "title": "9  Regresión lineal múltiple",
+    "section": "9.4 Inferencia",
+    "text": "9.4 Inferencia\nSi queremos ir más allá de la sola estimación de los parámetros y predicción puntual, debemos asumir una distribución para el error del modelo y obtener la distribución de los estimadores. Bajo el supuesto de normalidad, que es el más común\n\\[\\boldsymbol{\\varepsilon} \\sim N_n \\left( \\bf{0}, \\sigma^2 \\mathbb{I} \\right) \\Rightarrow\n\\textbf{y} \\sim N_n \\left( \\bf{X}\\boldsymbol{\\beta}, \\sigma^2 \\mathbb{I} \\right)\n\\] Teniendo en cuenta que los estimadores son combinaciones lineales de \\(\\bf{y}\\), y toda combinación lineal de distribuciones normales es también una distribución normal\n\\[\\boldsymbol{\\hat \\beta}\\sim N_{p+1} \\left( \\boldsymbol{\\beta}, \\left( \\textbf{X}^T \\textbf{X}\\right)^{-1} \\sigma^2 \\right)\\] Con esto ya podemos calcular intervalos de confianza y hacer algunas pruebas de hipótesis",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Regresión lineal múltiple</span>"
+    ]
+  },
+  {
+    "objectID": "reg-multiple.html#pruebas-de-significancia",
+    "href": "reg-multiple.html#pruebas-de-significancia",
+    "title": "9  Regresión lineal múltiple",
+    "section": "9.5 Pruebas de significancia",
+    "text": "9.5 Pruebas de significancia\nCuando tenemos un modelo con múltiples variables, podemos hablar de la significancia global del modelo y de significancia individual de las variables.\nLa significancia global del modelo se usa para responder a la pregunta: ¿Al menos una de las variables es importante o explica en términos estadísticos a la variable \\(y\\)? Para esto, usamos una prueba de hipótesis y un estadístico F (recordar por qué una distribución F en lugar de una distribución T, es valioso pero no fundamental para este curso)\n\\[\n\\begin{equation}\n\\begin{split}\nH_0 & : \\beta_1 = \\beta_2 =  \\dots = \\beta_p = 0 \\\\\nH_a & : \\text{Al menos un beta es diferente de 0} \\\\ \\\\\nF_{cal} & = \\frac{\\left( \\mathrm{TSS - RSS}\\right)/p}{ \\mathrm{RSS}/(n-p-1)}\n\\end{split}\n\\end{equation}\n\\] Al hablar de significancia nos referimos a variables, pero las pruebas se hacen sobre los parámetros que acompañan dichas variables. Si un parámetro no es estadísticamente diferente de cero, entonces se puede concluir que los cambios de esa variable se ven anulados o no afectan a la variable \\(y\\), por esa razón, el \\(\\beta_0\\) no se incluye en la prueba de significancia.\nCon un poco de manipulación algebraica se puede poner el \\(F_{cal}\\) en términos del \\(\\mathrm{R^2}\\) del modelo (compruebe) \\(F_{cal} = \\frac{(n-p-1)\\mathrm{R}^2}{p(1-\\mathrm{R}^2)}\\)\nLa prueba de significancia individual para las variables se plantea como\n\\[\n\\begin{equation}\n\\begin{split}\n  H_0 & : \\beta_j = 0 \\\\\n  H_a & : \\beta_j \\neq 0 \\\\\n  T_{cal} & = \\frac{\\hat \\beta_j}{\\sqrt{\\hat{\\mathrm{Var}} (\\hat \\beta_j)}}\n\\end{split}\n\\end{equation}\n\\] para algún \\(j=1,2,3,...,p\\)",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Regresión lineal múltiple</span>"
+    ]
+  },
+  {
+    "objectID": "reg-multiple.html#uso-de-r-para-los-cálculos",
+    "href": "reg-multiple.html#uso-de-r-para-los-cálculos",
+    "title": "9  Regresión lineal múltiple",
+    "section": "9.6 Uso de R para los cálculos",
+    "text": "9.6 Uso de R para los cálculos\nTrabajemos primero con un conjunto de datos simulados para observar algunos detalles de cálculo en el modelo de regresión lineal múltiple\nConsideremos el modelo lineal “real”\n\\[y = 1 + 2x_1 + 3x_2 + 4x_3 + \\varepsilon\\] Simulemos 100 observaciones de cada variable independiente (generadas uniformemente entre 0 y 1) y un error normalmente distribuido con media de 0 y desviación estándar de 1.5\n\nlibrary(tidyverse)\nset.seed(789)\nn &lt;- 100\nx1 &lt;- runif(n)\nx2 &lt;- runif(n)\nx3 &lt;- runif(n)\nerror &lt;- rnorm(n, 0, 1.5)\ny &lt;- 1 + 2*x1 + 3*x2 + 4*x3 + error\ndatos &lt;- tibble(var_dep = y, var1 = x1, var2 = x2, var3 = x3)\ndatos\n\n# A tibble: 100 × 4\n   var_dep   var1   var2   var3\n     &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;\n 1    4.19 0.700  0.481  0.293 \n 2    1.79 0.0935 0.314  0.0935\n 3    2.88 0.0119 0.0643 0.345 \n 4    7.80 0.592  0.890  0.215 \n 5    6.08 0.492  0.787  0.721 \n 6    5.46 0.0202 0.164  0.927 \n 7    5.13 0.573  0.443  0.565 \n 8    4.94 0.166  0.429  0.831 \n 9    4.54 0.359  0.240  0.556 \n10    4.66 0.346  0.481  0.115 \n# ℹ 90 more rows\n\n\nAjustamos un modelo de regresión lineal usando las funciones de R2\n2 como haríamos en la práctica, no es necesario usar las ecuaciones matriciales que hemos visto. Ni siquiera R ajusta el modelo con esas ecuaciones matriciales internamente (¿Por qué?)\nmodelo1 &lt;- lm(formula = var_dep ~ var1 + var2 + var3, data = datos)\nsummary(modelo1)\n\n\nCall:\nlm(formula = var_dep ~ var1 + var2 + var3, data = datos)\n\nResiduals:\n    Min      1Q  Median      3Q     Max \n-4.5503 -0.9438  0.0341  1.0381  3.2040 \n\nCoefficients:\n            Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  0.02071    0.50151   0.041    0.967    \nvar1         2.77634    0.56757   4.892 4.02e-06 ***\nvar2         3.16818    0.54805   5.781 9.23e-08 ***\nvar3         4.67855    0.53282   8.781 6.17e-14 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 1.543 on 96 degrees of freedom\nMultiple R-squared:  0.5838,    Adjusted R-squared:  0.5708 \nF-statistic: 44.89 on 3 and 96 DF,  p-value: &lt; 2.2e-16\n\n\nAl aplicar la función lm se guardan varios resultados, podemos acceder por el nombre de cada uno en el objeto modelo1 o en el objeto summary(modelo1)\n\nnames(modelo1)\n\n [1] \"coefficients\"  \"residuals\"     \"effects\"       \"rank\"         \n [5] \"fitted.values\" \"assign\"        \"qr\"            \"df.residual\"  \n [9] \"xlevels\"       \"call\"          \"terms\"         \"model\"        \n\nnames(summary(modelo1))\n\n [1] \"call\"          \"terms\"         \"residuals\"     \"coefficients\" \n [5] \"aliased\"       \"sigma\"         \"df\"            \"r.squared\"    \n [9] \"adj.r.squared\" \"fstatistic\"    \"cov.unscaled\" \n\n\nPodemos imprimir los coeficientes estimados o el \\(\\mathrm{R}^2\\)\n\nmodelo1$coefficients\n\n(Intercept)        var1        var2        var3 \n 0.02071457  2.77634472  3.16818077  4.67855453 \n\nsummary(modelo1)$r.squared\n\n[1] 0.5838244\n\n\nLa matriz de varianzas y covarianzas de los estimadores se obtiene con\n\nvcov(modelo1)\n\n            (Intercept)        var1        var2        var3\n(Intercept)   0.2515144 -0.14854787 -0.15860673 -0.14759946\nvar1         -0.1485479  0.32213475  0.01027060 -0.01353928\nvar2         -0.1586067  0.01027060  0.30036354  0.00552749\nvar3         -0.1475995 -0.01353928  0.00552749  0.28389997\n\n\nEs buen ejercicio intentar obtener estos resultados a partir de las ecuaciones matriciales del modelo\n\n# matriz X\nmx &lt;- cbind(rep(1,n), x1, x2, x3)\nbeta_est &lt;- solve(t(mx)%*%mx)%*%t(mx)%*%y\nH &lt;- mx%*%solve(t(mx)%*%mx)%*%t(mx)\nbeta_est\n\n         [,1]\n   0.02071457\nx1 2.77634472\nx2 3.16818077\nx3 4.67855453\n\n\nPredicciones, residuales, matriz de varianzas y covarianzas\n\ny_est &lt;- H%*%y\nres &lt;- y - y_est\nsigma2_est &lt;- sum(res*res)/(n-3-1)\ncov_beta &lt;- sigma2_est*(solve(t(mx)%*%mx))\nsummary(res)\n\n       V1          \n Min.   :-4.55030  \n 1st Qu.:-0.94376  \n Median : 0.03413  \n Mean   : 0.00000  \n 3rd Qu.: 1.03810  \n Max.   : 3.20398  \n\nsqrt(sigma2_est) # Residual standard error\n\n[1] 1.543416\n\ncov_beta\n\n                       x1          x2          x3\n    0.2515144 -0.14854787 -0.15860673 -0.14759946\nx1 -0.1485479  0.32213475  0.01027060 -0.01353928\nx2 -0.1586067  0.01027060  0.30036354  0.00552749\nx3 -0.1475995 -0.01353928  0.00552749  0.28389997\n\n\nEl \\(\\mathrm{R^2}\\) del modelo es por definición, \\(\\mathrm{R^2} = 1- \\frac{\\mathrm{SSE}}{\\mathrm{SST}}\\). El cálculo directo en R sería\n\nr2 &lt;- 1 - sum(res*res)/sum((y-mean(y))^2)\nr2\n\n[1] 0.5838244\n\n\nCalculemos el error estándar, valor de la distribución \\(t\\) y valor \\(p\\) para alguno de los \\(\\hat\\beta_i\\)\n\n# para el beta_1 que acompaña a la variable 1\ns.eb1 &lt;- sqrt(cov_beta[2,2]) # ¿por qué se elige el segundo valor en la diagonal?\ntb1 &lt;- beta_est[2]/s.eb1\np.b1 &lt;- 2*pt(q = tb1, df = n-3-1, lower.tail = F) # ¿por qué se multiplica por 2?\ns.eb1; tb1; p.b1 \n\n[1] 0.5675692\n\n\n[1] 4.891641\n\n\n[1] 4.019829e-06\n\n\nEl valor de la distribución F para la significancia global es\n\nf_cal &lt;- (n-3-1)*r2/(3*(1-r2))\nf_cal\n\n[1] 44.89062\n\n\nEl valor p es\n\n# ¿Por qué en este caso no se multiplica por 2?\np.sig.global &lt;- pf(q = f_cal, df1 = 3, df2 = n-3-1, lower.tail = FALSE)\np.sig.global\n\n[1] 3.220991e-18\n\n\nCompare todos los resultados con los entregados de forma directa por la función lm\nAlgo que se debe señalar, es el valor relativamente bajo del \\(\\mathrm{R}^2\\). Un \\(\\mathrm{R}^2\\) bajo no implica necesariamente que el modelo sea errado. En este caso, estamos ajustando sobre la verdadera forma del modelo “real” por lo que el modelo planteado no podría estar equivocado. Simulemos otro conjunto de datos en el que el error tenga una menor varianza o desviación estándar.\n\nx1 &lt;- runif(n)\nx2 &lt;- runif(n)\nx3 &lt;- runif(n)\nerror &lt;- rnorm(n, 0, 0.5)\ny &lt;- 1 + 2*x1 + 3*x2 + 4*x3 + error\ndatos &lt;- tibble(var_dep = y, var1 = x1, var2 = x2, var3 = x3)\n\nmodelo2 &lt;- lm(formula = var_dep ~ var1 + var2 + var3, data = datos)\n\nCompare el valor del \\(\\mathrm R^2\\) para cada caso. ¿Qué puede concluir?\n\nsummary(modelo2)$r.squared\n\n[1] 0.9135621\n\nsummary(modelo1)$r.squared\n\n[1] 0.5838244",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Regresión lineal múltiple</span>"
+    ]
+  },
+  {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "Referencias",
+    "section": "",
+    "text": "Alexander, Rohan. 2023. Telling Stories with\nData. CRC Press. https://tellingstorieswithdata.com/.\n\n\nEmaasit, Daniel. n.d. “Ggplot2 Extensions.” https://exts.ggplot2.tidyverse.org/gallery/.\n\n\nGarcía-Portugués, Eduardo. n.d.a. Notes for\nNonparametric Statistics. https://bookdown.org/egarpor/NP-UC3M/.\n\n\n———. n.d.b. Notes for Predictive\nModeling. https://bookdown.org/egarpor/PM-UC3M/.\n\n\nHastie, Trevor, Robert Tibshirani, and Jerome Friedman. 2009. The\nElements of Statistical\nLearning. Springer Series in\nStatistics. New York, NY: Springer. https://doi.org/10.1007/978-0-387-84858-7.\n\n\nHealy, Conor, and Yan Holtz. n.d. “From Data to Viz\n Find the Graphic You Need.” https://www.data-to-viz.com/data-to-viz.com.\n\n\nHealy, Kieran. 2018. Data Visualization. A\nPractical Introduction. Princeton\nUniversity Press. https://socviz.co/index.html#preface.\n\n\nHoltz, Yan. n.d. “The R Graph\nGallery – Help and Inspiration for\nR Charts.” The R Graph Gallery. https://r-graph-gallery.com/index.html.\n\n\nHuang, Shuai, and Houtao Deng. n.d. Data Analytics:\nA Small Data\nApproach. CRC Press. https://dataanalyticsbook.info/index.html#cover.\n\n\nJames, Gareth, Daniela Witten, Trevor Hastie, and Robert Tibshirani.\n2021. An Introduction to Statistical\nLearning: With Applications in\nR. 2nd ed. Springer Texts in\nStatistics. New York, NY: Springer US. https://doi.org/10.1007/978-1-0716-1418-1.\n\n\nKabacoff, Rob. n.d. Data Visualization with\nR. https://rkabacoff.github.io/datavis/.\n\n\nWickham, Hadley, Mine Çetinkaya-Rundel, and Garrett Grolemund. n.d.\nR for Data Science (2e). 2nd ed.\nO’REILLY. https://r4ds.hadley.nz/.",
+    "crumbs": [
+      "Referencias"
     ]
   }
 ]
