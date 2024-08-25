@@ -1,0 +1,4 @@
+# Uso de `R` para inferencia clásica
+
+## Intervalos de confianza y pruebas de hipótesis
+

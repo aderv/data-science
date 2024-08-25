@@ -1,0 +1,9 @@
+# Estimación
+
+## Estimacicón puntual
+
+### Estimación para la media
+
+### Estimación para la varianza
+
+## Construcción de intervalos de confianza

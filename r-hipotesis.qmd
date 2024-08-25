@@ -1,0 +1,8 @@
+# Pruebas de hipótesis
+
+## Aspectos básicos, tipos de error
+
+## Prueba de hipótesis sobre la media
+
+## Pruebas sobre la varianza
+

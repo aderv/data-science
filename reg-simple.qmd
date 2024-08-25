@@ -1,0 +1,9 @@
+# Regresión lineal simple
+
+## Estimación de los parámetros
+
+<!-- Incluir gráfica de la función de mínimos cuadrados y explicar porqué es suficiente al resolver la primera derivada -->
+
+## Propiedades de los estimadores
+
+## Prueba de significancia

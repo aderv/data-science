@@ -1,0 +1,517 @@
+# Introducción al uso de `R` {#sec-rgl1}
+
+```{r setup, include=FALSE}
+library(rgl)
+options(rgl.useNULL = TRUE) # Suppress the separate window.
+knitr::opts_chunk$set(echo = TRUE, collapse = TRUE)
+```
+
+Este capítulo presenta una breve introducción al uso de `R` como lenguaje de programación y programa estadístico. Es una revisión rápida de puntos claves que es recomendable para quienes ya tienen algo de experiencia con `R` o experiencia general programando.
+
+## Instalación
+
+Para trabajar con `R`, es necesario instalar el lenguaje en sí y un IDE (por sus siglas en inglés, _Integrated Development Environment_). Un [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment){target="_blank"} es una herramienta que facilita el trabajo con el lenguaje de programación, hay varias opciones para `R`, usaremos **Rstudio**.
+
+Siga los siguientes pasos para la instalación:
+
+1. [Descargar e instalar R](https://cran.r-project.org/bin/windows/base/){target="_blank"} según el sistema operativo que se tenga.
+2. [Descargar e instalar la versión de Rstudio Desktop](https://www.rstudio.com/products/rstudio/#rstudio-desktop){target="_blank"}
+
+Se recomienda instalarlo en el orden dado para que **Rstudio** reconozca automáticamente la versión de `R` ya instalada. Cuando esté todo listo, se ejecuta la aplicación de Rstudio, desde donde haremos todo el trabajo.
+
+En Rstudio: `file -> New File -> R script` (atajo: ctrl+shift+N), abrirá un editor en blanco para empezar a codificar. Al hacerlo, debe verse como en la imagen
+
+![Rstudio IDE](images/rstudio-screen.png){#fig-rstudio-ide}
+
+Guarde su trabajo desde el menú: `File -> Save As`; o con: `ctrl+S`.
+
+## Lo básico
+
+- `R` es un [lenguaje de tipado dinámico y de alto nivel](https://en.wikipedia.org/wiki/Type_system#DYNAMIC){target="_blank"} (o sea, fácil de aprender)
+
+- El operador de asignación es `<-`. Atajo de teclado: `Alt + -`. Asignación es el proceso mediante el cual guardamos los objetos que creamos en espacios de memoria o variables
+
+- Es posible usar también el signo igual (`=`) como operador de asignación, aunque en algunos pocos casos particulares puede generar confusiones, por lo que es recomendable usar `<-`
+
+- Para agregar comentarios al código use el signo `#`. Todo lo que escriba en `R`, después de un signo `#`, será ignorado. Sirve para comentar el código
+
+- Puede ejecutar una línea o un subconjunto de líneas seleccionadas del código con `ctrl + enter`. Sitúe el cursor en cualquier parte de la línea a ejecutar o seleccione las líneas deseadas. Dependiendo de las líneas ejecutadas, puede encontrar un resultado impreso en la consola, una gráfica, unas variables agregadas al entorno, etc.
+
+- Los nombres de las variables deben empezar con una letra^[También pueden empezar con un `.` pero esto crea objetos ocultos] y luego cualquier carácter alfanumérico. Los únicos caracteres especiales permitidos son el punto (.) y el guión bajo (_), útiles cuando se quiere usar nombres compuestos
+
+- Los nombres de variables no deben contener espacios
+
+Ejemplos de asignación de valores a variables:
+
+```{r}
+a1 <- 56 # numeric
+b = 12.3 # numeric
+b = b + 1
+a <- "hola" # character
+x_1 <- 3L # integer
+x2 <- FALSE # logical
+x.3 <- 1 + 3i # complex
+vel_inicial <- 47.31 # Velocidad inicial en km/h
+```
+
+Algunos consejos:
+
+* Usar nombres relacionados con lo que se está codificando para ayudar a entender mejor el código. Por ejemplo, si se está resolviendo un problema en física, donde se necesita almacenar el valor de la velocidad inicial de una partícula, es mejor opción `velocidad_incial <- 100`, en lugar de `var1 <- 100`
+* No usar mayúsculas (cuestión de gustos)
+* No usar acentos (tildes)
+* Comentar comentar comentar, para que cualquiera que lea su código, pueda entenderlo con más facilidad
+
+```{r}
+velocidad <- 80 # velocidad en km/h
+vel_inicial <- 45 # velocidad inicial en km/h
+```
+
+## Tipos de datos en `R`
+
+1. _Character_
+2. _Numeric_
+3. _Integer_
+4. _Complex_
+5. _Logical_
+
+```{r}
+x1 <- 'UPB Montería' # las cadenas de texto deben ir entre comillas simples (') o dobles (")
+class(x1)  # devuelve la clase del objeto x1
+
+pi # pi es una constante pi = 3.1415...
+
+x2 <- pi    
+class(x2)
+x3 <- "AB" # character
+x4 <- 6L # integer
+class(x4)
+x5 <- 3.4 + 9.3i # complex
+class(x5)
+logico <- FALSE # logical
+class(logico)
+```
+
+
+## Vectores
+
+Un vector es un arreglo unidimensional que puede almacenar datos de un mismo tipo. Podemos tener un vector numérico, por ejemplo, lo que quiere decir que tenemos un arreglo que almacena solo datos de tipo numérico. No se pueden almacenar datos de diferente tipo en un vector, es decir, no puede tener en `R` un vector con valores numéricos y lógicos mezclados.
+
+Para crear un vector, se usa la función `c()` (es una "c" minúscula, `R` distingue entre mayúsculas y minúsculas). Ejemplos:
+
+```{r}
+vector1 <- c(1,5,7,4) # Vector de solo valores numéricos
+vlog <- c(T, F, F, F, T) # vector de solo valores lógicos
+vchar <- c("c", "i", "e", "n", "c", "i", "a") # vector de caracteres
+vector1; vlog; vchar # imprime los vectores creados
+```
+
+Si intentamos almacenar elementos de diferente tipo en un vector, `R` intentará hacer una [coerción](https://www.oreilly.com/library/view/r-in-a/9781449358204/ch05s08.html#:~:text=When%20you%20call%20a%20function,coercion%20with%20built%2Din%20types.){target="_blank"} a un tipo de dato adecuado.
+
+```{r}
+c(1,2,3,"hola") # creará un vector de caracteres
+c(1,2,3,FALSE,TRUE) # creará un vector numérico. T equivale a 1 y F a 0
+```
+
+
+Hay muchas formas adicionales a la función `c()` para obtener o crear vectores en `R`. Algunas formas comunes son:
+
+```{r}
+# una suceción de números enteros desde el 10 hasta el 20 
+# almacenando el resultado en un vector llamado suc1
+suc1 <- 10:20 
+
+# con la función vector()
+vec1 <- vector(mode = "numeric", length = 15)
+vec2 <- vector("logical", 6)
+vec3 <- vector(length=6, mode="logical")
+suc1; vec1; vec2; vec3
+```
+
+Las funciones como `vector` pueden usarse sin declarar de forma explícita los argumentos, solo asegúrese de poner los valores en el orden correcto.
+
+Más ejemplos:
+```{r}
+23:15
+# con la función seq() para crear vectores a partir de secuencias
+seq(from = 5, to = 10) # secuencia que empieza en 5 y va hasta el 10 de uno en uno
+
+# una suceción que empieza en 5 y aumenta en pasos de 0.2 hasta llegar a 10
+seq(from = 5, to = 10, by = 0.2)
+
+# desde el 5 hasta el 10, en pasos iguales que permitan un total de 12 números
+seq(from = 5, to = 10, length.out = 12)
+
+# con la función rep() para repetir un objeto, n cantidad de veces
+rep(1.45, 6) # repite el número 1.45 6 veces y genera un vector
+rep(c(1,3), 7) # repite el vector c(1,3) 7 veces
+
+```
+
+Muchas funciones y procedimientos en R, devuelven sus resultados en vectores. Por ejemplo, es posible generar [números aleatorios](https://www.educba.com/random-number-generator-in-r/){target="blank"} de forma muy sencilla y guardarlos en un vector
+
+```{r}
+x <- runif(n=100) # runif() genera números uniformemente distribuidos (entre 0 y 1 por defecto)
+
+# 20 números uniformes entre -3.7 y -1
+y <- runif(n=100, min=-3.7, max=-1) # por supuesto: min < max
+
+# números con distribución normal
+z <- rnorm(n = 100, mean = 2.1, sd = 0.4)
+
+plot(x, y) # gráfico de dispersión
+hist(z) # histograma
+```
+
+
+Para acceder a los elementos de un vector se usan los corchetes []
+
+```{r}
+x <- rnorm(n=20, mean = 0, sd = 2) # vector con 20 números
+x # imprime el vector
+x[17] # elemento 17
+x[3:10]  # elementos del 3 al 10 inclusive 
+x[-5]  # todos los elementos menos el quinto
+x[c(1,6,4)]  # elementos 1, 6 y 4
+x[-c(1,6,4)]  # todos los elementos excepto el 1, 6 y 4
+```
+
+
+## Matrices
+
+Una matriz es un arreglo bidimensional para almacenar datos de un mismo tipo (igual que un vector, pero ahora en filas y columnas). Hay varias formas de crear matrices. Se puede usar la función `matrix()`
+
+```{r}
+# matriz de 3 filas y columnas, si no se asignan valores
+# se llenará cada posición con NA
+mm <- matrix(nrow = 3, ncol = 4)
+
+## Matriz de 3 filas y 4 columnas, cuyos valores están en un vector
+## de números aleatorios uniformemente distribuidos
+mm1 <- matrix(data=runif(12,0,1), nrow = 3, ncol = 4)
+mm1
+
+# Por defecto se llenará la matriz por columnas
+mm2 <- matrix(data = c(1,2,3,4,5,6,7,8,9), nrow = 3)
+mm2
+# note que no especificamos el número de columnas, pero R es "inteligente"
+# y sabe que necesita 4 columnas para crear una matriz de 3 filas con 12 elementos
+
+# Si desea "armar" la matriz por filas, agregue byrow = TRUE
+mm3 <- matrix(data = c(1,2,3,4,5,6,7,8,9), nrow = 3, byrow = TRUE)
+mm3
+
+# Para acceder a los elementos, indique el número de la fila y/o columna
+mm3[3,2]  #elemento (3,2): fila 3, columna 2
+mm3[2,]  # toda la fila 2 (un vector)
+mm3[,3]  # toda la columna 3 (un vector)
+```
+
+Se pueden combinar vectores por filas o por columnas para formar matrices
+
+```{r}
+suc1 <- 1:9
+suc2 <- 2:10
+mm4 <- cbind(suc1, suc2) # se combina por columnas
+mm5 <- rbind(suc1, suc2) # se combina por filas
+mm4; mm5 # Imprime las matrices en la consola
+
+```
+
+## _Data frame_
+
+## Listas
+
+Los vectores y matrices están formados por un único tipo de datos, las listas no tienen esta limitación y se pueden crear con la función `list()`. Los elementos de una lista pueden ser: numéricos, enteros, lógicos, texto; pueden contener otras estructuras como vectores, matrices, y otras listas.
+
+```{r}
+# una lista que contiene un número entero, un caracter, un número real
+# un vector, una matriz, y otra lista. 
+lista1 <- list(3L, "DF", pi, c(1.34,2,3), mm1, list(2,"ss"))
+lista1
+
+```
+
+Para acceder a sus elementos se usan dobles corchetes [[]]
+```{r}
+lista1[[2]] # segundo elemento de la lista
+
+# Primer elemento del vector que está el el lugar 4 de la lista (¡reloco!)
+lista1[[4]][1]  
+```
+
+
+`R` es un lenguaje muy versátil y trae por defecto muchas opciones de cálculo. Además de eso, es posible ampliar la gama de operaciones o actividades que se pueden realizar con la instalación de paquetes o librerías adicionales. Es un lenguaje bastante popular y con una comunidad muy activa. Si tiene algún problema con algún código, muy seguramente otra persona ya tuvo el mismo problema antes y se puede encontrar la solución en línea. Cuando tenga un resultado inesperado puede, copiar y pegar el error en Google para buscar soluciones.
+
+## Valores faltantes
+
+Un vector de valores lógicos puede usarse para extraer elementos de otro vector. Se extraerá cada elemento en el que haya un valor `TRUE`
+
+```{r}
+xx <- 20:26 # vector con 7 elementos
+ind <- c(T, T, F, F, T, T, T)
+xx[ind]  # extrae las posiciones donde hay TRUE: 1,2,5,6,7
+```
+
+Tipos de datos especiales:
+
++ `NA`: Not Available
+
++ `NaN`: Not a Number
+
+```{r}
+2/0
+0/0
+```
+
+Con alguna combinación de funciones podemos sacar datos `NA` y/o `NaN` de un vector
+
+```{r}
+zz <- c(1,2,NA,Inf,NA, NaN, NA, 4, NA)
+
+# devuelve un vector con elementos TRUE donde hay valores NA o NaN
+ss <- is.na(zz) 
+
+# Vector con elementos TRUE donde hay valores NaN
+ss1 <- is.nan(zz) 
+
+# con el operador ! cambiamos TRUE por FALSE y viceversa
+ssneg <- !ss # en ssneg hay TRUE donde no hay valores NA o NaN
+
+# extrae valores donde ssneg es TRUE, es decir donde no hay valores
+# NA o NaN en zz (¡qué enredo tan bueno!)
+zzlimpio <- zz[ssneg] 
+zz; zzlimpio # imprimir y comparar
+```
+
+## Paquetes o librerías
+
+Hay paquetes para hacer casi cualquier cosa en R. [Aquí](https://cran.r-project.org/web/packages/available_packages_by_name.html){target="_blank"} puede econttrar una lista de los paquetes disponibles para instalación directa desde la consola de R (hay más de 20.000).
+
+Para instalar y luego cargar paquetes:
+
+* `install.packages("nombre_paquete")`: solo se hace una vez, por lo que no es necesario incluirlo en el editor (la parte donde se escribe el código) sino que se puede realizar una única vez en la consola (la parte inferior izquierda de Rstudio donde se imprimen los resultados)
+
+* `library(nombre_paquete)`:  debe hacerse siempre que se inicie una nueva sesión y se vaya a usar el paquete, normalmente se cargan las librerías a usar al comienzo del código
+
+## Más vectores
+
+```{r}
+x1 <- rep(0,20)
+x2 <- seq(from=0, to=2, length.out=5)
+x3 <- seq(from=0, to=2, by=0.2)
+x4 <- 3:12
+
+# La función sample() es bastante útil
+# Extrae una muestra tamaño 3, del vector x4
+x5 <- sample(x4, size = 3, replace = F) # sin reemplazo
+x6 <- sample(x4, size = 15, replace = T) # con reemplazo
+x1; x2; x3; x4; x5; x6
+
+```
+
+Cuando se trabaja con números aleatorios es posible establecer una semilla, para poder reproducir los mismos resultados en diferentes computadores
+
+```{r}
+# se establece la semilla, esto permite que los números 
+# generados sean iguales en otros computadores, 
+# siempre que tengan la misma semilla establecida
+set.seed(234) 
+x7 <- rnorm(1000, mean = 0, sd=1)
+hist(x7)
+x8 <- c("c", "i", "e", "n", "c", "i", "a")
+x9 <- sample(x8, size = 15, replace = T)
+x9
+```
+
+## Algunas funciones básicas para usar con vectores
+
+```{r}
+
+min_x7 <- min(x7) # devuelve el valor mínimo en el vector
+max_x7 <- max(x7) # devuelve el valor máximo en el vector
+
+# devuelve la posición del vector donde se encuentra el valor mínimo
+donde_min <- which.min(x7) 
+# devuelve la posición del vector donde se encuentra el valor máximo
+donde_max <- which.max(x7)
+
+min_x7; donde_min
+max_x7; donde_max
+```
+
+Para borrar objetos de la memoria:
+
+```{r}
+rm(ind, logico, max_x7) # borra los objetos ind y max_x7
+rm(list = ls()) # borra todo
+
+```
+
+
+## Funciones
+
+`R` está optimizado para trabajar con funciones. Una función es un conjunto de líneas de código que se guardan en memoria y que se puede _llamar_ siempre que sea necesario en otras partes del código, sin necesidad de volver a escribir todo lo que hace dicha función
+
+La sintaxis básica para crear una función en `R` es
+
+```
+nombre_funcion <- function(<argumentos>){
+  Hacer algo con los argumentos
+  devuelva algún resultado
+}
+```
+
+Por ejemplo
+
+```{r}
+funcion_1 <- function(x) x^4 + 6*x + 3
+funcion_1(3)
+plot(funcion_1, 0, 10) #grafica la función en el intervalo especificado
+```
+
+Si las operaciones que hace la función se declaran en una sola línea, no es necesario usar las llaves `{}`. Si las declaraciones dentro de la función ocupan varias líneas, entonces sí es necesario usar las llaves^[Casi siempre es necesario, las funciones no suelen ser tan simples para declararse en una sola línea de código]
+
+
+Funciones de 2 variables
+```{r}
+funcion_2 <- function(x,y){
+  return(x*y + 2*x + log(abs(x+y+1)))
+}
+funcion_2(2,3)
+```
+
+
+El concepto de función en `R` no está limitado a funciones matemáticas tal como estamos acostumbrados, los argumentos de las funciones pueden ser: números, vectores, matrices, listas, otras funciones
+
+```{r}
+## f  una función
+## x es un vector
+## y es una matriz
+
+funcion_3 <- function(f,x,y){
+  return(f(x) + x*y[,1]) # el resultado debe ser un vector (¿por qué?)
+}
+
+xxxx <- 1:5
+yyyy <- matrix(data = 1:30, nrow = 5, byrow = TRUE)
+funcion_3(f = funcion_1, x = xxxx, y = yyyy)
+```
+
+<!-- ## Fórmulas en `R` -->
+
+## Ejemplo de la instalación y uso de un paquete {#sec-rgl}
+
+
+En `R` hay muchos paquetes que nos ayudan a hacer gráficas en 3D. Instalemos y usemos el paquete `rgl`. Note que cada paquete trae nuevas funciones que debemos aprender si es que queremos usarlo, lo bueno es que podemos encontrar documentación en muchos sitios de internet. [Aquí](http://www.sthda.com/english/wiki/a-complete-guide-to-3d-visualization-device-system-in-r-r-software-and-data-visualization){target="_blank"} encontramos un buen tutorial para usar `rgl`
+
+Gráfica 3D dinámica con el paquete 'rgl'
+```{r, message=FALSE}
+library(rgl) # ya debe estar instalado: install.package("rgl")
+x <- seq(-5.12, 5.12, length.out=200)
+y <- x
+
+# Función rastrigin muy usada en optimización
+rast <- function(x,y){
+  20 + x^2 -10*cos(2*pi*x) + y^2 - 10*cos(2*pi*y)
+}
+rast(0,0) # evalúa la función en el punto (0,0)
+
+z <- outer(x,y,FUN=rast)
+rgl::persp3d(x,y,z, col="orange2", main="Rastrigin")
+```
+
+```{r, echo=FALSE}
+# play3d(spin3d(axis = c(0, 0, 1), rpm = 5))
+# al agregar esto, no se termina de compilar el documento
+rglwidget()
+## Esto es para incrustar el gráfico dinámico de rgl en el archivo html
+```
+
+## Importar datos
+Para obtener y cambiar el directorio de trabajo
+
+`getwd()`
+
+`setwd("colocar la ruta de windows, cambiar \ por /")`
+
+```{r}
+# El archivo Auto.txt debe estar en el directorio de trabajo
+autos <- read.table(file = "Auto.txt")
+summary(autos) # hace un resumen de cada variable en la base de datos autos
+mpg_auto <- autos$mpg  #guarda la variable mpg en el objeto mpg_auto
+class(autos)
+```
+
+
+## Estructuras de control
+`if, for, while, repeat; break, next, return`
+
+### Condicionales
+
+```{r}
+## if(<condicion>){
+##  haga algo
+## } else if(<condicion2>){
+##  haga esto otro
+## } else{
+##  haga esto último
+## }
+x <- 10
+if(x<5){
+  "X es menor que 5"
+} else if(x==5){
+  "X es igual a 5"
+} else{
+  "X es mayor que 5"
+}
+
+```
+
+### Ciclos
+
+```{r}
+## for(i in <conjunto>){
+##  haga algo por cada elemento
+## }
+
+j <- 1
+for(i in 1:10){
+  if(i<6){
+    j <- 2*j+i
+    print(log(j))
+  } else{
+    j <- 2*j+i
+    print(cos(j))
+  }
+}
+
+
+vv <- c("primer", "programa", "en R", "Con ciclo for")
+for (i in vv){
+  print(i)
+}
+```
+
+Se pueden anidar
+```{r}
+mm <- matrix(data = seq(from=exp(1), to=pi, length.out=16), nrow = 4)
+
+for(i in 1:dim(mm)[1]){
+  for(j in 1:dim(mm)[2]){
+    cat("El elmento (", i, ",", j, ") es: ", mm[i,j], "\n", sep = "")
+  }
+}
+
+```
+
+
+<!-- ## Operaciones matriciales -->
+<!-- agregar aquí algunos problemas básicos de álgebra y cálculo matricial -->
+
+
+
+
+
+
+
+

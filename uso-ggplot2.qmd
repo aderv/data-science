@@ -1,0 +1,1051 @@
+---
+knitr:
+  opts_chunk: 
+    out.width: "70%"
+    fig.align: center
+---
+
+# Uso de `ggplot2`
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+library(tidyverse)
+library(kableExtra)
+library(palmerpenguins)
+library(htmlwidgets)
+```
+
+<!-- # Agregar Capítulo 0: Abstracción del problema -->
+
+## Abstración del problema 
+
+Antes de comenzar con EDA, hagamos una conceptualización del tipo de problemas que queremos resolver con lo que conocemos como Ciencia de Datos (<mark>En el tablero</mark>)
+
+## Análisis exploratorio
+
+El análisis exploratorio se lleva a cabo a través de     transformaciones y visualizaciones de los datos.^[Hablar de EDA es una forma de organizar las ideas, algunas personas o autores pueden considerar que el EDA incluye la limpieza de datos e incluso alguna modelación. Por sencillez, vamos a considerar que el EDA está compuesto principalmente por transformación de variables y visualizaciones] El proceso puede ser iterativo y ayuda a comprender mejor el tipo de datos con los que se está trabajando, muchos problemas en Ciencia de Datos se resuelven en esta fase. 
+
+:::{#fig-workflow}
+```{mermaid}
+flowchart LR
+subgraph DW[Data Wrangling]
+  direction LR
+  A(Importar) --> B(Ordenar)
+  B --> C(Transformar)
+end
+subgraph EDA["Exploratory Data Analysis (EDA)"]
+  direction RL
+  C2(Transformar) --> D(Visualizar)
+  D --> C2
+end
+subgraph MO[Modeling]
+  direction RL
+  E(Modelar) --> F(Evaluar)
+  F --> E
+end
+subgraph CO[Communicate]
+  G(comunicar)
+end
+
+DW --> EDA
+EDA --> MO
+MO --> EDA
+MO --> CO
+```
+
+Flujo de trabajo en ciencia de datos
+:::
+
+## ¿Cómo hacer EDA en `R`?
+
+Hay muchos paquetes en `R` pensados para facilitar el trabajo del científico de datos. Nos basaremos en el ecosistema de paquetes optimizados para análisis de datos, conocido como [_tidyverse_](https://www.tidyverse.org/){target="_blank"}
+
+El _core tidyverse_ es el conjunto principal de paquetes de este ecosistema:
+
++ `ggplot2`: Para hacer gráficas
++ `diplyr`: Para manipulación de datos
++ `tidyr`: Para organizar bases de datos en formato _tidy_
++ `readr`: Para importar datos
++ `tibble`: para manejo de bases de datos con muchos datos
++ `stringr`: Para manipular _strings_
++ `forcats`: Para manipular variables categóricas
+
+podemos cargar cada paquete de forma individual (`library(ggplot2)`) o cargarlos de forma conjunta con `library(tidyverse)`. Nos interesan principalmente `ggplot2` y `dplyr`.
+
+Para poder hacer análisis de cualquier tipo, primero necesitamos tener disponible un conjunto de datos o _data frame_ (o en formato del _tidyverse_ un _tibble_^[Investigue qué es un _tibble_]). Hay varias formas de obtener datos en `R`
+
+1. Datos sintéticos (simulados)
+2. Bases de datos instaladas con `R` o con alguno de sus paquetes
+3. Importarlo desde una fuente externa, ya sea de forma local o desde la web
+
+Usaremos una base de datos que viene en el paquete `palmerpenguins` (hay que instalar y cargar la librería) que es bastante adecuada para iniciar un análisis exploratorio
+
+```{r}
+library(palmerpenguins)
+penguins
+```
+
+Otra herramienta que usaremos con frecuencia en nuestros códigos es el operador _pipe_. Este operador viene en dos versiones:
+
++ ` |> `: Versión base o nativa de `R`, no requiere la instalación de ningún paquete
++ ` %>% `:  Versión del _tidyverse_, requiere cargar alguno de los paquetes `dplyr`, `magrittr`, `tidyverse`
+
+El atajo de teclado para el operador pipe es {{< kbd win=Ctrl+Shift+m >}}. Por defecto se genera ` %>% `, para generar el operador nativo ` |> `, debe ingresar a _Tools -> Global Options -> Code -> Editing_ y activar la casilla _use native pipe operator_
+
+El operador _pipe_ nos permite escribir código de forma lineal y más fácilmente legible de izquierda a derecha, en lugar de funciones anidadas. 
+
+```{r}
+sin(log(sum(c(1,2,3))))
+
+# usando el operador pipe
+c(1,2,3) |> sum() |> log() |> sin()
+```
+El operador permite pasar el resultado de la izquierda como primer argumento de la función siguiente a la derecha.
+
+El tipo de gráfica que debemos crear depende del tipo de variables que tengamos y de la forma en que las queramos analizar, por lo que es importante elegir las gráficas adecuadas. Antes de empezar a construir gráficas, recordemos una definición de los tipos de variables que podemos tener
+
++ Numéricas (cuantitativas)
+  + Discretas
+  + Continuas
++ categóricas (cualitativas o factores)
+  + Ordinales
+  + Nominales
+
+ejecute `?penguins` para estudiar y entender los datos en _penguins_
+
+Dividamos el trabajo por casos
+
+## Caso 1. Una variable numérica
+
+Algunas gráficas para este caso:
+
++ Histogramas
++ Gráficos de densidad
++ Diagramas de caja
+
+```{r}
+library(ggplot2)
+library(palmerpenguins)
+ggplot(data = penguins)
+```
+
+Una forma alterna, usando el operador _pipe_^[Para `ggplot2` solo usaremos este operador al aplicar la función `ggplot()` a la base de datos que estemos usando, el resto de elementos del gráfico se agregarán con el signo {{< kbd + >}}. Cuando estemos usando `dplyr`, usaremos con más frecuencia el operador _pipe_] sería `penguins |> ggplot()`
+
+`ggplot2` implementa lo que se conoce como gramática de gráficos, que en resumen quiere decir que el gráfico se construye al ir agregando capas (_layers_). Al aplicar la función `ggplot()` a una base de datos, se crea un lienzo en blanco (gris). 
+
+```{r}
+penguins |> ggplot(mapping = aes(x = body_mass_g))
+```
+
+Aún no se muestra una gráfica, se ha creado un _mapeo_ y puede verse la escala de valores de la variable `body_mass_g` en el eje X, pero aún falta por agregar el tipo de geometría o tipo de gráfico a construir
+
+```{r}
+penguins |> ggplot(mapping = aes(x = body_mass_g)) +
+  geom_histogram()
+```
+
+`ggplot` nos informa sobre la presencia de 2 valores no finitos, probablemente sean `NA`. Por ahora eliminemos los `NA` de la base de datos^[Esto no debe hacerse a la ligera, más adelante nos ocuparemos de cómo tratar estos `NA`, por ahora vamos a concentrarnos en hacer gráficas]
+
+```{r}
+penguins <- na.omit(penguins)
+```
+
+Volvemos a intentar la gráfica
+
+```{r}
+penguins |> ggplot(mapping = aes(x = body_mass_g)) +
+  geom_histogram()
+```
+
+Para hacer gráficos ordenados, es bueno personalizar las etiquetas y los títulos y subtítulos, esto se logra con la función `labs()` que tiene argumentos como `title`, `subtitle`, `caption`, etc
+
+```{r}
+penguins |> ggplot(mapping = aes(x = body_mass_g)) +
+  geom_histogram() +
+  labs(
+    title = "Peso de los Pingüinos del Archipiélago de Palmer",
+    x = "Peso en gramos",
+    y = "Conteo",
+    caption = "Datos de 333 pingüinos distribuidos en 3 islas y 3 especies")
+
+```
+
+Algunos argumentos o propiedades, tales como el color (_colour_) y relleno (_fill_), son comunes a muchos o todos los tipos de geometrías. Otras propiedades son más específicas, para un histograma por ejemplo, tiene sentido tener propiedades de número de clases (`bins`) o ancho de las clases (`binwidth`), pero no tendría mucho sentido hablar de número de clases en un diagrama de cajas. 
+
+En el siguiente gráfico, modificamos la cantidad de clases a usar, el color del borde y el relleno. 
+
+```{r}
+penguins |> ggplot(mapping = aes(x = body_mass_g)) +
+  geom_histogram(fill="red", bins = 20, color = "black") +
+  labs(
+    title = "Peso de los Pingüinos del Archipiélago de Palmer",
+    x = "Peso en gramos",
+    y = "Conteo",
+    caption = "Datos de 333 pingüinos distribuidos en 3 islas y 3 especies")
+```
+
+## _Bonus:_ Colores
+
++ Parte importante de toda gráfica, es el uso de los colores
+
++ En `R` podemos manejar colores por nombres (en inglés, por supuesto) o usando sistemas de codificación como el RGB y Hexadecimal
+
++ Una lista de colores en `R` la podemos obtener con `colors()`^[Ejecute el comando en la consola, a menos que quiera imprimir una lista de colores siempre que ejecute el código en su editor]. La lista completa de colores disponibles en `R` es
+
+  ```{r, echo=F}
+  colores <- colors()
+  colores <- data.frame(N=1:length(colores), Colores = colores)
+  kbl(colores)  |>  kable_styling(bootstrap_options = c("condensed", "striped"),
+                                full_width = F, position = "center")  |> 
+   scroll_box(width = "300px", height = "400px")
+  
+  ```
+-----
+
++ Manejar colores por nombres nos permite recordarlos fácilmente, pero es bastante limitado, a pesar de los más de 600 colores de la lista, no es nada comparado con los más de 16 millones de colores que podemos generar con sistemas como RGB o HEX (aunque tampoco necesitamos tantos colores, ni todas las pantallas pueden generarlos  ni nosotros notamos la diferencia)
+
+### RGB
+
++ Iniciales de los colores primarios (en inglés): R: _Red_; G: _Green_; B: _Blue._ Se basa en la combinación de diferentes niveles de intensidad para cada uno de estos colores
+
++ Se representa como una terna, donde cada valor está, por lo general, entre 0 y 255 (también en escala de 0 a 1 o en porcentajes de 0 a 100). Equivalencia de los colores primarios:
+
+  + Rojo: rgb(255, 0, 0) 
+  + Verde: rgb(0, 255, 0)
+  + Azul: rgb(0, 0, 255)
+
++ Algunos colores en sistema RGB (intente comprender el código completo, no se usa ggplot2 sino la función base `plot` de `R`, ejecute `?plot` en la consola para ver la documentación si quiere aprender a usar esta función base de `R`)
+
+  ```{r}
+  plot(x = rep(1,3), col = c(rgb(230,50,110, maxColorValue = 255), 
+                             rgb(20,50,10, maxColorValue = 100), 
+                             rgb(0.5,0.5,0.7)), 
+       main = "Algunos colores con RGB",
+       xlim = c(0,4),
+       xlab = "", ylab="", pch = 20, cex = 10)
+  ```
+
++ Por defecto, la función `rgb()` en `R`, tomará como valor máximo de la escala el 1, así que si se está trabajando en la escala 0-255 (lo más usual), es necesario establecer `maxColorValue=255`, en realidad de puede trabajar con cualquier valor positivo, `R` hará la conversión de forma adecuada.
+
++ los 256 posibles valores para cada componente (0-255), pueden producir en total $256^3=16777216$, ¡más de 16 millones de colores!
+
++ Es posible agregar un valor $\alpha$ de _opacidad_ a los colores (estudie y comprenda el siguiente código)
+
+  ```{r}
+  alfa <- seq(5, 255, by = 25) # ¿qué hace esto?
+  plot(x = rep(1,length(alfa)), 
+       col = rgb(17, 125, 0, maxColorValue = 255, alpha = alfa), 
+       cex = 10, pch = 20, xlab = "", ylab = "", xlim = c(0,12),
+       main = "Agregar opacidad al color")
+  ```
+
+
+### Hexadecimal
+
++ El sistema hexadecimal consta de 6 posiciones `r emoji::emoji("man_teacher")`, las primeras 2 para el rojo, las siguientes para el verde y las últimas para el azul. Cada una de estas varía entre 00 y FF. Equivalencia de los colores primarios:
+
+  + Rojo: #FF0000
+  + Verde: #00FF00
+  + Azul: #0000FF
+
++ Hay una correspondencia uno a uno entre ambos sistemas (RGB y HEX). Al igual que el sistema RGB, se puede agregar una propiedad de opacidad al agregar 2 posiciones más (también entre 00 y FF) al sistema Hexadecimal.
+
++ Algunos colores en sistema Hexadecimal
+
+  ```{r}
+  plot(x = rep(1,7), col = c("#AD504E", "#5F9EA0", "#009ACD", "#435EBF", 
+                             "#2F5A63", "#2F5A63A6", "#2F5A6355"),
+       cex = 10, pch = 20, xlab = "", ylab = "", xlim = c(0,8),
+       main = "Algunos colores con Hexadecimal")
+  ```
+
++ La equivalencia de los colores primarios en los sistemas RGB y Hex, se resume en la imagen
+
+![Tomado de <https://www.w3schools.com/colors/default.asp>](images/color.png){width="70%"}
+
++ La función `rgb()` convierte el código RGB a Hexadecimal. También se puede hacer lo contrario con la función `col2rgb()`
+
+  ```{r}
+  rgb(255, 0, 0, maxColorValue = 255) # De RGB a Hexadecimal
+  col2rgb("#FF0000") # De Hexadecimal a RGB
+  ```
+
++ Dado que estamos hablando de colores, sin duda alguna lo más natural y sencillo es verlos en lugar de memorizar códigos. Hay muchas herramientas _online_ que sirven como mezcladores de colores y nos devuelven los respectivos códigos en diferentes sistemas. Puede consultar el siguiente tutorial para más detalles
+
+[![](images/colpickerw3.png "Clic para ir al sitio"){width="70%"}](https://www.w3schools.com/colors/colors_picker.asp){target="_blank"}
+
++ En Rstudio podemos instalar el complemento `colourPicker` con `install.packages("colourpicker")`. Al hacerlo se activa en el botón _Addins_ un nuevo complemento.
+
+    ![](images/rstudio-pick1.png){width="45%"} ![](images/rstudio-pick2.png){width="45%"} 
+
+## Volviendo a `ggplot2`
+
+```{r}
+penguins |> ggplot(mapping = aes(x = body_mass_g)) +
+  geom_histogram(fill="#FA88FC9B", color = "darkblue", binwidth = 200) +
+  labs(
+    title = "Peso de los Pingüinos del Archipiélago de Palmer",
+    x = "Peso en gramos",
+    y = "Conteo",
+    caption = "Datos de 333 pingüinos distribuidos en 3 islas y 3 especies")
+```
+
+Podemos cambiar la orientación del histograma al cambiar la variable en el argumento `mapping` y actualizar las etiquetas del gráfico
+
+```{r}
+penguins |> ggplot(mapping = aes(y = body_mass_g)) +
+  geom_histogram(fill="#FFD08594", color = "darkblue", binwidth = 200) +
+  labs(
+    title = "Peso de los Pingüinos del Archipiélago de Palmer",
+    y = "Peso en gramos",
+    x = "Conteo",
+    caption = "Datos de 333 pingüinos distribuidos en 3 islas y 3 especies")
+```
+
+
+Un gráfico de densidad se obtiene con `geom_density()`
+
+```{r}
+penguins |> ggplot(mapping = aes(x = body_mass_g)) +
+  geom_density(fill="aliceblue", color = "black") +
+  labs(
+    title = "Peso de los Pingüinos del Archipiélago de Palmer",
+    x = "Peso en gramos",
+    y = "",
+    caption = "Datos de 333 pingüinos distribuidos en 3 islas y 3 especies")
+```
+
+:::{.callout-note}
+## Posición del signo "+"
+
+el signo {{< kbd + >}} __NO__ debe ir al comienzo de una línea, puede ir como último elemento de la línea pero no de primero
+:::
+
+El siguiente código mostrará un error debido a la posición errada del signo {{< kbd + >}}
+
+```{r}
+#| error: true
+#| fig-show: hide
+#| collapse: true
+
+penguins |> ggplot(mapping = aes(x = body_mass_g))
+  + geom_density(fill="aliceblue", color = "black") +
+  labs(
+    title = "Peso de los Pingüinos del Archipiélago de Palmer",
+    x = "Peso en gramos",
+    y = "",
+    caption = "Datos de 333 pingüinos distribuidos en 3 islas y 3 especies")
+```
+
+Siguiendo la lógica de construcción de las gráficas anteriores, no debe ser difícil ahora crear un diagrama de cajas, la geometría necesaria tiene el nombre que uno esperaría: `geom_boxplot()`
+
+```{r}
+penguins |> ggplot(aes(y = body_mass_g)) +
+  geom_boxplot() +
+  labs(
+    title = "Diagrama de Cajas para el peso en gramos de los Pingüinos",
+    y = "Peso en gramos"
+  )
+```
+
+
+
+## Caso 2. Una variable numérica y una categórica o factor
+
+Al agregar una variable categórica o factor, podemos obtener información más detallada de la distribución del peso de los pingüinos por especie o isla
+
+```{r}
+penguins |> ggplot(aes(x = body_mass_g, fill=species)) +
+  geom_histogram(color="black")
+```
+
+¿Cómo actúa el argumento `fill` dentro de `aes()` y por qué es diferente cuando se usa como argumento dentro de `geom_histogram`?^[Responder esta pregunta es importante para entender el funcionamiento de `ggplot2`]
+
+Note que se agregan leyendas de forma automática y las podemos personalizar. El argumento `alpha` agrega opacidad (transparencia) al color, debe ser un valor entre 0 (totalmente transparente) y 1 (totalmente opaco)
+
+```{r}
+penguins |> ggplot(aes(x = body_mass_g, fill = species)) +
+  geom_histogram(color = "darkblue", binwidth = 200, alpha = 0.7) +
+  labs(
+    title = "Peso de los Pingüinos del Archipiélago de Palmer",
+    x = "Peso en gramos",
+    y = "Conteo",
+    fill = "Especie",
+    caption = "Datos de 333 pingüinos discriminados por especies")
+```
+
+Al igual que con el histograma, podemos combinar la variable categórica para construir gráficos de densidad y gráficos de caja por cada categoría
+
+```{r}
+penguins |> ggplot(aes(x = body_mass_g, fill = species)) +
+  geom_density(alpha = 0.5) +
+  labs(
+    title = "Distribución del peso por especie",
+    subtitle = "Datos de pingüinos del archipiélago de Palmer",
+    fill = "Especie",
+    y = "",
+    x = "Peso en gramos"
+  )
+```
+
+Los gráficos de densidad por categoría sobre la misma escala son muy útiles. El resultado anterior puede ser un poco desalentador ya que los gráficos se superponen, agregamos transparencia al color para tener una mejor lectura, pero una mejor opción es variar un poco la escala en el eje vertical para cada densidad^[Estos son los llamados _ridgeline plots_ o _joyplots_]. `ggplot2` no tiene soporte para este tipo de gráficos, pero podemos agregar una extensión que nos permite crearlos fácilmente (existen muchas extensiones para `ggplot`). La librería que debemos agregar es `ggridges`, instalamos desde la consola `install.packages("ggridges")` y cargamos la librería para poder usarla: `library(ggridges)`
+
+```{r}
+# install.packages("ggridges") # haga esto en la consola
+library(ggridges)
+penguins |> ggplot(aes(x = body_mass_g, y = species)) +
+  geom_density_ridges()
+```
+
+Podemos controlar el aspecto del gráfico con algunos parámetros que ya son familiares, tales como `color`, `fill` entre otros. El parámetro `scale` permite controlar la superposición de los gráficos, cuando toma el valor de 1, los gráficos apenas se _tocan_. Entre más cercano el valor a 0, más separados, entre más alto el valor, estarán más superpuestos
+
+```{r}
+#| warning: false
+p1 <- penguins |> ggplot(aes(x = body_mass_g, y = species, fill = species)) +
+  labs(
+    title = "Distribución del peso por especie",
+    subtitle = "Datos de pingüinos del archipiélago de Palmer",
+    fill = "Especie",
+    y = "Especie",
+    x = "Peso en gramos"
+  )
+p1 + geom_density_ridges(color = "red", 
+                      alpha = 0.7, 
+                      size = 1,
+                      scale = 0.5)
+p1 + geom_density_ridges(alpha = 0.6,
+                      scale = 5)
+
+```
+
+Teniendo en cuenta lo aprendido hasta ahora, intente reproducir el siguiente gráfico de cajas del peso de los pingüinoss por islas
+
+```{r}
+#| code-fold: true
+#| code-summary: "Click para mostrar el código"
+penguins |> ggplot(aes(x = island, y = body_mass_g, fill = island)) +
+  geom_boxplot(alpha = 0.8) +
+  labs(
+    title = "Distribución del peso por isla",
+    subtitle = "Datos de pingüinos del archipiélago de Palmer",
+    fill = "Especie",
+    x = "Isla",
+    y = "Peso en gramos"
+  )
+```
+
+:::{#exr-ej1}
+Invierta la orientación del gráfico anterior
+:::
+
+
+----
+
+Un gráfico muy popular con un propósito similar al diagrama de cajas, es el gráfico de violín. Se puede construir usando `ggplot2` con la misma sencillez que los anteriores gráficos
+
+```{r}
+penguins |> ggplot(aes(x = island, y = body_mass_g, fill = island)) +
+  geom_violin() +
+  labs(
+    title = "Distribución del peso por Isla",
+    x = "Isla",
+    y = "Peso en gramos",
+    fill = "Isla"
+  )
+```
+
+Sería interesante agregar sobre el mismo sistema de coordenadas, gráfico de violín y gráfico de caja
+
+```{r}
+penguins |> ggplot(aes(x = island, y = body_mass_g, fill = island)) +
+  geom_violin() +
+  geom_boxplot()+
+  labs(
+    title = "Distribución del peso por Isla",
+    x = "Isla",
+    y = "Peso en gramos",
+    fill = "Isla"
+  )
+```
+Esta combinación de gráficos es bastante usual, aunque nuestro resultado no es el mejor, afinarlo requiere del uso de otras librerías. Más adelante volveremos a este tipo de gráficos.
+
+## Caso 3. Dos variables numéricas
+
+El gráfico más común para este caso es el diagrama de dispersión. Observemos la relación que hay entre el peso del pingüino y la longitud de la aleta
+
+```{r}
+penguins |> ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point()
+```
+
+Con algo más de trabajo, podemos personalizar^[Personalizar no quiere decir necesariamente mejorar] el resultado, agregando una forma a los puntos con _shape_, modificando el tamaño de los puntos con _size_, coloreando con _colour_ y _fill_, modificando el ancho del marco de los puntos con _stroke_
+
+```{r}
+penguins |> ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(shape = 23, fill = "white", 
+             colour = "purple", size = 3, 
+             stroke = 3)
+```
+
+En `R` hay un total de 25 formas (argumento _shape_) básicas para representar estos puntos
+
+```{r}
+data.frame(x = 1:25, y = 1:25) |> ggplot(aes(x = x, y = y)) +
+  geom_point(shape = 1:25, size = 5)
+```
+
+Todas estas formas admiten el argumento de color y de la forma 21 a 25 admiten además un argumento de relleno (_fill_). Reuniendo todo lo anterior, podemos crear un gráfico más detallado
+
+```{r}
+penguins |> ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(shape = 22, fill = "#37C790E6", colour = "black",
+             size = 2, stroke = 1) +
+  labs(
+    title = "Peso vs Longitud de la aleta",
+    subtitle = "Datos de 3 especies de pingüinos del archipiélago de Palmer",
+    x = "Longitudad de la aleta (mm)",
+    y = "Peso (gr)"
+  )
+```
+
+Podemos agregar distribuciones marginales a este diagrama de dispersión, usando el paquete `ggExtra`. Instale desde la consola: `install.packages("ggExtra")`. Veamos un ejemplo
+
+```{r}
+#| warning: false
+library(ggExtra)
+p1 <- penguins |> ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(shape = 22, fill = "#37C790E6", colour = "black",
+             size = 2, stroke = 1) +
+  labs(
+    title = "Peso vs Longitud de la aleta",
+    subtitle = "Datos de 3 especies de pingüinos del archipiélago de Palmer",
+    x = "Longitudad de la aleta (mm)",
+    y = "Peso (gr)"
+  )
+
+ggMarginal(p = p1)
+```
+
+La función `ggMarginal` del paquete `ggExtra` no funciona con el operador _pipe_, por lo que es necesario guardar el objeto `ggplot2` (gráfico) en una variable para luego aplicar la función `ggMarginal` sobre esta variable. Cambiando algunos detalles del gráfico anterior, obtenemos
+
+```{r}
+#| warning: false
+library(ggExtra)
+p1 <- penguins |> ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(shape = 22, fill = "#37C790E6", colour = "black",
+             size = 2, stroke = 1) +
+  labs(
+    title = "Peso vs Longitud de la aleta",
+    subtitle = "Datos de 3 especies de pingüinos del archipiélago de Palmer",
+    x = "Longitudad de la aleta (mm)",
+    y = "Peso (gr)"
+  )
+
+ggMarginal(p = p1, 
+           type = "histogram", 
+           size = 4, 
+           fill = "slateblue",
+           bins = 20)
+```
+
+
+
+Otro tipo de gráfico útil para estudiar la relación entre dos variables numéricas es el de densidad en dos dimensiones.
+
+```{r}
+penguins |> ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_density_2d()
+```
+
+Para modificar de forma manual la escala de valores de los ejes, agregamos `xlim(inf_x, sup_x)` y `ylim(inf_y, sup_y)`
+
+```{r}
+penguins |> ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_density_2d() +
+  xlim(NA, 240) +
+  ylim(2000, 6500) +
+  labs(
+    title = "Densidad conjunta",
+    subtitle = "Datos de 3 especies de pingüinos del archipiélago de Palmer",
+    x = "Longitudad de la aleta (mm)",
+    y = "Peso (gr)"
+  )
+```
+
+O en un intento de automatizar más el cálculo de la escala de los ejes
+
+```{r}
+penguins |> ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_density_2d() +
+  xlim(0.98*min(penguins$flipper_length_mm), 
+       1.02*max(penguins$flipper_length_mm)) +
+  ylim(0.95*min(penguins$body_mass_g), 
+       1.02*max(penguins$body_mass_g)) +
+  labs(
+    title = "Densidad conjunta",
+    subtitle = "Datos de 3 especies de pingüinos del archipiélago de Palmer",
+    x = "Longitudad de la aleta (mm)",
+    y = "Peso (gr)"
+  )
+```
+
+
+Volveremos después a revisar con más detalle estos gráficos.
+
+## Caso 4. Dos variables numéricas y una categórica
+
+En el siguiente gráfico de dispersión, agregamos la información de la especie y además un modelo ajustado a los datos. Comparemos los dos resultados para comprender una característica fundamental de `ggplot2`
+
+```{r}
+penguins |> ggplot(aes(x = flipper_length_mm, 
+                       y = body_mass_g, 
+                       colour = species)) +
+  geom_point() +
+  geom_smooth()
+```
+```{r}
+penguins |> ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(mapping = aes(colour = species)) +
+  geom_smooth()
+```
+
+Los valores de `data` y `magpping = aes()` declarados en la función `ggplot()` se consideran globales, cada geometría o capa agregada heredará estos valores, pero pueden ser reemplazados por declaraciones locales dentro de cada geometría. Eso quiere decir que cada geometría puede tener su propio conjunto de datos y su propia forma de mapear los datos en el gráfico, permitiendo así una gran flexibilidad. 
+
+En el primer código se mapeó el atributo color con la variable especie, por eso al aplicar `geom_smooth()` se crea una estimación para cada tipo de especie. En el segundo código, el mapeo de color se hace dentro de `geom_point()` por lo que solo aplica para esa geometría en particular, al aplicar `geom_smooth()` no se tiene en cuenta ya que no se ha declarado globalmente dentro de la función `ggplot()` 
+
+Explique cada componente del siguiente gráfico
+
+```{r}
+penguins |> ggplot(aes(x = flipper_length_mm, y = body_mass_g,)) +
+  geom_point(aes(color = species, shape = species), size = 2) +
+  geom_smooth(se = FALSE, color = "#8A0200", method = "lm") +
+  labs(
+    title = "Peso Vs Longitud de la aleta",
+    subtitle = "Datos de 3 especies de pingüinos del archipiélago de Palmer",
+    x = "Longitudad de la aleta (mm)",
+    y = "Peso (gr)",
+    color = "Especie",
+    shape = "Especie"
+  )
+```
+
+Usando el paquete `ggthemes` podemos mejorar la presentación del gráfico^[Intente varios temas]
+
+```{r}
+library(ggthemes)
+penguins |> ggplot(aes(x = flipper_length_mm, y = body_mass_g,)) +
+  geom_point(aes(color = species, shape = species)) +
+  geom_smooth(se = FALSE, method = "lm") +
+  labs(
+    title = "Peso Vs Longitud de la aleta",
+    subtitle = "Datos de 3 especies de pingüinos del archipiélago de Palmer",
+    x = "Longitudad de la aleta (mm)",
+    y = "Peso (gr)",
+    color = "Especie",
+    shape = "Especie"
+  ) + ggthemes::scale_colour_colorblind()
+```
+
+## Geometrías
+
+Ya que hemos revisado el funcionamiento básico de `ggplot2`, podemos echarle un vistazo a las geometrías disponibles. La apariencia de la mayoría de ellas puede deducirse de su nombre, podemos encontrar una explicación detallada en la [página de referencia](https://ggplot2.tidyverse.org/index.html){target="_blank"} de `ggplot2`
+
++ Utilizadas hasta ahora
+  + `geom_point()`
+  + `geom_histogram()`
+  + `geom_density()`
+  + `geom_density_2d()`
+  + `geom_boxplot()`
+  + `geom_smooth()`
+
++ Algunas que faltan
+  + `geom_abline()`, `geom_hline()`, `geom_vline()`: Para agregar líneas rectas oblicuas (dado un intercepto y pendiente), horizontales y verticales
+  + `geom_bar()`, `geom_col()`: Para construir diagramas de barras
+  <!-- + `geom_contour()`, `geom_contour_filled()`: Para hacer gráficas de contorno `r emoji::emoji(keyword = "exploding head")` -->
+  + `geom_density_2d_filled`: Para gráficas de contorno con relleno `r emoji::emoji(keyword = "exploding head")`
+  + `geom_function()`
+  + `geom_freqpoly()`
+  + `geom_path()`, `geom_line()`
+
+
+Como se ha dicho en varias ocasiones, gran parte del trabajo es aprender el tipo de geometría a usar dependiendo del tipo de variables involucradas. Observemos las siguientes gráficas a las que no se les agrega mayor detalle para revisar rápidamente las diferentes geometrías.
+
+### `geom_abline()`, `geom_hline()`, `geom_vline()`
+
+Las líneas admiten parámetros de `linewidth`, `color`, `linetype`, `alpha`. El siguiente gráfico no tiene otro propósito diferente al de utilizar varias de estas opciones, aunque el gráfico resultante sea poco útil
+
+```{r}
+penguins |> ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point() +
+  geom_hline(yintercept = c(3000, 4000, 6000),
+             color = "red",
+             linewidth = 1,
+             linetype = 1) +
+  geom_vline(xintercept = seq(170, 230, length.out = 6),
+             color = "blue", 
+             linetype = 5) +
+  geom_abline(slope = 60,
+              intercept = c(-6000,-10000)) +
+  geom_smooth(se = FALSE, method = "lm", color = "blue")
+```
+
+Para el caso de `geom_hline()` y `geom_vline()` se deben agregar  las intercepciones en el eje Y y el eje X, respectivamente. Esto puede hacerse a través de un valor numérico o un vector. Para el caso de `geom_abline()` se requiere una pendiente (_slope_) y un intercepto (_intercept_), `ggplot2` reciclará uno de los valores si es necesario.
+
+Los tipos de línea disponibles son: _blank, solid, dashed, dotted, dotdash, longdash, twodash_. Se pueden identificar de forma ordenada con los dígitos del 0 al 6, por lo que `linetype = "dashed"` es equivalente a `linetype = 2`
+
+```{r}
+ggplot() +
+  geom_hline(yintercept = 1:7, linetype = 0:6)
+```
+
+El gráfico anterior muestra algo interesante, estas geometrías en realidad no necesitan una base de datos para poder crearse, ya que son reglas o funciones. Para los más exigentes en la personalización, se puede crear un patrón con hasta 8 dígitos hexadecimales (1,...,9,a,b,...,f) indicando un patrón de línea y espacio (así que deben ser 2,4,6 u 8 dígitos). El valor `1` es el menor y `f` el mayor. El patrón "5a3f" indica una línea de longitud `5` seguida de un espacio de longitud `a` luego una línea de longitud `3` y un espacio de longitud `f`, este patrón se repetirá hasta completar la gráfica.
+
+```{r}
+ggplot() +
+  geom_hline(yintercept = 1:4,
+             color = "red",
+             linewidth = 2,
+             linetype = c("11", "f4f2", "224466", "a5b6c7d8"))
+```
+### `geom_bar()`, `geom_col()`
+
+`geom_bar()` y `geom_col()` son adecuados para hacer gráficas que incluyen variables categóricas, con `geom_bar()` se cuenta el número de casos de cada categoría y con `geom_col()` se grafican los valores en los datos para cada categoría.
+
+```{r}
+penguins |> ggplot(aes(x = island)) +
+  geom_bar(fill = "#ddffeeaa", color = "black")
+```
+
+Si agregamos una segunda variable categórica, las barras saldrán apiladas. Mapeamos por ejemplo `fill = species`
+
+```{r}
+penguins |> ggplot(aes(x = island, fill = species)) +
+  geom_bar()
+```
+Algunas veces, es más útil mostrar la proporción de una categoría dentro de otra. En este caso, cómo está distribuida la proporción de cada especie en cada isla
+
+```{r}
+penguins |> ggplot(aes(x = island, fill = species)) +
+  geom_bar(position = "fill")
+```
+
+Podemos agregar las barras por categoría, lado a lado usando `position = "dodge"` o `position = "dodge2"`, en la segunda opción se agregará un espacio para separar los grupos en cada categoría 
+
+```{r}
+#| fig-show: hide
+p1 <- penguins |> ggplot(aes(x = island, fill = species)) +
+  geom_bar(position = "dodge")
+p2 <- penguins |> ggplot(aes(x = island, fill = species)) +
+  geom_bar(position = "dodge2")
+p1; p2
+```
+
+:::{layout-ncol=2}
+
+```{r}
+#| echo: false
+#| out-width: 100%
+p1
+```
+
+```{r}
+#| echo: false
+#| out-width: 100%
+p2
+```
+
+:::
+
+Para mostrar el funcionamiento de `geom_col()` agrupamos los datos en `penguins` con la variable `species` y agregamos algunas variables nuevas^[En el siguiente capítulo veremos con detalle estas funciones]
+
+```{r}
+data <- penguins |> group_by(species) |> 
+  summarise(cantidad = n(), 
+            peso_promedio = mean(body_mass_g), 
+            peso_total = sum(body_mass_g),
+            ind1 = mean(body_mass_g/flipper_length_mm))
+data
+```
+Queremos observar en un gráfico de barras las diferencias en el peso promedio de los pingüinos según la especie a la que pertenecen
+
+```{r}
+data |> ggplot(aes(x = species, y = peso_promedio)) +
+  geom_col()
+```
+Estudie el siguiente gráfico y explique cada parte del código
+
+```{r}
+n <- 100
+data1 <- tibble(
+  fact1 = sample(c("a", "b", "c", "d"), size = n, replace = T),
+  fact2 = sample(c("g1", "g2", "g3"), size = n, replace = T),
+  num1 = rnorm(n, 20, 5)
+)
+data1 <- data1 |> group_by(fact1, fact2) |> 
+  summarise(var_interesante = (mean(num1)))
+data1
+data1 |> ggplot(aes(x = fact1, y = var_interesante, fill = fact2)) +
+  geom_col(position = "dodge2")
+```
+
+<!-- ### `geom_contour()`, `geom_contour_filled()` -->
+
+<!-- `ggplot2` no construye gráficas en 3D, pero sí puede crear gráficas de contorno, lo que viene siendo una mirada en 2 dimensiones a superficies en 3D. Cuando usamos `geom_density_2d()`, `ggplot2` estimará de forma automática la densidad de las 2 variables usando un método de estimación con kernel^[Usando la función `kde2d` del paquete `MASS`. Más adelante aprenderemos a ajustar estos modelos por nuestra cuenta] y graficará el contorno de dicha estimación. Podemos construir gráficas de contorno para superficies generales (no necesariamente densidades estimadas) usando `geom_contour()` y `geom_contour_filled()`. Aprovechamos la función _rastrigin_ usada en la sección anterior -->
+
+<!-- ```{r} -->
+<!-- varx <- seq(-5.12, 5.12, length.out=200) -->
+<!-- vary <- varx -->
+<!-- # Función rastrigin, muy usada en optimización -->
+<!-- rast <- function(x,y){ -->
+<!--   20 + x^2 -10*cos(2*pi*x) + y^2 - 10*cos(2*pi*y) -->
+<!-- } -->
+<!-- varz <- outer(varx,vary,FUN=rast) -->
+
+<!-- ggplot(mapping = aes(x = varx, y = vary, z = varz)) + -->
+<!--   geom_contour() -->
+<!-- ``` -->
+
+
+### `geom_density_2d_filled()`
+
+De uso muy similar a `geom_density_2d()`, pero agretando un color de relleno al gráfico. Se puede combinar con `geom_point()` para ofrecer una gráfica más completa. Con todo lo visto hasta ahora, debe ser claro cómo funciona el siguiente código
+
+```{r}
+penguins |> ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_density_2d_filled(alpha = 0.5, show.legend = FALSE) +
+  geom_density_2d(color = "black") +
+  xlim(NA, 240) +
+  ylim(2000, 6500) +
+  geom_point(size = 0.8, color = "magenta") +
+  labs(
+    title = "Densidad conjunta",
+    subtitle = "Datos de 3 especies de pingüinos del archipiélago de Palmer",
+    x = "Longitudad de la aleta (mm)",
+    y = "Peso (gr)",
+    
+  )
+```
+
+### `geom_function()`
+
+Podemos construir curvas a partir de funciones con `geom_function()`. En el siguiente código, construimos 2 funciones muy sencillas y las agregamos con diferente color, la _capa_ `coord_fixed` nos sirve para mantener la relación 1 a 1 entre los valores de los ejes coordenados (la mayoría de veces, no es buena idea hacer esto, es mejor dejar que se reescalen los ejes)
+
+```{r}
+f1 <- function(x) x^2
+f2 <- function(x) x^3
+ggplot() + geom_function(fun = f1, color = "blue") +
+  geom_function(fun = f2, color = "red") +
+  xlim(-1,1) +
+  coord_fixed()
+```
+Podemos usar directamente las funciones de `R`. A continuación graficamos 3 distribuciones normales con la misma desviación y diferentes valores de la media
+
+```{r}
+ggplot() +
+  xlim (-5,5) +
+  geom_function(fun = dnorm, 
+                args = list(mean = -2, sd = 1),
+                color = "blue") +
+  geom_function(fun = dnorm, 
+                args = list(mean = 0, sd = 1),
+                color = "red") +
+  geom_function(fun = dnorm, 
+                args = list(mean = 2, sd = 1),
+                color = "orange")
+```
+### `geom_freqpoly()`
+
+Un polígono de frecuencia es un buen complemento para un histograma
+
+```{r}
+penguins |> ggplot(aes(x = body_mass_g)) +
+  geom_histogram(fill = "#C820387f", 
+                 color = "black",
+                 bins = 15) +
+  geom_freqpoly(bins = 15,
+                linewidth = 1,
+                color = "#00B82ECC")
+```
+
+### `geom_path()`, `geom_line()`
+
+Estas geometrías unen puntos con líneas, `geom_line()` lo hace en orden ascendente de la variable x, mientras que `geom_path()` lo hace en el orden mismo que aparecen los datos. `geom_line()` es bastante útil para representar series de tiempo y `geom_path()` puede bocetar formas irregulares. Usamos la base de datos de serie de tiempo `economics_long`^[Tanto `economics` como `economics_long` traen la misma información pero una está en formato "ancho" y la otra en formato "largo", investigue a qué se refieren estos términos] que viene con `ggplot2` para mostrar el uso de `geom_line()`. Agregamos una forma geométrica cualquiera para el uso de `geom_path()`
+
+```{r}
+# Revisar los primeros valores de la base de datos
+economics_long
+# graficar
+economics_long |> ggplot(aes(x = date, y = value01, color = variable)) +
+  geom_line(linewidth = 0.8)
+```
+```{r}
+data2 <- tibble(
+  x = c(0.5, 3, 5.5, 0, 6, 0.5),
+  y = c(0, 6, 0, 4, 4, 0)
+)
+data2 |> ggplot(aes(x = x, y = y)) +
+  geom_path() +
+  theme(aspect.ratio = 1)
+```
+## Agregando facetas o _subplots_
+
+Si tenemos una variable categórica dentro de nuestro conjunto de variables, una forma de analizar su contribución o patrón es mapeando con un atributo del gráfico como `fill` o `color`, tal como lo hemos hecho en ocasiones anteriores
+
+```{r}
+penguins |> ggplot(aes(x = bill_length_mm, 
+                       y = body_mass_g,
+                       color = species)) +
+  geom_point()
+```
+Otra alternativa es construir un gráfico por separado para cada grupo o valor de la variable categórica, para este ejemplo en particular, sería construir un diagrama de dispersión para cada subconjunto de datos según la especie. Esto es fácil de conseguir usando `face_wrap()` o `face_grid()`. La primera alternativa crea un subgráfico de forma lineal para una variable categórica que se incluya usando una fórmula^[revise el cocepto de fórmula en `R`] y la segunda opción crea un cuadrícula usando 2 variables categóricas. Es más fácil viendo que diciendo
+
+```{r}
+#| out-width: 100%
+penguins |> ggplot(aes(x = flipper_length_mm,
+                       y = body_mass_g)) +
+  geom_point(aes(color = species)) + 
+  geom_smooth() +
+  facet_wrap(facets = ~species, nrow = 2)
+```
+```{r}
+#| out-width: 100%
+penguins |> ggplot(aes(x = flipper_length_mm,
+                       y = body_mass_g)) +
+  geom_point(aes(color = species)) + 
+  geom_smooth() +
+  facet_grid(species~island)
+```
+Note que mientras `face_wrap()` usa una fórmula de un solo lado, `face_grid()` usa una fórmula de 2 lados. 
+
+Por defecto, todos los gráficos compartirán la misma escala en ambos ejes, se puede modificar este comportamiento con el argumento `scales`, cuyos valores posibles son: `fixed` (por defecto), `free` (ambos ejes se ajustan de manera automática según los valores en cada gráfico), `free_x` (se fija el eje _y_), `free_y` (se fija el eje _x_)
+
+```{r}
+#| out-width: 100%
+penguins |> ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(aes(color = species)) +
+  geom_smooth() +
+  facet_wrap(~species, nrow = 2, scales = "free")
+```
+
+
+
+
+## Más allá de `ggplot2`
+
+Una de las grandes fortalezas de `R` para análisis de datos es su increíble cantidad de herramientas para hacer gráficas. Esta gran oferta puede resultar un poco abrumadora al principio, por lo que en este curso nos vamos a basar casi que exclusivamente en `ggplot2` para hacer nuestras gráficas y ni siquiera usaremos con regularidad la función base `plot`. Puede parecer poco, pero `ggplot2` es bastante amplio y seguramente no abarcaremos todas las opciones que ofrece.
+
+Dicho eso, vamos a mencionar algunas librerías que agregan fortaleces a `ggplot2` o funcionan de forma complementaria y algunas que son ecosistemas totalmente independientes, pero son tan geniales que debemos saber por lo menos que existen.
+
+Ya hemos agregado algunas librerías: `ggridges`, `ggExtra`, `ggthemes`. Podemos encontrar una lista asombrosa de extras para `ggplot2` [aquí](https://exts.ggplot2.tidyverse.org/gallery/){traget="_blank"}
+
+### `patchwork`
+
+Esta librería permite combinar de forma sencilla varias gráficas individuales en una sola gráfica. Debemos instalar (`install.packages("patchwork")`) y cargar (`library(patchwork)`) el paquete. [Revise la página de `patchwork`](https://patchwork.data-imaginist.com/index.html){target="_blank"} para ver los detalles. Para revisar el uso básico, vamos a crear algunos gráficos individuales sencillos y combinarlos de diferentes formas
+
+```{r}
+library(patchwork)
+p1 <- penguins |> ggplot(aes(x = flipper_length_mm,
+                             y = body_mass_g,
+                             color = species)) +
+  geom_point(show.legend = F)
+
+p2 <- penguins |> ggplot(aes(x = island, 
+                             y = bill_depth_mm,
+                             color = island)) +
+  geom_boxplot(show.legend = F)
+
+p3 <- penguins |> ggplot(aes(x = bill_length_mm,
+                             y = species,
+                             color = species,
+                             fill = species)) +
+  geom_density_ridges(alpha = 0.5, show.legend = F)
+
+p4 <- penguins |> ggplot(aes(x = island, fill = species)) +
+  geom_bar(position = "dodge2", show.legend = F)
+```
+
+Podemos agrupar los gráficos con el signo `+`, `patchwork` intentará distribuir los gráficos en filas y columnas de forma que el resultado sea lo más cuadrado posible, agregando los gráficos por filas (como si fuese una matriz en `R`). Podemos forzar la distribución usando `plot_layout()`
+
+
+```{r}
+#| out-width: 100%
+p1 + p2 + p3 + p4
+```
+```{r}
+#| out-width: 100%
+p1 + p2 + p3 + p4 + plot_layout(nrow = 3, ncol = 2, byrow = F)
+```
+Se puede forzar un _layout_ con "|" para separar columnas y "/" para separar filas. Probemos algunas combinaciones
+
+```{r}
+#| out-width: 100%
+(p1 / p2) | p3
+(p1 | p4) / p2
+p1 / p2 / p3
+(p1 + p2) | p4
+```
+Se pueden agregar etiquetas y títulos a cada gráfico de forma normal a cada gráfico individual, también se puede para el conjunto completo, usando `plot_annotation()`. Con `plot_layout()` se puede especificar la proporción de ancho y alto para cada columna y fila del arreglo.
+
+```{r}
+#| out-width: 100%
+(p1 | (p2 / p3 + plot_layout(heights = c(2,1)))) +
+  plot_layout(widths = c(3,2)) +
+  plot_annotation(
+    title = "Un grupo interesante de gráficas",
+    subtitle = "Gráficas bonitas", 
+    caption = "Datos de Pingüinos del archipiélago de Palmer"
+  )
+```
+
+Por último nombraremos 2 paquetes para gráficas pero que juegan en una liga diferente, están basados en librerías de _JavaScript_ por lo que pueden generar gráficas interactivas y son especialmente adecuados para generar reportes con [`quarto`](https://quarto.org/){target="blank"} y aplicaciones con [`shiny`](https://shiny.posit.co/){target="blank"}
+
+
+
+### `dygraphs`
+
+El paquete `dygraphs` de `R` es una implementación de la librería [`dygraphs`](https://dygraphs.com/){target="blank"} de _Javascript_. Es bastante usado para graficar datos de series de tiempo. El siguiente ejemplo es tomado de la 
+[documentación](http://rstudio.github.io/dygraphs/index.html){target="blank"} 
+
+```{r}
+#| out-width: 90%
+# install.packages("dygraphs") # ejecutar desde la consola
+library(dygraphs)
+lungDeaths <- cbind(mdeaths, fdeaths)
+dygraph(lungDeaths) |> 
+  dySeries("mdeaths", label = "Male") |> 
+  dySeries("fdeaths", label = "Female") |> 
+  dyOptions(stackedGraph = TRUE) |> 
+  dyRangeSelector(height = 20)
+```
+
+### `plotly`
+
+[`plotly`](https://plotly.com/graphing-libraries/){target="blank"} es una librería declarativa y de alto nivel basada en [D3.js](https://d3js.org/){target="blank"} y [stack.gl](https://github.com/stackgl){target="blank"} para crear gráficos interactivos. Tiene versiones para `python`, `R`, `Julia`, `Javascript`, `Matlab`, `F#` (¡casi nada!). Ofrece muchos tipos de gráficos para 2 y 3 dimensiones y es un mundo completo para aprender. Por ahora solo nos interesa la función `ggplotly` que convierte cualquier gráfico estático `ggplot` en un gráfico interactivo `plotly`
+
+```{r}
+#| message: false
+#| warning: false
+#| eval: true
+#| out-width: 90%
+# install.packages("plotly") # ejecutar desde la consola
+library(plotly)
+pp1 <- penguins |> ggplot(aes(x = flipper_length_mm,
+                             y = body_mass_g,
+                             color = species)) +
+  geom_point(show.legend = F)
+ggplotly(pp1)
+```
+
+
+<!-- hay un problema, cuando se ejecuta plotly no se ejecuta dygraphs, no sé porqué -->
+
+
+
+
+
+
+
+
+  

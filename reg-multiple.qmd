@@ -1,0 +1,277 @@
+# Regresión lineal múltiple
+
+```{r setup, echo=F, eval=F}
+knitr::opts_chunk$set(comment = "")
+```
+
+## Estimación de los parámetros
+
+Recuerde que el modelo general es
+$$y_i = f(x_i) + \varepsilon_i$$
+Y lo hemos reducido al caso muy especial de regresión lineal simple
+$$y_i = \beta_0 + \beta_1 x_i + \varepsilon_i$$
+La generalización natural de este modelo es
+$$y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} +...+ \beta_p x_{ip} + \varepsilon_i$$
+que se llama modelo de regresión lineal múltiple. En este caso, tenemos $p$ variables  y $p+1$ parámetros^[algunos textos consideran $p$ como el número de parámetros]
+
+El modelo con múltiples variables se puede escribir de forma concisa usando notación matricial
+
+$$\bf{y} = \bf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}$$
+Donde
+$$\bf{y} = \begin{bmatrix}
+y_1 \\ y_2 \\ \vdots \\ y_n
+\end{bmatrix}, \hspace{10pt}
+\bf{X} = \begin{bmatrix}
+1 & x_{11} & \dots & x_{1p} \\
+1 & x_{21} & \dots & x_{2p} \\
+\vdots & \vdots & \ddots & \vdots \\
+1 & x_{n1} & \dots & x_{np} \\
+\end{bmatrix}, \hspace{10pt}
+\boldsymbol{\beta} = \begin{bmatrix}
+\beta_0 \\ \beta_1 \\ \vdots \\ \beta_p
+\end{bmatrix}, \hspace{10pt}
+\boldsymbol{\varepsilon} = \begin{bmatrix}
+\varepsilon_1 \\ \varepsilon_2 \\ \vdots \\ \varepsilon_n
+\end{bmatrix}
+$$
+Desde este punto de vista, podemos plantear la suma de residuales al cuadrado como 
+$$\mathrm{RSS} = \boldsymbol{\varepsilon}^T\boldsymbol{\varepsilon}$$
+Y la estimación se hace a través del método de mínimos cuadrados 
+$$
+\begin{equation}
+\begin{split}
+\boldsymbol{\hat{\beta}} & = \arg\min \boldsymbol{\varepsilon}^T\boldsymbol{\varepsilon} \\
+& = \arg\min \left( \bf{Y} - \bf{X} \boldsymbol{\beta} \right)^T \left( \bf{Y} - \bf{X} \boldsymbol{\beta} \right) \\
+\end{split}
+\end{equation}
+$$
+Al tomar la derivada de $\mathrm{RSS}$ con respecto a $\boldsymbol{\hat{\beta}}$ e igualar a cero, obtenemos la solución
+$$
+\boldsymbol{\hat{\beta}} = \left( \textbf{X}^T\bf{X}  \right)^{-1}\textbf{X}^T\bf{y}
+$$
+
+
+
+
+## Valor esperado y Varianza
+
+Los supuestos de homocedasticidad y no autocorrelación para los términos del error en el modelo, se pueden resumir estableciendo la matriz de varianzas y covarianzas del error como $$\mathrm{Cov} \left( \boldsymbol{\varepsilon}\right) = \sigma^2 \mathbb{I}$$
+Además, $\mathrm{E}\left( \boldsymbol{\varepsilon}\right) = \bf{0}$ y se asume que la matriz $\bf{X}$ no es estocástica.
+
+Como consecuencia  tenemos que
+
+$$\mathrm{E} \left( \bf{{y}} \right) = \mathrm{E}\left( \boldsymbol{{\bf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}}}\right) = \mathrm{E} \left( \bf{X} \boldsymbol{\beta} \right) + \mathrm{E} \left( \boldsymbol{\varepsilon} \right)= \bf{X}\boldsymbol{\beta} + \bf{0} = \bf{X}\boldsymbol{\beta}\\
+$$
+$$
+\mathrm{Cov}\left( \bf{{y}}\right) = \mathrm{Cov}\left( \boldsymbol{{\bf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}}}\right) = \bf{0} + \mathrm{Cov} \left( \boldsymbol{\varepsilon} \right)= \sigma^2\mathbb{I}\\$$
+Al aplicar propiedades del valor esperado y la varianza al vector de parámetros estimados (vector aleatorio) obtenemos
+
+$$
+\begin{equation}
+\begin{split}
+\mathrm{E} \left( \boldsymbol{\hat\beta}\right)
+& = \mathrm{E} \left( \left( \textbf{X}^T\bf{X}\right)^{-1} \textbf{X}^T\bf{y} \right) \\
+& = \left( \textbf{X}^T\bf{X}\right)^{-1} \textbf{X}^T \mathrm{E} \left( \bf{y} \right) \\
+& = \left( \textbf{X}^T \textbf{X}\right)^{-1} \textbf{X}^T \textbf{X} \boldsymbol{\beta} \\
+& = \mathbb{I}\boldsymbol{\beta} = \boldsymbol{\beta}
+\end{split}
+\end{equation}
+$$
+$$
+\begin{equation}
+\begin{split}
+\mathrm{Cov} \left( \boldsymbol{\hat\beta}\right)
+& = \mathrm{Cov} \left( \left( \textbf{X}^T\bf{X}\right)^{-1} \textbf{X}^T\bf{y} \right) \\
+& = \left( \textbf{X}^T\bf{X}\right)^{-1} \textbf{X}^T \mathrm{Cov} \left( \bf{y} \right) 
+\left( \left( \textbf{X}^T\bf{X}\right)^{-1} \textbf{X}^T \right)^T\\
+& = \left( \textbf{X}^T \textbf{X}\right)^{-1} \textbf{X}^T \left(\sigma^2 \mathbb{I}\right)
+\textbf{X} \left( \textbf{X}^T\bf{X}\right)^{-1} \\
+& = \left( \textbf{X}^T \textbf{X}\right)^{-1} \textbf{X}^T
+\textbf{X} \left( \textbf{X}^T\bf{X}\right)^{-1} \sigma^2 \\
+& = \left( \textbf{X}^T \textbf{X}\right)^{-1} \mathbb{I} \sigma^2 \\
+& = \left( \textbf{X}^T \textbf{X}\right)^{-1} \sigma^2 \\
+\end{split}
+\end{equation}
+$$
+Nota: Bajo los supuestos indicados (valor esperado cero, varianza constante y no autocorrelación), los estimadores de mínmios cuadrados son los de menor varianza entre todos los estimadores lineales insesgados (**Teorema de Gauss-Markov**)
+
+Si queremos estimar la matriz de varianzas y covarianzas, debemos estimar la varianza del modelo, lo hacemos usando el estimador de mínimos cuadrados
+
+$$\hat\sigma^2 = \frac{\boldsymbol{\varepsilon}^T \boldsymbol{\varepsilon}}{n-p-1}$$
+
+## Predicción
+
+Al igual que en modelo de regresión lineal simple, una predicción para un conjunto de datos *nuevos* de las variables independientes, se obtiene al reemplezar dichos valores en la ecuación lineal.
+
+Sea $\textbf{x}_0$ el vector que contiene los valores para los cuáles se quiere predecir la variable $y$. en notación matricial tenemos
+
+$$\hat{y} = \textbf{x}_0^T \boldsymbol{\hat \beta}$$
+siendo, $\textbf{x}_0^T = \begin{bmatrix} 1 & x_{01} & x_{02} & \dots & x_{0p} \end{bmatrix}$
+
+
+Si calculamos el valor de $\hat{y}$ para cada observación en el conjunto de datos $\bf{X}$ 
+
+$$\hat{\bf{y}} = \textbf{X}\boldsymbol{\hat \beta} = \textbf{X}\left( \textbf{X}^T \textbf{X}\right)^{-1} \textbf{X}^T \bf{y} = \textbf{H}\bf{y}$$
+La matriz $\textbf{H} = \textbf{X}\left( \textbf{X}^T \textbf{X}\right)^{-1} \textbf{X}^T$ se suele llamar matriz sombrero, ya que le "pone" un sombrero al vector $\bf{y}$
+
+Con el último resultado, salta a la vista un hecho importante, las predicciones son **combinaciones lineales** de los datos observados. El modelo de regresión lineal es un caso particular de una clase de modelos más generales que son **suavizadores lineales** (hay otros modelos diferentes a los de regresión lineal que son suavizadores lineales) 
+
+## Inferencia
+
+Si queremos ir más allá de la sola estimación de los parámetros y predicción puntual, debemos asumir una distribución para el error del modelo y obtener la distribución de los estimadores. Bajo el supuesto de normalidad, que es el más común
+
+$$\boldsymbol{\varepsilon} \sim N_n \left( \bf{0}, \sigma^2 \mathbb{I} \right) \Rightarrow 
+\textbf{y} \sim N_n \left( \bf{X}\boldsymbol{\beta}, \sigma^2 \mathbb{I} \right)
+$$
+Teniendo en cuenta que los estimadores son combinaciones lineales de $\bf{y}$, y toda combinación lineal de distribuciones normales es también una distribución normal
+
+$$\boldsymbol{\hat \beta}\sim N_{p+1} \left( \boldsymbol{\beta}, \left( \textbf{X}^T \textbf{X}\right)^{-1} \sigma^2 \right)$$
+Con esto ya podemos calcular intervalos de confianza y hacer algunas pruebas de hipótesis
+
+## Pruebas de significancia
+Cuando tenemos un modelo con múltiples variables, podemos hablar de la significancia global del modelo y de significancia individual de las variables. 
+
+La significancia global del modelo se usa para responder a la pregunta: ¿Al menos una de las variables es importante o explica en términos estadísticos a la variable $y$? Para esto, usamos una prueba de hipótesis y un estadístico F (recordar por qué una distribución F en lugar de una distribución T, es valioso pero no fundamental para este curso)
+
+$$
+\begin{equation}
+\begin{split}
+H_0 & : \beta_1 = \beta_2 =  \dots = \beta_p = 0 \\
+H_a & : \text{Al menos un beta es diferente de 0} \\ \\
+F_{cal} & = \frac{\left( \mathrm{TSS - RSS}\right)/p}{ \mathrm{RSS}/(n-p-1)}
+\end{split}
+\end{equation}
+$$
+Al hablar de significancia nos referimos a variables, pero las pruebas se hacen sobre los parámetros que acompañan dichas variables. Si un parámetro no es estadísticamente diferente de cero, entonces se puede concluir que los cambios de esa variable se ven anulados o no afectan a la variable $y$, por esa razón, el $\beta_0$ no se incluye en la prueba de significancia. 
+
+Con un poco de manipulación algebraica se puede poner el $F_{cal}$ en términos del $\mathrm{R^2}$ del modelo (compruebe) $F_{cal} = \frac{(n-p-1)\mathrm{R}^2}{p(1-\mathrm{R}^2)}$
+
+La prueba de significancia individual para las variables se plantea como 
+
+$$
+\begin{equation}
+\begin{split}
+  H_0 & : \beta_j = 0 \\
+  H_a & : \beta_j \neq 0 \\
+  T_{cal} & = \frac{\hat \beta_j}{\sqrt{\hat{\mathrm{Var}} (\hat \beta_j)}}
+\end{split}
+\end{equation}
+$$
+para algún $j=1,2,3,...,p$
+
+## Uso de `R` para los cálculos
+
+Trabajemos primero con un conjunto de datos simulados para observar algunos detalles de cálculo en el modelo de regresión lineal múltiple
+
+Consideremos el modelo lineal "real"
+
+$$y = 1 + 2x_1 + 3x_2 + 4x_3 + \varepsilon$$
+Simulemos 100 observaciones de cada variable independiente (generadas uniformemente entre 0 y 1) y un error normalmente distribuido con media de 0 y desviación estándar de 1.5
+
+```{r, message=F, warning=F}
+library(tidyverse)
+set.seed(789)
+n <- 100
+x1 <- runif(n)
+x2 <- runif(n)
+x3 <- runif(n)
+error <- rnorm(n, 0, 1.5)
+y <- 1 + 2*x1 + 3*x2 + 4*x3 + error
+datos <- tibble(var_dep = y, var1 = x1, var2 = x2, var3 = x3)
+datos
+```
+
+Ajustamos un modelo de regresión lineal usando las funciones de `R`^[como haríamos en la práctica, no es necesario usar las ecuaciones matriciales que hemos visto. Ni siquiera `R` ajusta el modelo con esas ecuaciones matriciales internamente (¿Por qué?)]
+
+```{r}
+modelo1 <- lm(formula = var_dep ~ var1 + var2 + var3, data = datos)
+summary(modelo1)
+```
+Al aplicar la función `lm` se guardan varios resultados, podemos acceder por el nombre de cada uno en el objeto `modelo1` o en el objeto `summary(modelo1)`
+```{r}
+names(modelo1)
+names(summary(modelo1))
+```
+Podemos imprimir los coeficientes estimados o el $\mathrm{R}^2$
+```{r}
+modelo1$coefficients
+summary(modelo1)$r.squared
+```
+
+La matriz de varianzas y covarianzas de los estimadores se obtiene con 
+
+```{r}
+vcov(modelo1)
+```
+
+Es buen ejercicio intentar obtener estos resultados a partir de las ecuaciones matriciales del modelo
+
+```{r}
+# matriz X
+mx <- cbind(rep(1,n), x1, x2, x3)
+beta_est <- solve(t(mx)%*%mx)%*%t(mx)%*%y
+H <- mx%*%solve(t(mx)%*%mx)%*%t(mx)
+beta_est
+```
+Predicciones, residuales, matriz de varianzas y covarianzas
+
+```{r}
+y_est <- H%*%y
+res <- y - y_est
+sigma2_est <- sum(res*res)/(n-3-1)
+cov_beta <- sigma2_est*(solve(t(mx)%*%mx))
+summary(res)
+sqrt(sigma2_est) # Residual standard error
+cov_beta
+```
+
+El $\mathrm{R^2}$ del modelo es por definición, $\mathrm{R^2} = 1- \frac{\mathrm{SSE}}{\mathrm{SST}}$. El cálculo directo en `R` sería
+```{r}
+r2 <- 1 - sum(res*res)/sum((y-mean(y))^2)
+r2
+```
+
+Calculemos el error estándar, valor de la distribución $t$ y valor $p$ para alguno de los $\hat\beta_i$
+```{r}
+# para el beta_1 que acompaña a la variable 1
+s.eb1 <- sqrt(cov_beta[2,2]) # ¿por qué se elige el segundo valor en la diagonal?
+tb1 <- beta_est[2]/s.eb1
+p.b1 <- 2*pt(q = tb1, df = n-3-1, lower.tail = F) # ¿por qué se multiplica por 2?
+s.eb1; tb1; p.b1 
+```
+
+El valor de la distribución F para la significancia global es 
+```{r}
+f_cal <- (n-3-1)*r2/(3*(1-r2))
+f_cal
+```
+El valor p es 
+```{r}
+# ¿Por qué en este caso no se multiplica por 2?
+p.sig.global <- pf(q = f_cal, df1 = 3, df2 = n-3-1, lower.tail = FALSE)
+p.sig.global
+```
+
+Compare todos los resultados con los entregados de forma directa por la función `lm`
+
+Algo que se debe señalar, es el valor relativamente bajo del $\mathrm{R}^2$. Un $\mathrm{R}^2$ bajo no implica necesariamente que el modelo sea errado. En este caso, estamos ajustando sobre la verdadera forma del modelo "real" por lo que el modelo planteado no podría estar equivocado. Simulemos otro conjunto de datos en el que el error tenga una menor varianza o desviación estándar.  
+
+
+```{r}
+x1 <- runif(n)
+x2 <- runif(n)
+x3 <- runif(n)
+error <- rnorm(n, 0, 0.5)
+y <- 1 + 2*x1 + 3*x2 + 4*x3 + error
+datos <- tibble(var_dep = y, var1 = x1, var2 = x2, var3 = x3)
+
+modelo2 <- lm(formula = var_dep ~ var1 + var2 + var3, data = datos)
+```
+
+Compare el valor del $\mathrm R^2$ para cada caso. ¿Qué puede concluir?
+
+```{r}
+summary(modelo2)$r.squared
+summary(modelo1)$r.squared
+```
+

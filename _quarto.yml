@@ -1,0 +1,48 @@
+project:
+  type: book
+  output-dir: docs
+  preview: 
+    browser: true
+    
+book:
+  title: "Ciencia de Datos"
+  author: "Ader Villar"
+  google-analytics: "G-JBLWWCLEGX"
+  #date: today
+  chapters:
+    - index.qmd
+    - part: "Análisis Exploratorio"
+      chapters:
+      - r-intro.qmd
+      # - r-inferencia.qmd # uso de r para inferencia clásica
+      - uso-ggplot2.qmd
+      - uso-dplyr.qmd
+      # - prueba.qmd
+    - part: "Inferencia clásica"
+      chapters: 
+        - r-prob.qmd
+        - r-estimacion.qmd
+        - r-hipotesis.qmd
+    - part: "Regresión lineal"
+      chapters:
+        - reg-simple.qmd
+        - reg-multiple.qmd
+    - references.qmd
+
+bibliography: refs/references.bib
+lang: es
+author-title: Profesor
+reference-location: margin
+# df-print: default
+
+format:
+  html:
+    theme: default
+    css: styles/global.css
+    class-output: hscroll
+    mermaid: 
+      theme: default
+
+execute: 
+  cache: true
+  freeze: true

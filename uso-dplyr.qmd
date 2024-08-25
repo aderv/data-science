@@ -1,0 +1,217 @@
+# Uso de `dplyr`
+
+En el capítulo anterior trabajamos las opciones básicas de `ggplot` para construir gráficas y explorar  los datos.^[En realidad, nos preocupamos más del cómo hacer las gráficas que en el por qué y para qué, pero al final de este capítulo estaremos en capacidad de orientar nuestras habilidades para hacer un análisis apropiado de datos] Esta exploración requiere de unos datos organizados y en este curso trabajaremos con bases de datos estructuradas en formato _tidy_, donde cada columna es una variable y cada fila es una observación. 
+
+<!-- colocar ejemplos de datos en formato tidy y no tidy -->
+
+Este capítulo lo vamos a dedicar a explorar las opciones y funcionalidades de `dplyr`, un paquete que hace parte del _tidyverse_ y que nos va a ayudar a realizar tareas como: transformar variables, reordenar, filtrar, agrupar, crear nuevas variables, renombrar, hacer resúmenes, etc. Al igual que en la construcción de gráficas, hay varias formas de llevar a cabo este tipo de tareas en `R` pero seguiremos fieles a la filosofía de elegir una de esas herramientas y procurar adquirir rápidamente la fluidez necesaria para aplicarla en el análisis de datos.
+
+Las operaciones de `dplyr` las podemos clasificar según la forma en que se aplican en la base de datos, distinguiremos los siguientes casos: 
+
+1. Operaciones por filas
+2. Operaciones por columnas
+3. Operaciones por grupos
+
+De forma similar a `ggplot`, `dplyr` funciona en forma gramática, lo que significa que escribir y leer el código es más intuitivo, las operaciones se interpretan de izquierda a derecha en lugar de hacerlo de forma anidada en funciones, así que haremos uso extensivo del operador _pipe_. A diferencia de `ggplot`, donde solo se usaba este operador para aplicar la función `ggplot` a una base de datos y luego se agregaban capas con el signo {{< kbd + >}}, en `dplyr` solo usaremos el operador _pipe_. `dplyr` opera sobre bases de datos y devuelve como resultado, bases de datos. 
+
+Usaremos la base de datos `diamonds`, instalada con `ggplot2`, que contiene 53.940 observaciones y 10 variables. Como siempre, lo mínimo es conocer las variables y unidades en el conjunto de datos, podemos ejecutar `?diamonds` o buscar en internet la información necesaria
+
+```{r}
+#| warning: false
+#| message: false
+library(tidyverse)
+diamonds
+glimpse(diamonds) # ¿cuál es la diferencia?
+```
+
+Realice algunas gráficas para explorar relaciones básicas entre algunas de las variables
+
+```{r}
+#| message: false
+diamonds |> ggplot(aes(x = carat, y = price, color = cut)) +
+  geom_point() +
+  facet_wrap(facets = ~cut)
+
+diamonds |> ggplot(aes(x = cut, y = price, fill = cut)) +
+  geom_boxplot()
+
+diamonds |> ggplot(aes(x = color, y = price, fill = color)) +
+  geom_boxplot()
+
+library(ggridges)
+diamonds |> ggplot(aes(x = price, y = clarity, fill = clarity)) +
+  geom_density_ridges2()
+```
+
+
+
+## Operaciones sobre filas
+
+Nada que agregar, son operaciones o funciones que modifican de alguna forma las filas u observaciones en la base de datos. Dentro de estas funciones tenemos operaciones como filtrar y ordenar. Las funciones principales en este grupo son: 
+
++ `arrange()`: Ordena las filas de forma ascendente o descendente para valores de una o más variables
++ `filter()`: Selecciona o filtra los datos que cumplen una o más condiciones
++ `distinct()`: Selecciona valores únicos
+
+Podemos ordenar las filas en `diamonds` en orden ascendente o descendente según el precio, o cualquier otra variable numérica
+
+```{r}
+diamonds |> arrange(price)
+diamonds |> arrange(desc(price))
+```
+Si queremos ver los valores únicos de las variables que son categóricas^[No tiene mucho sentido hacerlo para variables continuas] (_cut_, _color_ y _clarity_) podemos usar `distinct(cat1)` o combinaciones únicas de varias de ellas con `distinct(fact1, fact2)`
+
+```{r}
+diamonds |> distinct(cut)
+diamonds |> distinct(color, clarity) |> arrange(color, desc(clarity))
+```
+Note que en el último código, luego de captar las combinaciones únicas de _color_ y _clarity_, se ordenan los datos de forma ascendente para _color_ y para valores repetidos de _color_ se ordenan de forma descendente para _clarity_.
+
+La base de datos `diamonds` es un `tibble`. Un `tibble` es un _data.frame_ pero con algunas características especiales. Su principal diferencia con un _data.frame_ es que al momento de imprimir la base de datos, no se imprimen todos los datos sino solo las primeras 10 observaciones, algo bastante bueno si se está trabajando con bases de datos con muchas observaciones. Si deseamos imprimir todas las observaciones o una cantidad determinada de ellas, debemos solicitarlo^[Omitimos la salida para facilitar la lectura del documento]
+
+```{r}
+#| eval: false
+print(diamonds, n = 20)
+diamonds |> distinct(color, clarity) |> 
+  arrange(color, desc(clarity)) |> print(n = 56) # todas (mejórelo)
+```
+
+Siempre que aplicamos `distinct()`, la base de datos resultante, no tendrá todas las variables originales, solo mantendrá aquellas involucradas en la operación (¿por qué eso puede ser deseable?)
+
+Hay una forma de mantener todas las variables, con el argumento y valor `.keep_all = TRUE` (¿por qué es necesario poner un punto al inicio?). En este caso, se mantendrá la primera coincidencia para cada combinaicón única encontrada.
+
+```{r}
+diamonds |> distinct(clarity, color, .keep_all = TRUE)
+```
+
+
+`filter()` es quizás, la función más usada en filas. Nos permite seleccionar un subconjunto de los datos que cumplen uno o más criterios. La función requiere una base de datos como primer argumento y luego una serie de condiciones sobre los valores de una o más variables. Estas condiciones deben devolver un vector de valores lógicos que indicarán las filas a seleccionar.
+
+Es buen momento para recordar algunas operaciones con valores lógicos en `R`. Los valores lógicos son `TRUE` y `FALSE` o `T` y `F`. Podemos obtener estos valores al comparar con: `>`, `>=`, `<`, `<=`, `==`, `!=`
+
+```{r}
+2 == 5 # FALSE
+3 >= 0 # TRUE
+2 < -3 # FALSE
+3 != 6 # TRUE
+```
+
+El operador "o" es `|`, el operador "y" es `&`, el
+
+```{r}
+(2 > 0) & (10 > 20) # TRUE y FALSE es FALSE
+(2 > 0) | (10 > 20) # TRUE o FALSE es TRUE
+```
+
+Claramente, estas operaciones se pueden aplicar sobre vectores
+
+```{r}
+c(2,6,9,3) >= 5
+(c(7, 2, 9, 3, 1) < 4) & (c(1, 2, 8, 2, 0))
+```
+
+Como se mencionó, el primer argumento en `dplyr` es una base de datos, y podemos pensar lo siguiente como un vector de valores lógicos donde se debe tener un valor de `TRUE` en cada posición que se quiera filtrar o extraer. Para entender con claridad el funcionamiento de `filter()`, vamos a crear una pequeña base de datos
+
+```{r}
+set.seed(123)
+data_prueba <- tibble(
+  var1 = sample(c("a", "b", "c"), 10, replace = T),
+  var2 = runif(10, 3, 7),
+  var3 = runif(10)
+)
+data_prueba
+```
+Supongamos que, de estas 10 filas, queremos seleccionar o filtrar la fila 1 y 4. 
+```{r}
+data_prueba |> filter(c(T,F,F,T,F,F,F,F,F,F))
+```
+Esta es la forma en que opera `filter()`, aunque el vector de valores lógicos será resultado de algunas condiciones sobre los valores de las variables. Supongamos que queremos filtrar aquellos datos o filas en los que el valor de `var3` es mayor a 0.7, lo que debemos escribir es
+
+```{r}
+data_prueba |> filter(var3 > 0.7)
+```
+Podemos usar tantas combinaciones o condiciones como se requieran sobre las variables. En el siguiente ejemplo, filtramos los datos para los que var1 tiene el valor "c" __y__ var3 es menor que 0.65
+
+```{r}
+data_prueba |> filter(var1 == "c" & var3 < 0.65)
+```
+Volvamos a trabajar con `diamonds`, para recordar sus variables volvamos a imprimir los nombres de las columnas
+
+```{r}
+glimpse(diamonds)
+```
+Queremos filtrar los datos para los diamantes que tienen las mejores cualidades en términos de _cut_ ("Ideal"), _color_ ("D") y _clarity_ ("IF")
+
+```{r}
+diamonds |> 
+  filter(cut == "Ideal" & color == "D" & clarity == "IF")
+```
+Seleccionamos los diamantes más baratos y más caros (1%), y los ordenamos de forma descendente según su precio
+
+```{r}
+x_inf <- quantile(diamonds$price, probs = 0.01)
+x_sup <- quantile(diamonds$price, probs = 0.99)
+diamonds |> 
+  filter(price < x_inf | price > x_sup) |> 
+  arrange(desc(price))
+```
+Al pasar las condiciones con las que queremos filtrar los datos, el operador `&` puede ser reemplazado por una `,` o dicho de otra forma, las condiciones separadas por `,` se interpretarán como `&`. 
+
+Si queremos seleccionar los diamantes que tienen el atributo _clarity_ más pobre (los 3 peores): "I1", "SI2", "SI1"
+
+```{r}
+diamonds |> 
+  filter(clarity == "I1" | clarity == "SI2" | clarity == "SI1")
+```
+Cuando estamos evaluando la condición de que una variable tome alguno entre 2 o más valores, es más sencillo usar `var %in% c(valor1, ..., valorn)` en lugar de `var == valor1 | var == "valor2" | ... var == "valorn"`. El siguiente código hace la misma operación que el anterior
+
+```{r}
+diamonds |> filter(clarity %in% c("I1", "SI2", "SI1", "VS2"))
+```
+
+## Operaciones sobre columnas
+
+Para agregar nuevas variables a la base de datos se usa `mutate()`, estas pueden ser variables externas o creadas en el momento o resultado de cálculo de variables dentro de la base de datos misma^[esto es algo bastante bueno, normalmente no podríamos hacerlo ya que las variables en la base de datos no están guardadas directamente en el entorno de variables de la sesión de trabajo]
+
+```{r}
+var_inventada <- sample(c("c1", "c2", "c3"), size = nrow(diamonds), replace = T)
+diamonds |> 
+  mutate(
+    var_nueva = var_inventada, # una variable externa
+    var_nueva2 = runif(nrow(diamonds)), # una creada en el momento
+    var_nueva3 = x + y + y # una con las variables existentes en la base de datos
+  ) |> glimpse()
+```
+Por defecto, las variables creadas serán agregadas "a la derecha" de la base de datos. Esto se puede controlar con:
+
++ `.before`: El valor debe ser un número entero o nombre de variable, las nuevas variables se colocarán antes de ese número de columna o variable
++ `.after`: `r emoji::emoji("brain")`
+
+También es posible especificar las variables que se quieren mantener con el argumento `.keep`, las opciones son: `all` (por defecto), `used` (solo las usadas), `unused`, `none`
+
+```{r}
+diamonds |> 
+  mutate(
+    var_nueva = var_inventada,
+    var_nueva2 = runif(nrow(diamonds)),
+    var_nueva3 = x + y + z,
+    .keep = "used",
+    .after = x
+  )
+```
+
+Es posible renombrar las variables con `rename()`
+
+```{r}
+diamonds |> 
+  rename(
+    precio = price,
+    peso = carat,
+    corte = cut, 
+    claridad = clarity
+  )
+```
+
+
+Podemos seleccionar un subconjunto de variables con `select()`
+
