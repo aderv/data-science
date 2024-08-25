@@ -1,19 +1,31 @@
-h1{color: #29849a;}
-h2{color: #9a2984;}
-
-#title-block-header{
-  color: #849a29;
-  background-image: url("upb-logo.png");
-  background-repeat: no-repeat;
-  background-position: right;
-  background-size: 200px;
-}
 main{
   text-align: justify;
 }
-figcaption{text-align: center}
+
+#eval colgroup :first-child{
+    width: 15% !important;
+}
+h1{color: #29849a;}
+h2{color: #9a2984;}
+#title-block-header{
+    color: #849a29;
+    /*background-image: url(ds-plot.svg);
+    background-size: 130px;
+    background-position: right;
+    background-repeat: no-repeat;*/       
+}
+figcaption{
+    text-align: center;
+}
+/* Para cambiar algunas variables en el estilo de los diagramas con mermaid */
+/*:root {
+    --mermaid-node-bg-color: #83c58f;
+  }*/
 .div-float{
-  float: right;
-  width: 50%;
-  margin-left: 1em;
+    /* float: right; */
+    width: 100%;
+    /* margin-left: 1em; */
+}
+abbr{
+    text-decoration: none;
 }

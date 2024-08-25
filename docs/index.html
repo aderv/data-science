@@ -279,7 +279,7 @@ window.Quarto = {
   <ul>
   <li><a href="#presentación" id="toc-presentación" class="nav-link active" data-scroll-target="#presentación">Presentación</a>
   <ul class="collapse">
-  <li><a href="#descripción-del-curso" id="toc-descripción-del-curso" class="nav-link" data-scroll-target="#descripción-del-curso">Descripción del curso</a></li>
+  <li><a href="#presentación-del-curso" id="toc-presentación-del-curso" class="nav-link" data-scroll-target="#presentación-del-curso">Presentación del curso</a></li>
   <li><a href="#recursos-bibliógraficos" id="toc-recursos-bibliógraficos" class="nav-link" data-scroll-target="#recursos-bibliógraficos">Recursos bibliógraficos</a></li>
   <li><a href="#saberes-previos" id="toc-saberes-previos" class="nav-link" data-scroll-target="#saberes-previos">Saberes previos</a></li>
   <li><a href="#objetivos" id="toc-objetivos" class="nav-link" data-scroll-target="#objetivos">Objetivos</a></li>
@@ -321,21 +321,24 @@ window.Quarto = {
 
 <section id="presentación" class="level1 unnumbered page-columns page-full">
 <h1 class="unnumbered">Presentación</h1>
-<section id="descripción-del-curso" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="descripción-del-curso">Descripción del curso</h2>
+<section id="presentación-del-curso" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="presentación-del-curso">Presentación del curso</h2>
 <p>El curso de ciencia de datos presenta una introducción a la teoría e implementación de métodos estadísticos para el análisis de datos. Se hace énfasis en los modelos predictivos que buscan aproximar una variable de interés <span class="math inline">\(Y\)</span> (métodos supervisados) en términos de un conjunto de variables predictoras <span class="math inline">\((\textbf{X})\)</span>, usando una función <strong>f</strong> que debe ser <em>aprendida</em> a través de un conjunto de datos <span class="math inline">\((x_i, y_i)\ i=1,2,...,n\)</span>.</p>
 <div class="div-float">
 <div id="fig-ds-plot" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-ds-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="images/ds-plot.svg" class="img-fluid figure-img">
+<img src="ds-plot.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ds-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;1: Habilidades necesarias para ciencia de datos
+Figura&nbsp;1: Habilidades necesarias para la Ciencia de Datos
 </figcaption>
 </figure>
 </div>
 </div>
+<!-- :::{.div-float} -->
+<!-- ![Cielo nocturno](fig1.jpg) -->
+<!-- ::: -->
 <p>Se estudian las bases conceptuales y matemáticas de los modelos y se evalúan a partir de sus propiedades estadísticas y capacidad de predecir la variable <span class="math inline">\(Y\)</span>. Se estudia también la parte práctica de los temas mediante la aplicación y validación de los métodos en bases de datos sintéticas y reales, usando el lenguaje <code>R</code> como software estadístico y de programación.</p>
 <p>La ciencia de datos requiere de disciplinas y habilidades diversas, pero puede resumirse en 3 grandes aspectos (<a href="#fig-ds-plot" class="quarto-xref">Figura&nbsp;<span>1</span></a>):</p>
 <ul>
@@ -345,7 +348,7 @@ Figura&nbsp;1: Habilidades necesarias para ciencia de datos
 </ul>
 <p>El objetivo principal de este curso es desarrollar de manera formal, pero sin exceso en la teoría matemática, los modelos estadísticos en ciencia de datos. Las habilidades de programación y conocimientos básicos en los campos de aplicación se desarrollarán en la medida de lo necesario.</p>
 <p>Resolver problemas de ciencia de datos no es un proceso lineal, pero sí se puede enmarcar en una serie de etapas que ayudan a desarrollar de manera consistente el trabajo o flujo de trabajo.</p>
-<p>En la <a href="#fig-workflow" class="quarto-xref">Figura&nbsp;<span>2</span></a> se muestra un esquema de este proceso sistemático. La primera etapa se conoce como <strong>disputa de datos</strong> (<em>data wrangling</em>)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> y consiste en la obtención y <em>puesta a punto</em> de los datos que se van a utilizar. Esta fase requiere <strong>importar</strong>, <strong>ordenar</strong> y <strong>transformar</strong> los datos, y necesita habilidades específicas en manejo de bases de datos. Las personas con alta especialización en esta área se conocen somo Ingenieros de Datos (<em>Data Engineers</em>).</p>
+<p>En la <a href="uso-ggplot2.html#fig-workflow" class="quarto-xref">Figura&nbsp;<span>2.1</span></a> se muestra un esquema de este proceso sistemático. La primera etapa se conoce como <strong>disputa de datos</strong> (<em>data wrangling</em>)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> y consiste en la obtención y <em>puesta a punto</em> de los datos que se van a utilizar. Esta fase requiere <strong>importar</strong>, <strong>ordenar</strong> y <strong>transformar</strong> los datos, y necesita habilidades específicas en manejo de bases de datos. Las personas con alta especialización en esta área se conocen somo Ingenieros de Datos (<em>Data Engineers</em>).</p>
 <div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;Algunos autores lo definen como una <em>pelea</em> con los datos</p></div></div><div id="fig-workflow" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-workflow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -391,18 +394,18 @@ Figura&nbsp;2: Flujo de trabajo en ciencia de datos
 </figure>
 </div>
 <p>La segunda fase es el <strong>análisis exploratorio de datos</strong> (<em>Exploratory Data Analysis (EDA)</em>) y consiste principalmente en la visualización a través de tablas, resúmenes y gráficas de la información que se tiene en las bases de datos que han sido previamente organizadas. Esta fase puede requerir iterar entre los procesos de transformación y visualización. No todos los problemas de ciencia de datos requieren de técnicas de <em>machine learning</em> y muchos de estos problemas pueden resolverse en esta fase. Las personas que se especializan en esta área se conocen como Analistas de Datos (<em>Data Analysts</em>).</p>
-<p>La tercera fase (y la que más desarrollaremos en este curso) es la <strong>Modelación</strong> y se trata de aplicar modelos estadísticos y de <em>machine learning</em> para obtener ideas e información a partir de los datos. Este proceso también es iterativo y puede requerir aplicar varios tipos de modelos, evaluarlos y compararlos para obtener buenos resultados. Los especialistas en esta área son los Científicos de Datos (<em>Data Scientists</em>).</p>
+<p>La tercera fase es la <strong>Modelación</strong> y se trata de aplicar modelos estadísticos y de <em>machine learning</em> para obtener ideas e información a partir de los datos. Este proceso también es iterativo y puede requerir aplicar varios tipos de modelos, evaluarlos y compararlos para obtener buenos resultados. Los especialistas en esta área son los Científicos de Datos (<em>Data Scientists</em>).</p>
 <p>La última fase del proceso es la <strong>comunicación</strong> de los resultados y hallazgos. Es importante aprender a presentar los resultados y veremos algunas herramientas básicas para lograrlo.</p>
 </section>
 <section id="recursos-bibliógraficos" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="recursos-bibliógraficos">Recursos bibliógraficos</h2>
-<p>Hay muchos (muchísimos) recursos disponibles para apoyar este curso. Es fundamental usar lenguajes de programación y en este caso usaremos <code>R</code>, cualquier curso <em>online</em>, libro o tutorial puede servir para aprender los conceptos básicos, el estudiante es libre de escoger y aprender (si aún no sabe) <code>R</code> de una fuente de su preferencia.</p>
+<p>Hay muchos recursos disponibles para apoyar este curso. Es fundamental usar lenguajes de programación y en este caso usaremos <code>R</code>, cualquier curso <em>online</em>, libro o tutorial puede servir para aprender los conceptos básicos, el estudiante es libre de escoger y aprender (si aún no sabe) <code>R</code> de una fuente de su preferencia.</p>
 <p>El libro principal para los conceptos estadísticos será <span class="citation" data-cites="james2021">James et&nbsp;al. (<a href="references.html#ref-james2021" role="doc-biblioref">2021</a>)</span>, ya que maneja un buen balance entre aplicaciones y teoría para el bagaje matemático que se espera de los estudiantes. Este libro también trae código y aplicaciones en <code>R</code>, pero hay mejores fuentes en este aspecto.</p>
-<p>Otros 2 libros interesantes para la parte conceptual y teórica son <span class="citation" data-cites="irizarry huang_data">(<a href="references.html#ref-irizarry" role="doc-biblioref">Irizarry, s.&nbsp;f.</a>; <a href="references.html#ref-huang_data" role="doc-biblioref">Huang y Deng, s.&nbsp;f.</a>)</span>, un poco menos desarrollados en lo conceptual con respecto a <span class="citation" data-cites="james2021">(<a href="references.html#ref-james2021" role="doc-biblioref">James et&nbsp;al. 2021</a>)</span> pero a cambio traen más y mejor código para aplicaciones usando <code>R</code>.</p>
+<p>Otros 2 libros interesantes para la parte conceptual y teórica son <span class="citation" data-cites="irizarry1 irizarry2 huang_data">(<a href="references.html#ref-irizarry1" role="doc-biblioref"><strong>irizarry1?</strong></a>; <a href="references.html#ref-irizarry2" role="doc-biblioref"><strong>irizarry2?</strong></a>; <a href="references.html#ref-huang_data" role="doc-biblioref">Huang y Deng, s.&nbsp;f.</a>)</span>, que además ofrecen código desarrollado para aplicaciones usando <code>R</code>.</p>
 <p>El libro de <span class="citation" data-cites="wickham">(<a href="references.html#ref-wickham" role="doc-biblioref">Wickham, Çetinkaya-Rundel, y Grolemund, s.&nbsp;f.</a>)</span> es excelente para aprender a hacer ciencia de datos en <code>R</code>, sobre todo en la parte de análisis exploratorio de datos, tiene muchos ejemplos y código muy bien escrito. Su desventaja<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> es la falta de modelos estadísticos.</p>
 <div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;Desventaja en el sentido de que el libro no está pensado para hacer modelación por lo que tendremos que usar otras fuentes para esta parte</p></div></div><p>Un libro que requiere algo más de madurez matemática que <span class="citation" data-cites="james2021">(<a href="references.html#ref-james2021" role="doc-biblioref">James et&nbsp;al. 2021</a>)</span> es <span class="citation" data-cites="hastie2009">(<a href="references.html#ref-hastie2009" role="doc-biblioref">Hastie, Tibshirani, y Friedman 2009</a>)</span>, aunque no se usará como referencia principal, es útil para profundizar en algunos temas importantes. De igual manera, se pueden consultar las notas disponibles en línea de 2 cursos de estadística no paramétrica <span class="citation" data-cites="garcia_notes">(<a href="references.html#ref-garcia_notes" role="doc-biblioref">García-Portugués, s.&nbsp;f.a</a>)</span> y modelos predictivos <span class="citation" data-cites="garcia_notes1">(<a href="references.html#ref-garcia_notes1" role="doc-biblioref">García-Portugués, s.&nbsp;f.b</a>)</span>.</p>
 <p>Los libros <span class="citation" data-cites="alexander2023 healy2018 kabacoff">(<a href="references.html#ref-alexander2023" role="doc-biblioref">Alexander 2023</a>; <a href="references.html#ref-healy2018" role="doc-biblioref">K. Healy 2018</a>; <a href="references.html#ref-kabacoff" role="doc-biblioref">Kabacoff, s.&nbsp;f.</a>)</span> son excelentes referencias para profundizar en aspectos de visualización de datos usando <code>R</code>. También se pueden encontrar toda una serie de recursos valiosos en la web, como <span class="citation" data-cites="emaasit healy holtz">(<a href="references.html#ref-emaasit" role="doc-biblioref">Emaasit, s.&nbsp;f.</a>; <a href="references.html#ref-healy" role="doc-biblioref">C. Healy y Holtz, s.&nbsp;f.</a>; <a href="references.html#ref-holtz" role="doc-biblioref">Holtz, s.&nbsp;f.</a>)</span>.</p>
-<p>Los libros <span class="citation" data-cites="james2021 hastie2009">(<a href="references.html#ref-james2021" role="doc-biblioref">James et&nbsp;al. 2021</a>; <a href="references.html#ref-hastie2009" role="doc-biblioref">Hastie, Tibshirani, y Friedman 2009</a>)</span> pueden obtenerse de las bases de datos de la universidad. Los libros <span class="citation" data-cites="irizarry huang_data wickham garcia_notes garcia_notes1 alexander2023 healy2018 kabacoff">(<a href="references.html#ref-irizarry" role="doc-biblioref">Irizarry, s.&nbsp;f.</a>; <a href="references.html#ref-huang_data" role="doc-biblioref">Huang y Deng, s.&nbsp;f.</a>; <a href="references.html#ref-wickham" role="doc-biblioref">Wickham, Çetinkaya-Rundel, y Grolemund, s.&nbsp;f.</a>; <a href="references.html#ref-garcia_notes" role="doc-biblioref">García-Portugués, s.&nbsp;f.a</a>, <a href="references.html#ref-garcia_notes1" role="doc-biblioref">s.&nbsp;f.b</a>; <a href="references.html#ref-alexander2023" role="doc-biblioref">Alexander 2023</a>; <a href="references.html#ref-healy2018" role="doc-biblioref">K. Healy 2018</a>; <a href="references.html#ref-kabacoff" role="doc-biblioref">Kabacoff, s.&nbsp;f.</a>)</span> están disponibles en la web y son de libre acceso.</p>
+<p>Los libros <span class="citation" data-cites="james2021 hastie2009">(<a href="references.html#ref-james2021" role="doc-biblioref">James et&nbsp;al. 2021</a>; <a href="references.html#ref-hastie2009" role="doc-biblioref">Hastie, Tibshirani, y Friedman 2009</a>)</span> pueden obtenerse de las bases de datos de la universidad. Los libros <span class="citation" data-cites="irizarry1 irizarry2 huang_data wickham garcia_notes garcia_notes1 alexander2023 healy2018 kabacoff">(<a href="references.html#ref-irizarry1" role="doc-biblioref"><strong>irizarry1?</strong></a>; <a href="references.html#ref-irizarry2" role="doc-biblioref"><strong>irizarry2?</strong></a>; <a href="references.html#ref-huang_data" role="doc-biblioref">Huang y Deng, s.&nbsp;f.</a>; <a href="references.html#ref-wickham" role="doc-biblioref">Wickham, Çetinkaya-Rundel, y Grolemund, s.&nbsp;f.</a>; <a href="references.html#ref-garcia_notes" role="doc-biblioref">García-Portugués, s.&nbsp;f.a</a>, <a href="references.html#ref-garcia_notes1" role="doc-biblioref">s.&nbsp;f.b</a>; <a href="references.html#ref-alexander2023" role="doc-biblioref">Alexander 2023</a>; <a href="references.html#ref-healy2018" role="doc-biblioref">K. Healy 2018</a>; <a href="references.html#ref-kabacoff" role="doc-biblioref">Kabacoff, s.&nbsp;f.</a>)</span> están disponibles en la web y son de libre acceso.</p>
 </section>
 <section id="saberes-previos" class="level2">
 <h2 class="anchored" data-anchor-id="saberes-previos">Saberes previos</h2>
@@ -421,7 +424,7 @@ Figura&nbsp;2: Flujo de trabajo en ciencia de datos
 </section>
 <section id="metodología" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="metodología">Metodología</h2>
-<p>El contenido del curso será presentado en sesiones presenciales los días martes a las 8:00 am y miércoles a las 4:00 pm. Durante las clases se irán desarrollando de manera simultánea conceptos y código en <code>R</code>, por lo que es necesario estar en salas de informática.</p>
+<p>El contenido del curso será presentado en 2 sesiones presenciales por semana. Durante las clases se irán desarrollando de manera simultánea conceptos y código en <code>R</code>, por lo que es necesario estar en salas de informática.</p>
 <p>El estudiante es responsable de trabajar semanalmente en el curso para afianzar los temas dados. se realizarán exámenes cortos<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> periódicamente para evaluar la evolución de cada estudiante en la asimilación de los temas. Se dejarán talleres/tareas para estimular la investigación y profundización de los temas vistos durante las clases.</p>
 <div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;No es necesario que estas evaluaciones rápidas o quices sean programadas o avisadas con anticipación, pueden realizarse en cualquier clase y en cualquier momento de la clase. Si <span class="math inline">\(p_k\)</span> es la probabilidad de haya quiz en la k-ésima clase, entonces <span class="math inline">\(p_k&gt;0 \ \forall k\)</span></p></div></div></section>
 <section id="plan-de-trabajo-por-semana" class="level2">
@@ -439,83 +442,83 @@ Figura&nbsp;2: Flujo de trabajo en ciencia de datos
 <tbody>
 <tr class="odd">
 <td style="text-align: right;">1</td>
-<td style="text-align: left;">julio 17</td>
-<td style="text-align: left;">Introducción al curso. Fundamentos de <code>R</code> para el análisis de datos</td>
+<td style="text-align: left;">julio 15</td>
+<td style="text-align: left;">Introducción al curso. Análisis exploratorio, parte I</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">2</td>
-<td style="text-align: left;">julio 24</td>
-<td style="text-align: left;">Análisis exploratorio, parte I</td>
+<td style="text-align: left;">julio 22</td>
+<td style="text-align: left;">Análisis exploratorio, parte II</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">3</td>
-<td style="text-align: left;">julio 31</td>
-<td style="text-align: left;">Análisis exploratorio, parte II</td>
+<td style="text-align: left;">julio 29</td>
+<td style="text-align: left;">Manejo de bases de datos. Estadística descriptiva y probabilidad</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">4</td>
-<td style="text-align: left;">agosto 07</td>
-<td style="text-align: left;">Función de pérdida. Medidas de la calidad de un modelo. Sesgo y varianza</td>
+<td style="text-align: left;">agosto 05</td>
+<td style="text-align: left;">Modelos estadísticos, función de pérdida. Medidas de la calidad de un modelo. Sesgo y varianza. Regresión lineal</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">5</td>
-<td style="text-align: left;">agosto 14</td>
-<td style="text-align: left;">Regresión lineal. Parte I. <strong>Examen 1</strong></td>
+<td style="text-align: left;">agosto 12</td>
+<td style="text-align: left;">Modelos lineales de clasificación. Análisis discriminante lineal. <strong>Examen 1</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">6</td>
-<td style="text-align: left;">agosto 21</td>
-<td style="text-align: left;">Regresión lineal. Parte II</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">7</td>
-<td style="text-align: left;">agosto 28</td>
-<td style="text-align: left;">Modelos lineales de clasificación. Análisis discriminante lineal</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">8</td>
-<td style="text-align: left;">septiembre 04</td>
+<td style="text-align: left;">agosto 19</td>
 <td style="text-align: left;">Regresión logística</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">9</td>
-<td style="text-align: left;">septiembre 11</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: left;">agosto 26</td>
 <td style="text-align: left;">Validación cruzada (CV)</td>
 </tr>
 <tr class="even">
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">septiembre 02</td>
+<td style="text-align: left;">Introducción a modelos no lineales. Regresión polinómica y en bases funcionales. Splines, Smoothing splines</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">septiembre 09</td>
+<td style="text-align: left;">Métodos basados en árboles, parte I. <strong>Examen 2</strong></td>
+</tr>
+<tr class="even">
 <td style="text-align: right;">10</td>
-<td style="text-align: left;">septiembre 18</td>
-<td style="text-align: left;">Métodos de regularización. Ridge y Lasso. <strong>Examen 2</strong></td>
+<td style="text-align: left;">septiembre 16</td>
+<td style="text-align: left;">Métodos basados en árboles, parte II</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">11</td>
-<td style="text-align: left;">septiembre 25</td>
-<td style="text-align: left;">Reducción de la dimensión. Componentes principales</td>
+<td style="text-align: left;">septiembre 23</td>
+<td style="text-align: left;">Métodos basados en árboles, parte III</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">12</td>
-<td style="text-align: left;">octubre 02</td>
-<td style="text-align: left;">Modelos no lineales de regresión. Regresión polinómica y en bases funcionales</td>
+<td style="text-align: left;">septiembre 30</td>
+<td style="text-align: left;">Métodos basados en árboles, parte IV</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">13</td>
-<td style="text-align: left;">octubre 09</td>
-<td style="text-align: left;">Splines, Smoothing splines</td>
+<td style="text-align: left;">octubre 07</td>
+<td style="text-align: left;">Aprendizaje NO supervisado, parte I. <strong>Examen 3</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">14</td>
-<td style="text-align: left;">octubre 16</td>
-<td style="text-align: left;">Métodos basados en árboles. Parte I <strong>Examen 3</strong></td>
+<td style="text-align: left;">octubre 14</td>
+<td style="text-align: left;">Aprendizaje NO supervisado, parte II</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">15</td>
-<td style="text-align: left;">octubre 23</td>
-<td style="text-align: left;">Métodos basados en árboles. Parte II</td>
+<td style="text-align: left;">octubre 21</td>
+<td style="text-align: left;">Aprendizaje NO supervisado, parte III</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">16</td>
-<td style="text-align: left;">octubre 30</td>
-<td style="text-align: left;">Breve introducción a temas adicionales: Máquinas de Soporte Vectorial, Redes Neuronales</td>
+<td style="text-align: left;">octubre 28</td>
+<td style="text-align: left;">Aprendizaje NO supervisado, parte IV</td>
 </tr>
 </tbody>
 </table>
@@ -533,7 +536,7 @@ Figura&nbsp;2: Flujo de trabajo en ciencia de datos
 </section>
 <section id="evaluación" class="level2">
 <h2 class="anchored" data-anchor-id="evaluación">Evaluación</h2>
-<p>La nota final se calculará como el promedio de 4 cortes de igual ponderación (25%). Cada corte tendrá los siguientes componentes:</p>
+<p>La nota final se calculará como el promedio ponderado de 4 notas parciales tal como se detalla en la siguiente tabla</p>
 <div id="eval">
 <div class="cell">
 <div class="cell-output-display">
@@ -551,26 +554,23 @@ Figura&nbsp;2: Flujo de trabajo en ciencia de datos
 <tbody>
 <tr class="odd">
 <td style="text-align: left; vertical-align: middle;">Primer corte <strong>(25%)</strong></td>
-<td style="text-align: left;">Evaluaciones de Seguimiento, quices, talleres, exposiciones, trabajos <strong>(12%)</strong><br>
-Asistencia (puntualidad), Participación en clase <strong>(2%)</strong><br>
-Evaluación parcial <strong>(11%)</strong></td>
+<td style="text-align: left;">Evaluaciones de Seguimiento, quices, talleres, exposiciones, trabajos <strong>(10%)</strong><br>
+Examen 1 <strong>(15%)</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; vertical-align: middle;">Segundo corte <strong>(25%)</strong></td>
-<td style="text-align: left;">Evaluaciones de Seguimiento, quices, talleres, exposiciones, trabajos <strong>(12%)</strong><br>
-Asistencia (puntualidad), Participación en clase <strong>(2%)</strong><br>
-Evaluación parcial <strong>(11%)</strong></td>
+<td style="text-align: left;">Evaluaciones de Seguimiento, quices, talleres, exposiciones, trabajos <strong>(10%)</strong><br>
+Examen 2 <strong>(15%)</strong></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left; vertical-align: middle;">Tercer corte <strong>(25%)</strong></td>
-<td style="text-align: left;">Evaluaciones de Seguimiento, quices, talleres, exposiciones, trabajos <strong>(12%)</strong><br>
-Asistencia (puntualidad), Participación en clase <strong>(2%)</strong><br>
-Evaluación parcial <strong>(11%)</strong></td>
+<td style="text-align: left;">Evaluaciones de Seguimiento, quices, talleres, exposiciones, trabajos <strong>(10%)</strong><br>
+Examen 3 <strong>(15%)</strong></td>
 </tr>
 <tr class="even">
 <td style="text-align: left; vertical-align: middle;">Cuarto corte <strong>(25%)</strong></td>
 <td style="text-align: left;">Evaluaciones de Seguimiento, quices, talleres, exposiciones, trabajos <strong>(10%)</strong><br>
-Evaluación o proyecto final <strong>(15%)</strong></td>
+Examen final <strong>(15%)</strong></td>
 </tr>
 </tbody>
 </table>
@@ -619,9 +619,6 @@ Holtz, Yan. s.&nbsp;f. <span>«The <span>R</span> <span>Graph</span> <span>Galle
 </div>
 <div id="ref-huang_data" class="csl-entry" role="listitem">
 Huang, Shuai, y Houtao Deng. s.&nbsp;f. <em>Data <span>Analytics</span>: <span>A</span> <span>Small</span> <span>Data</span> <span>Approach</span></em>. CRC Press. <a href="https://dataanalyticsbook.info/index.html#cover">https://dataanalyticsbook.info/index.html#cover</a>.
-</div>
-<div id="ref-irizarry" class="csl-entry" role="listitem">
-Irizarry, Rafael A. s.&nbsp;f. <em>Introduction to <span>Data</span> <span>Science</span></em>. CRC Press. <a href="http://rafalab.dfci.harvard.edu/dsbook/">http://rafalab.dfci.harvard.edu/dsbook/</a>.
 </div>
 <div id="ref-james2021" class="csl-entry" role="listitem">
 James, Gareth, Daniela Witten, Trevor Hastie, y Robert Tibshirani. 2021. <em>An <span>Introduction</span> to <span>Statistical</span> <span>Learning</span>: with <span>Applications</span> in <span>R</span></em>. 2.ª ed. Springer <span>Texts</span> en <span>Statistics</span>. New York, NY: Springer US. <a href="https://doi.org/10.1007/978-1-0716-1418-1">https://doi.org/10.1007/978-1-0716-1418-1</a>.

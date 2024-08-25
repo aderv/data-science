@@ -17,13 +17,18 @@ library(DiagrammeR)
 ```
 
 
-## Descripción del curso
+## Presentación del curso
 
-El curso de ciencia de datos presenta una introducción a la teoría e implementación de métodos estadísticos para el análisis de datos. Se hace énfasis en los modelos predictivos que buscan aproximar una variable de interés $Y$ (métodos supervisados) en términos de un conjunto de variables predictoras $(\textbf{X})$, usando una función **f** que debe ser _aprendida_ a través de un conjunto de datos $(x_i, y_i)\ i=1,2,...,n$. 
+El curso de ciencia de datos presenta una introducción a la teoría e implementación de métodos estadísticos para el análisis de datos. Se hace énfasis en los modelos predictivos que buscan aproximar una variable de interés $Y$ (métodos supervisados) en términos de un conjunto de variables predictoras $(\textbf{X})$, usando una función **f** que debe ser _aprendida_ a través de un conjunto de datos $(x_i, y_i)\ i=1,2,...,n$.
 
 :::{.div-float}
-![Habilidades necesarias para ciencia de datos](images/ds-plot.svg){#fig-ds-plot}
+![Habilidades necesarias para la Ciencia de Datos](ds-plot.svg){#fig-ds-plot}
 :::
+
+
+<!-- :::{.div-float} -->
+<!-- ![Cielo nocturno](fig1.jpg) -->
+<!-- ::: -->
 
 Se estudian las bases conceptuales y matemáticas de los modelos y se evalúan a partir de sus propiedades estadísticas y capacidad de predecir la variable $Y$. Se estudia también la parte práctica de los temas mediante la aplicación y validación de los métodos en bases de datos sintéticas y reales, usando el lenguaje `R` como software estadístico y de programación.
 
@@ -72,18 +77,18 @@ Flujo de trabajo en ciencia de datos
 
 La segunda fase es el **análisis exploratorio de datos** (_Exploratory Data Analysis (EDA)_) y consiste principalmente en la visualización a través de tablas, resúmenes y gráficas de la información que se tiene en las bases de datos que han sido previamente organizadas. Esta fase puede requerir iterar entre los procesos de transformación y visualización. No todos los problemas de ciencia de datos requieren de técnicas de _machine learning_ y muchos de estos problemas pueden resolverse en esta fase. Las personas que se especializan en esta área se conocen como Analistas de Datos (_Data Analysts_).
 
-La tercera fase (y la que más desarrollaremos en este curso) es la **Modelación** y se trata de aplicar modelos estadísticos y de _machine learning_ para obtener ideas e información a partir de los datos. Este proceso también es iterativo y puede requerir aplicar varios tipos de modelos, evaluarlos y compararlos para obtener buenos resultados. Los especialistas en esta área son los Científicos de Datos (_Data Scientists_).
+La tercera fase es la **Modelación** y se trata de aplicar modelos estadísticos y de _machine learning_ para obtener ideas e información a partir de los datos. Este proceso también es iterativo y puede requerir aplicar varios tipos de modelos, evaluarlos y compararlos para obtener buenos resultados. Los especialistas en esta área son los Científicos de Datos (_Data Scientists_).
 
 La última fase del proceso es la **comunicación** de los resultados y hallazgos. Es importante aprender a presentar los resultados y veremos algunas herramientas básicas para lograrlo.
 
 
 ## Recursos bibliógraficos
 
-Hay muchos (muchísimos) recursos disponibles para apoyar este curso. Es fundamental usar lenguajes de programación y en este caso usaremos `R`, cualquier curso _online_, libro o tutorial puede servir para aprender los conceptos básicos, el estudiante es libre de escoger y aprender (si aún no sabe) `R` de una fuente de su preferencia. 
+Hay muchos recursos disponibles para apoyar este curso. Es fundamental usar lenguajes de programación y en este caso usaremos `R`, cualquier curso _online_, libro o tutorial puede servir para aprender los conceptos básicos, el estudiante es libre de escoger y aprender (si aún no sabe) `R` de una fuente de su preferencia. 
 
 El libro principal para los conceptos estadísticos será @james2021, ya que maneja un buen balance entre aplicaciones y teoría para el bagaje matemático que se espera de los estudiantes. Este libro también trae código y aplicaciones en `R`, pero hay mejores fuentes en este aspecto.
 
-Otros 2 libros interesantes para la parte conceptual y teórica son [@irizarry; @huang_data], un poco menos desarrollados en lo conceptual con respecto a [@james2021] pero a cambio traen más y mejor código para aplicaciones usando `R`.
+Otros 2 libros interesantes para la parte conceptual y teórica son [@irizarry1; @irizarry2; @huang_data], que además ofrecen código desarrollado para aplicaciones usando `R`.
 
 El libro de [@wickham] es excelente para aprender a hacer ciencia de datos en `R`, sobre todo en la parte de análisis exploratorio de datos, tiene muchos ejemplos y código muy bien escrito. Su desventaja^[Desventaja en el sentido de que el libro no está pensado para hacer modelación por lo que tendremos que usar otras fuentes para esta parte] es la falta de modelos estadísticos. 
 
@@ -91,7 +96,7 @@ Un libro que requiere algo más de madurez matemática que [@james2021] es [@has
 
 Los libros [@alexander2023; @healy2018; @kabacoff] son excelentes referencias para profundizar en aspectos de visualización de datos usando `R`. También se pueden encontrar toda una serie de recursos valiosos en la web, como [@emaasit; @healy; @holtz].
 
-Los libros [@james2021; @hastie2009] pueden obtenerse de las bases de datos de la universidad. Los libros [@irizarry; @huang_data; @wickham; @garcia_notes; @garcia_notes1; @alexander2023; @healy2018; @kabacoff] están disponibles en la web y son de libre acceso.
+Los libros [@james2021; @hastie2009] pueden obtenerse de las bases de datos de la universidad. Los libros [@irizarry1; @irizarry2; @huang_data; @wickham; @garcia_notes; @garcia_notes1; @alexander2023; @healy2018; @kabacoff] están disponibles en la web y son de libre acceso.
 
 
 
@@ -118,7 +123,7 @@ De igual forma es necesario el manejo de conceptos matemáticos de funciones, de
 
 ## Metodología
 
-El contenido del curso será presentado en sesiones presenciales los días martes a las 8:00 am y miércoles a las 4:00 pm. Durante las clases se irán desarrollando de manera simultánea conceptos y código en `R`, por lo que es necesario estar en salas de informática. 
+El contenido del curso será presentado en 2 sesiones presenciales por semana. Durante las clases se irán desarrollando de manera simultánea conceptos y código en `R`, por lo que es necesario estar en salas de informática. 
 
 El estudiante es responsable de trabajar semanalmente en el curso para afianzar los temas dados. se realizarán exámenes cortos^[No es necesario que estas evaluaciones rápidas o quices sean programadas o avisadas con anticipación, pueden realizarse en cualquier clase y en cualquier momento de la clase. Si $p_k$ es la probabilidad de haya quiz en la k-ésima clase, entonces $p_k>0 \ \forall k$] periódicamente para evaluar la evolución de cada estudiante en la asimilación de los temas. Se dejarán talleres/tareas para estimular la investigación y profundización de los temas vistos durante las clases.
 
@@ -128,29 +133,27 @@ El estudiante es responsable de trabajar semanalmente en el curso para afianzar 
 ```{r, echo=F}
 library(kableExtra)
 session <- 1:16
-start_date <- as.Date("17/07/2023", format = "%d/%m/%Y")
+start_date <- as.Date("15/07/2024", format = "%d/%m/%Y")
 dates <- seq.Date(from = start_date, length.out = length(session), 
                   by = "week")
 dates <- format(dates, "%B %d")
 subject <- c(
-  "Introducción al curso. Fundamentos de <code>R</code> para el análisis
-  de datos",
-  "Análisis exploratorio, parte I",
+  "Introducción al curso. Análisis exploratorio, parte I",
   "Análisis exploratorio, parte II",
-  "Función de pérdida. Medidas de la calidad de un modelo. Sesgo y varianza",
-  "Regresión lineal. Parte I. <b>Examen 1</b>",
-  "Regresión lineal. Parte II",
-  "Modelos lineales de clasificación. Análisis discriminante lineal",
+  "Manejo de bases de datos. Estadística descriptiva y probabilidad",
+  "Modelos estadísticos, función de pérdida. Medidas de la calidad de un modelo. Sesgo y varianza. Regresión lineal",
+  "Modelos lineales de clasificación. Análisis discriminante lineal. <b>Examen 1</b>",
   "Regresión logística",
   "Validación cruzada (CV)",
-  "Métodos de regularización. Ridge y Lasso. <b>Examen 2</b>",
-  "Reducción de la dimensión. Componentes principales",
-  "Modelos no lineales de regresión. Regresión polinómica y en bases funcionales",
-  "Splines, Smoothing splines",
-  "Métodos basados en árboles. Parte I <b>Examen 3</b>",
-  "Métodos basados en árboles. Parte II",
-  "Breve introducción a temas adicionales: Máquinas de Soporte Vectorial, 
-  Redes Neuronales"
+  "Introducción a modelos no lineales. Regresión polinómica y en bases funcionales. Splines, Smoothing splines",
+  "Métodos basados en árboles, parte I. <b>Examen 2</b>",
+  "Métodos basados en árboles, parte II",
+  "Métodos basados en árboles, parte III",
+  "Métodos basados en árboles, parte IV",
+  "Aprendizaje NO supervisado, parte I. <b>Examen 3</b>",
+  "Aprendizaje NO supervisado, parte II",
+  "Aprendizaje NO supervisado, parte III",
+  "Aprendizaje NO supervisado, parte IV"
 )
 
 content <- data.frame(session, dates, subject)
@@ -171,24 +174,24 @@ content %>% kbl(escape = F) %>%
 
 ## Evaluación
 
-La nota final se calculará como el promedio de 4 cortes de igual ponderación (25%). Cada corte tendrá los siguientes componentes:
+La nota final se calculará como el promedio ponderado de 4 notas parciales tal como se detalla en la siguiente tabla
 
 :::{#eval}
 ```{r}
 #| echo: false
+#| message: false
+library(tidyverse)
+library(kableExtra)
 cortes <- c('Primer corte <b>(25%)</b>', 'Segundo corte <b>(25%)</b>',
             'Tercer corte <b>(25%)</b>', 'Cuarto corte <b>(25%)</b>')
-notas <- c('Evaluaciones de Seguimiento, quices, talleres, exposiciones, trabajos <b>(12%)</b><br> 
-           Asistencia (puntualidad), Participación en clase <b>(2%)</b><br>
-           Evaluación parcial <b>(11%)</b>',
-           'Evaluaciones de Seguimiento, quices, talleres, exposiciones, trabajos <b>(12%)</b><br> 
-           Asistencia (puntualidad), Participación en clase <b>(2%)</b><br>
-           Evaluación parcial <b>(11%)</b>',
-           'Evaluaciones de Seguimiento, quices, talleres, exposiciones, trabajos <b>(12%)</b><br> 
-           Asistencia (puntualidad), Participación en clase <b>(2%)</b><br>
-           Evaluación parcial <b>(11%)</b>',
+notas <- c('Evaluaciones de Seguimiento, quices, talleres, exposiciones, trabajos <b>(10%)</b><br> 
+           Examen 1 <b>(15%)</b>',
            'Evaluaciones de Seguimiento, quices, talleres, exposiciones, trabajos <b>(10%)</b><br> 
-           Evaluación o proyecto final <b>(15%)</b>')
+           Examen 2 <b>(15%)</b>',
+           'Evaluaciones de Seguimiento, quices, talleres, exposiciones, trabajos <b>(10%)</b><br> 
+           Examen 3 <b>(15%)</b>',
+           'Evaluaciones de Seguimiento, quices, talleres, exposiciones, trabajos <b>(10%)</b><br> 
+           Examen final <b>(15%)</b>')
 dt <- tibble::tibble(Cortes = cortes, Componentes = notas)
 dt %>% kbl(escape = FALSE) %>% kable_styling(
   bootstrap_options = c("hover", "estriped", "bordered", "condensed"),
@@ -196,7 +199,6 @@ dt %>% kbl(escape = FALSE) %>% kable_styling(
   column_spec(1, border_right = F, extra_css = 'vertical-align:middle;')
 ```
 :::
-
 
 
 ## Sobre el [Reglamento](https://gconocimiento.upb.edu.co/gesdoc/Informacin%20Institucional/Reglamento%20Estudiantes%20Pregrado.pdf){target="_blank"}
@@ -212,3 +214,4 @@ profesor, como mínimo con ocho (8) días hábiles de anticipación.</abbr>
 + <abbr title="Artículo 35, parágrafo">Cuando, por causas justificadas, no se puedan presentar las evaluaciones parciales o finales en las fechas establecidas por el docente, se podrán solicitar pruebas supletorias ante el director de la Facultad. Estas pruebas tendrán un costo y deberán ser solicitadas dentro de los tres (3) días hábiles siguientes a la programación de la prueba no presentada por el estudiante y, si es autorizada, deberá ser presentada dentro de los 10 días hábiles siguientes a su autorización.</abbr> 
 + <abbr title="Artículo 34, parágrafo 2">Los resultados de las evaluaciones deberán ser informados al estudiante, a más
 tardar, dentro de las dos (2) semanas siguientes a su presentación.</abbr>
+
