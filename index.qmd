@@ -22,7 +22,7 @@ library(DiagrammeR)
 El curso de ciencia de datos presenta una introducción a la teoría e implementación de métodos estadísticos para el análisis de datos. Se hace énfasis en los modelos predictivos que buscan aproximar una variable de interés $Y$ (métodos supervisados) en términos de un conjunto de variables predictoras $(\textbf{X})$, usando una función **f** que debe ser _aprendida_ a través de un conjunto de datos $(x_i, y_i)\ i=1,2,...,n$.
 
 :::{.div-float}
-![Habilidades necesarias para la Ciencia de Datos](ds-plot.svg){#fig-ds-plot}
+![Habilidades necesarias para la Ciencia de Datos](images/ds-plot.svg){#fig-ds-plot}
 :::
 
 
