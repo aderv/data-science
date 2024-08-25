@@ -1,5 +1,6 @@
 /.quarto/
 *_files/
 *_cache/
+!docs/*_files/
 .Rhistory
 _freeze/
