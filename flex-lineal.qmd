@@ -1,0 +1,502 @@
+# Controlando la flexibilidad del modelo de regresión lineal
+
+Existen diversos métodos para comparar modelos lineales. La flexibilidad del modelo se puede medir en términos del número de variables, de tal forma que entre más variables tenemos en un modelo lineal, más flexible es. Hay varias formas de controlar esta flexibilidad:
+
+## Selección de variables
+
+Suponga que se tiene un modelo lineal con $p$ variables $$y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} +...+ \beta_p x_{ip} + \epsilon_i$$
+
+El objetivo es determinar cuáles de estas variables deben ir en el modelo _final_. Para comparar modelos tenemos diversos criterios. El $R^2$ es útil para comparar modelos con igual número de variables. En caso de que tengan diferente número de variables, tenemos alternativas como: $R_{adj}^2$, $AIC$, $C_p$ y $BIC$.
+
+### selección exhaustiva: 
+
+Se ajustan todos los modelos posibles, desde el modelo con 0 variables (solo el intercepto) hasta el modelo con todas las $p$ variables. Se comparan de forma adecuada para obtener el "mejor" modelo. Este método implica ajustar $2^p$^[corresponde a la suma de todos los modelos de 0, 1, 2, ..., k, ..., p variables $$\binom{p}{0} + \binom{p}{1} + \cdots + \binom{p}{p} = \sum_{k=0}^{p}\binom{p}{k} = 2^p$$]  submodelos, lo cuál puede fácilmente convertirse en algo imposible de llevar a cabo en la práctica, dado su costo computacional.
+
+### Métodos heurísticos: Selección hacia adelante o hacia atrás.
+
+Para evitar el crecimiento exponencial en la cantidad de modelos a ajustar, 
+se puede optar por un procedimiento heurístico de selección hacia adelante o hacia atrás.
+En el caso de selección hacia adelante, se inicia con el modelo que no contiene variables ($\mathcal{M}_0$), y se forman $p$ modelos univariados agregando cada una de las $p$ variables, se escoge el _mejor_ de estos modelos (que puede ser elegido con el $R^2$ ya que tienen el mismo número de variables), llamemos a este modelo $\mathcal{M}_1$. A $\mathcal{M}_1$ se le agrega cada una de las $p-1$ variables restantes y se elige el _mejor_ modelo de 2 variables: $\mathcal{M}_2$. Al final se tendrán $1 + \frac{p(p+1)}{2}$^[Es fácil comprobar que $$1 + p + (p-1) + (p-2) + \cdots + 1 = 1 + \sum_{k=1}^{p}k = 1 + \frac{p(p+1)}{2}$$] modelos:
+$$\mathcal{M}_0, \mathcal{M}_1, \mathcal{M}_2, \cdots, \mathcal{M}_p$$
+Para elegir entre estos modelos, no es adecuado el $R^2$ (¿por qué?) y debe recurrirse a medidas tales como: $R_{adj}^2$, $AIC$, $C_p$ y $BIC$, sin olvidar que para el $R_{adj}^2$ se busca el modelo con mayor valor, y para el resto de métricas se busca el menor valor (¿por qué?). También es posible hacer _Cross Validation_ (CV) y elegir el modelo con menor $MSE_{cv}$, pero para el caso de regresión lineal, no es necesario hacerlo (¿por qué?). 
+
+En la tabla, se muestra cómo crece la cantidad de modelos a ajustar según la metodología: exhaustivo o heurístico.
+
+```{r}
+#| echo: false
+n_modelos <- seq(5, 50, 5)
+exhaustivo <- 2^n_modelos
+options(scipen=999)
+heuristico <- 1 + 0.5*(n_modelos*(1 + n_modelos))
+tabla <- data.frame("Variables" = n_modelos, "Exhaustivo" = exhaustivo, "Heurístico" = heuristico)
+# knitr::kable(tabla, caption = "Cantidad de modelos según el método de selección usado", col.names = c("Número de variables", "Método Exhaustivo", "Método Secuencial"))
+tabla
+```
+
+Es claro que el método secuencial ofrece ventajas en cuánto a la cantidad de modelos que se deben ajustar, sin embargo, es probable que el resultado de estos procedimientos no sea el modelo óptimo (¿por qué?)
+
+### Combinación de métodos
+
+En algunos casos (cuando hay muchas variables), incluso un método secuencial puede resultar poco atractivo para la selección de variables. Para estos casos, se puede establecer un límite, por ejemplo, si se usa selección hacia adelante, se pone una cota $L$ al número de variables a incluir, siendo $L<<p$. También es posible combinar (piense bien cómo sería eso) los métodos de selección hacia adelante y hacia atrás, esto con el fin de aumentar la probabilidad de llegar al modelo óptimo.
+
+## Métodos tipo penalización
+
+Un enfoque alternativo a la selección directa de variables, para el control de la flexibilidad del modelo lineal, es la penalización. La idea es considerar el modelo completo con las $p$ variables y _encoger_ el efecto de dichas variables a través de una penalización. Recuerde que el método de mínimos cuadrados, resuelve el problema de optimización 
+
+$$
+\hat{\boldsymbol{\beta}} = \underset{\boldsymbol{\beta} \in \mathbb{R}^{p+1}}{\arg\min} \sum_{i=1}^{n} \left( y_i - \beta_0 - \sum_{j=1}^{p}\beta_j x_{ij}\right)^2
+$$
+Replanteando el problema como
+
+$$
+\hat{\boldsymbol{\beta}} = \underset{\boldsymbol{\beta} \in \mathbb{R}^{p+1}}{\arg\min} \sum_{i=1}^{n} \left( y_i - \beta_0 - \sum_{j=1}^{p}\beta_j x_{ij}\right)^2 + Penalización
+$$
+
+Al agregar un término de penalización se espera un aumento del sesgo del modelo (¿por qué?) pero también una reducción significativa de la varianza (de hecho, ese es el _truco_ u objetivo al agregar penalizaciones) por lo que al final, considerando la combinación de ambos efectos (¿cuáles?), podríamos tener una reducción en el error esperado de predicción de nuestro modelo.  
+
+Hay muchas formas de agregar la $Penalización$ Veamos las 2 más comunes
+
+### Regresión _Ridge_
+
+Se habla de _Ridge Regression_ cuando la penalización en el problema de optimización se plantea con la suma de los coeficientes al cuadradro, es decir:
+
+$$
+\hat{\boldsymbol{\beta}}_{Ridge} = \underset{\boldsymbol{\beta} \in \mathbb{R}^{p+1}}{\arg\min} \sum_{i=1}^{n} \left( y_i - \beta_0 - \sum_{j=1}^{p}\beta_j x_{ij}\right)^2 + \lambda\sum_{j=1}^{p}\beta_j^2 \hspace{2cm} \lambda \geq0
+$$
+
+Algunos apuntes sobre este enfoque
+
++ La penalización no incluye a $\beta_0$ ya que la idea es penalizar el efecto de las variables, y no hay variable asociada al intercetpo. 
++ cuando $\lambda=0$ el resultado es mínimos cuadrados ordinarios (el de toda la vida)
++ La solución al problema de optimización se puede expresar de forma cerrada^[Bono para quien lo haga y lo explique] 
+$$\hat{\boldsymbol{\beta}}_{Ridge} = \left( \boldsymbol{X^TX} + \lambda \boldsymbol{I}\right)^{-1} \boldsymbol{X^TY}$$ Aquí debe hacerse más claro aún que cuando $\lambda=0$ se tiene el método de mínimos cuadrados ordinarios (¿por qué?).
+
+¿Qué se ha ganado realmente?  
+Ya no es necesario seleccionar variables. En algunos casos, aunque la selección de variables se haga de forma metódica, no hay relaciones causales bien definidas en el modelo obtenido (¿cómo así, eso qué significa?).   
+
+¿Qué debemos hacer entonces?  
+Hemos cambiado el problema de seleccionar variables a seleccionar un valor de $\lambda$ que sea un _trade-off_ entre sesgo y varianza del modelo. Esto es lo que se conoce como calibración del modelo o selección del _tuning parameter_. Una forma de hacerlo es usando CV. Se selecciona un conjunto de valores para $\lambda$, por ejemplo: $\lambda_1, \lambda_2, \lambda_3, \cdots, \lambda_m$ se calcula el $MSE$ con CV para cada caso y se busca el valor de $\lambda$ con mínimo $MSE$ (asegúrese de entender bien este procedimiento, por ejemplo, **¿qué sería usar 10-fold cv para 15 valores de $\lambda$?**)
+
+### Regresión _Lasso_ 
+
+Un modelo Lasso se obtiene al plantear la penalización con el valor absoluto:
+
+$$
+\hat{\boldsymbol{\beta}}_{Lasso} = \underset{\boldsymbol{\beta} \in \mathbb{R}^{p+1}}{\arg\min} \sum_{i=1}^{n} \left( y_i - \beta_0 - \sum_{j=1}^{p}\beta_j x_{ij}\right)^2 + \lambda\sum_{j=1}^{p}|{\beta_j}| \hspace{2cm} \lambda \geq0
+$$
+
+Para este caso no hay solución cerrada para el problema de optimización, pero no es problema, existen algoritmos numéricos muy eficientes para hacer la tarea.
+
+Tenga en cuenta el otro punto de vista para estos dos modelos: _Ridge_ y _Lasso_. El que considera la función de mínimos cuadrados ordinaria pero agregando una restricción.^[Una o varias preguntas del examen se referirán a la interpretación de esto]
+
+
+## Reducción de la dimensionalidad ^[El profesor dice que deberían investigar sobre este tema para el examen]
+
+### Regresión por componentes principales (PCR)
+
+### Cuadrados mínimos parciales (PLS)
+
+
+
+# Caso de estudio
+
+
+## Cargamos las librerías necesarias
+
+```{r}
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(patchwork)
+library(ggcorrplot)
+library(broom)
+```
+
+
+:::{.callout-note}
+## Broom
+La librería `broom` trae funciones que permiten convertir diversos objetos de `R` en _data.frame_. Es muy útil para trabajar con el _tidyverse_
+:::
+
+## Breve descripción de la base de datos
+
+La base de datos contiene información sobre diferentes características físicas y químicas de más de 1000 muestras de vino. 
+
+```{r}
+datos <- read.csv("WineQT.csv", header = T) |> as_tibble()
+glimpse(datos)
+summary(datos)
+```
+
+### Algunas gráficas y resúmenes interesantes
+
+Observemos una gráfica de la correlación entre cada par de variables, omitiendo `ID`
+
+```{r}
+datos |> select(!Id) |> cor() |> 
+  ggcorrplot()
+```
+
+Graficamos la variable densidad contra cada una de las variables: 
+
++ acidez fija
++ alcohol
++ acidez volátil
+
+```{r}
+p1 <- datos |> ggplot(aes(x = fixed.acidity,
+                          y = density)) +
+  geom_point(color = "#FF7857") +
+  geom_smooth(method = "lm")
+
+p2 <- datos |> ggplot(aes(x = alcohol,
+                          y = density)) +
+  geom_point(color = "#A480E7") +
+  geom_smooth(method = "lm")
+
+p3 <- datos |> ggplot(aes(x = volatile.acidity,
+                          y = density)) +
+  geom_point(color = "green") +
+  geom_smooth(method = "lm")
+
+(p1|p2)/p3
+```
+
+## Validación cruzada
+
+### Ajsute de modelos lineales
+
+Seleccionamos solo las 3 variables que hemos decidido trabajar y las renombramos usano funciones de `dplyr`
+
+```{r}
+datos_sub <- datos |> select(densidad = density,
+                             acidez.f = fixed.acidity,
+                             acidez.v = volatile.acidity,
+                             alcohol)
+```
+
+Ajustamos un modelo simple para cada variable considerada
+
+```{r}
+mod1 <- lm(densidad ~ acidez.f, data = datos_sub)
+summary(mod1)
+tidy(summary(mod1))
+```
+
+Observe la diferencia cuando se aplica la función `tidy` del paquete `broom`. Es bastante útil para usar combinando con el operador _pipe_
+
+Ajustamos los dos modelos restantes
+
+```{r}
+mod2 <- lm(densidad ~ alcohol, data = datos_sub)
+mod3 <- lm(densidad ~ acidez.v, data = datos_sub)
+```
+
+Verificoamos el $R^2$ de cada modelo
+
+```{r}
+r2_1 <- summary(mod1)$r.squared
+r2_2 <- summary(mod2)$r.squared
+r2_3 <- summary(mod3)$r.squared
+r2_1
+r2_2
+r2_3
+```
+
+
+### Validación cruzada
+
+Queremos ver cómo funciona el método de validación cruzada para comparar modelos, recuerde que esto no es necesario para un modelo de regresión lineal pero lo haremos en el contexto de modelos lineales por la familiaridad del tema
+
+Establecemos unos valores para la cantidad de particiones 
+
+```{r}
+set.seed(22)
+k_fold <- 10
+n <- nrow(datos_sub)
+celda <- ceiling(n/k_fold)
+```
+
+Evaluamos o calculamos el $MSE$ para el modelo 1. Para esto, creamos una partición aleatoria de los datos y creamos un vector para guardar el $MSE$ de cada iteración
+
+```{r}
+permutacion <- sample(n)
+mse <- vector(mode = "numeric", length = k_fold)
+for(i in 1:k_fold){
+  test <- permutacion[((i-1)*celda + 1):(min(celda*i, n))]
+  datos_test <- datos_sub[test,]
+  datos_train <- datos_sub[-test,]
+  modelo <- lm(densidad ~ acidez.f, data = datos_train)
+  mse[i] <- mean((datos_test$densidad - 
+                    predict(modelo, newdata = datos_test))^2)
+}
+mse_1 <- mean(mse)
+```
+
+Hacemos lo propio para los 2 modelos restantes
+
+Modelo con la variable _alcohol_
+
+```{r}
+permutacion <- sample(n)
+mse <- vector(mode = "numeric", length = k_fold)
+for(i in 1:k_fold){
+  test <- permutacion[((i-1)*celda + 1):(min(celda*i, n))]
+  datos_test <- datos_sub[test,]
+  datos_train <- datos_sub[-test,]
+  modelo <- lm(densidad ~ alcohol, data = datos_train)
+  mse[i] <- mean((datos_test$densidad - 
+                    predict(modelo, newdata = datos_test))^2)
+}
+mse_2 <- mean(mse)
+```
+
+Modelo con la variable acidez volátil
+
+```{r}
+permutacion <- sample(n)
+mse <- vector(mode = "numeric", length = k_fold)
+for(i in 1:k_fold){
+  test <- permutacion[((i-1)*celda + 1):(min(celda*i, n))]
+  datos_test <- datos_sub[test,]
+  datos_train <- datos_sub[-test,]
+  modelo <- lm(densidad ~ acidez.v, data = datos_train)
+  mse[i] <- mean((datos_test$densidad - 
+                    predict(modelo, newdata = datos_test))^2)
+}
+mse_3 <- mean(mse)
+```
+
+Comparamos el resultado de cada modelo
+
+```{r}
+mse_1
+mse_2
+mse_3
+```
+
+
+Organizamos los resultados
+
+```{r}
+resultados <- tibble(
+  Modelo = c("Acidez Fija", "Alcohol", "Acidez Volátil"),
+  R2 = c(r2_1, r2_2, r2_3),
+  MSE_cv = c(mse_1, mse_2, mse_3)
+)
+resultados 
+glimpse(resultados)
+
+```
+
+:::{.callout-warning}
+## Ejercicio para la casa, para el aburrimiento
+
+1. Programar en `R` una función que reciba el parámetro k_fold, la base de datos y las variables y devuelva el MSE de validación cruzada
+
+2. Use la función del punto 1 para calcular LOOCV de los modelos resueltos en clase
+
+3. Hacer validación cruzada usando librerías de `R`. Investigue
+:::
+
+Aplicamos LOOCV para el modelo con acidez fija
+
+```{r}
+k_fold <- n
+permutacion <- sample(n)
+mse <- vector(mode = "numeric", length = k_fold)
+for(i in 1:k_fold){
+  # test <- permutacion[((i-1)*celda + 1):(min(celda*i, n))]
+  datos_test <- datos_sub[i,]
+  datos_train <- datos_sub[-i,]
+  modelo <- lm(densidad ~ acidez.f, data = datos_train)
+  mse[i] <- mean((datos_test$densidad - 
+                    predict(modelo, newdata = datos_test))^2)
+}
+mse_1_loocv <- mean(mse)
+mse_1_loocv
+```
+
+Ahora usamos directamente las librerías de `R` para facilitar el trabajo de evaluación de los modelos. Usaremos `caret`
+
+```{r}
+library(caret)
+train_control <- trainControl(method = "LOOCV")
+mod1.caret <- train(densidad ~ acidez.f, data = datos_sub,
+                    method = "lm", trControl = train_control)
+mod1.caret
+```
+
+Veamos los resultados del ajuste y evluación del modelo
+
+```{r}
+mod1.caret$results
+```
+
+Extraemos el MSE (por LOOCV) del modelo
+
+```{r}
+mse.loocv.caret <- mod1.caret$results[2]^2
+mse.loocv.caret
+```
+
+
+### Matriz de proyección
+
+La matriz de proyección es la que convierte los valores observados en predicciones. Cuando los modelos tienen esta propiedad, se suelen llamar __suavizadores lineales__. El modelo de regresión lineal es uno de ellos. 
+
+La matriz de proyección también se llama: matriz sombrero (_hat_), matriz de influencia. Los elementos de la diagonal principal de esta matriz son los llamados _leverages_ y se pueden interpretar como la influencia individual de cada punto en las predicciones. Algunas formas de analizar datos atípicos revisan estos _leverages_.
+
+Calculemos la matriz de proyección para el modelo de acidez fija
+
+```{r}
+mod_ac.f <- lm(densidad ~ acidez.f, data = datos_sub)
+
+mx <- cbind(rep(1, n), datos_sub$acidez.f)
+mh <- mx%*%solve(t(mx)%*%mx)%*%t(mx) 
+traza <- sum(diag(mh))
+mse_loocv_mh <- mean((mod_ac.f$residuals/(1-diag(mh)))^2)
+mse_loocv_mh
+```
+
+Podemos hacer esto mismo de una forma un poco más sencilla
+
+```{r}
+leverage.mod_ac.f <-  lm.influence(mod_ac.f)$hat
+sum(leverage.mod_ac.f)
+mse_loocv_mh_r <- mean((mod_ac.f$residuals/(1-leverage.mod_ac.f))^2)
+mse_loocv_mh_r
+```
+
+
+## Selección de variables
+
+como siempre, hay varias alternativas y niveles de detalle para trabajar 
+el problema de selección de variables. La función básica para construir modelos lineales es lm(). Podemos programar algoritmos para hacer selección de variables, 
+pero haremos uso directo de la librería `olsrr`
+
+```{r}
+library(olsrr)
+```
+
+Esta librería es para facilitar el trabajo con mínimos cuadrados ordinarios (OLS: _Ordinary Least Squares_). Para un estudio más detallado de las funciones y opciones, visite la [documentación](https://olsrr.rsquaredacademy.com/){target="_blank"}
+
+Volvamos a trabajar con todas las variables
+
+```{r}
+datos_sub2 <- datos |> select(
+  densidad = density,
+ acidez.f = fixed.acidity,
+ acidez.v = volatile.acidity,
+ acido.c = citric.acid,
+ azucar = residual.sugar,
+ cloruro = chlorides,
+ sulfuro.l = free.sulfur.dioxide,
+ sulfuro.t = total.sulfur.dioxide,
+ ph = pH,
+ sulfato = sulphates,
+ alcohol,
+ calidad = quality
+)
+datos_sub2
+```
+
+Debemos verificar la información de cada variable, hacer algunos resúmenes y algunas gráficas de forma marginal, antes de ver la posible relación con otras variables. Esto incluye estudiar los metadatos que acompañan a la base de datos^[Aquí normalmente, viene información relevante del tipo de varibles, unidades, y otros apuntes importantes]. Tomemos por ejemplo la variable `azúcar`
+
+```{r}
+datos_sub2 |> ggplot(aes(x = azucar)) +
+  geom_histogram(bins = 40, fill = "orange", color = "darkblue") +
+  labs(
+    title = "Niveles de Azúcar",
+    subtitle = "Datos sobre la calidad del vino, tomado de <internet>",
+    x = "Azúcar (unidades)"
+  )
+datos_sub2 |> select(azucar) |> summary()
+datos_sub2 <- datos_sub2 |> select(-calidad)
+```
+
+
+Ajustemos modelos lineales por mínimos cuadrados
+
+```{r}
+mod_lineal1 <- ols_regress(
+  densidad ~ .,
+  data = datos_sub2
+)
+modelo.lineal <- lm(densidad ~ ., data = datos_sub2)
+mod_lineal1
+names(mod_lineal1)
+
+```
+
+Podemos, fácilmente, ajustar todos los posibles modelos de regresión (cuidado, es costoso computacionalmente)
+
+```{r, eval=F}
+mod_todos1 <- ols_step_all_possible(
+  model = modelo.lineal
+)
+# mod_todos1
+plot(mod_todos1)
+```
+
+Una alternativa más prudente es establecer una cantidad máxima de variables a considerar, con el argumento `max_order`
+
+```{r}
+mod_todos2 <- ols_step_all_possible(model = modelo.lineal, 
+                                    max_order = 3)
+mod_todos2
+plot(mod_todos2)
+```
+
+Podemos solicitar directamente la selección de modelos
+
+```{r, eval=F}
+mod_todos3 <- ols_step_best_subset(
+  model = modelo.lineal, 
+  max_order = 5,
+  metric = "aic"
+)
+mod_todos3
+plot(mod_todos3)
+```
+
+De igual forma, podemos hacer selección tipo _forward_ y _backward_
+
+```{r}
+mod_todos_f <- ols_step_forward_adj_r2(
+  model = modelo.lineal
+)
+mod_todos_f
+plot1 <- plot(mod_todos_f)
+plot1
+```
+
+
+:::{.callout-note}
+## Ejercicio para reducir el estrés
+
+Graficar directamente con `ggplot2` y mejorar los resultados gráficos
+:::
+
+
+Una alternativa es convertir a un gráfico interactivo con `plotly`
+
+```{r}
+library(plotly)
+ggplotly(plot1)
+```
+
+
+Con selección tipo _backward_, obtenemos
+
+```{r}
+mod_todos4 <- ols_step_backward_adj_r2(modelo.lineal)
+mod_todos4
+plot2 <- plot(mod_todos4)
+plot2
+ggplotly(plot2)
+```
+
+   
+

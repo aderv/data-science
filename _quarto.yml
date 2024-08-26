@@ -28,6 +28,7 @@ book:
         - ds-intro.qmd
         - reg-simple.qmd
         - reg-multiple.qmd
+        - flex-lineal.qmd
     - references.qmd
 
 bibliography: refs/references.bib
