@@ -1,0 +1,212 @@
+
+# _Smoothing Splines_
+
+## Modelo simulado
+
+Considere el siguiente conjunto de datos simulados a partir de un modelo del tipo
+
+$$
+y_i = f(x_i) + \varepsilon_i \hspace{2cm} i=1,...,n
+$$
+
+Donde $\varepsilon_i$ tiene una distribución normal $\varepsilon_i \sim \mathrm{N} (0, \sigma^2)$
+
+```{r}
+#| echo: false
+library(tidyverse)
+library(plotly)
+set.seed(1005)
+n <- 500
+x <- runif(n, 0, 1.5)
+f <- function(x) (cos(2.5*exp(1.1*x))^2/(2.1*sqrt(x)+exp(1)/pi))
+error <- rnorm(n, 0, 0.2)
+y <- f(x) + error
+datos <- tibble(
+  x = x,
+  y = y
+)
+plot1 <- datos |> ggplot(aes(x = x, y = y)) +
+  geom_point()
+ggplotly(plot1)
+
+# fig1 <- ggplot(data = data.frame(x,y)) + ylim(-0.3, 1) + xlim(-0.1, 1.6) + geom_point(aes(x=x, y=y)) 
+# ggplotly(fig1)
+# fig1 +  geom_line(aes(x = x, y = f(x)), col = "blue", lwd = 1) 
+```
+
++ Intente aproximar una forma funcional adecuada para estos datos
++ ¿Cuántas opciones tiene disponible?
++ ¿Cómo saber si la elección es adecuada o no?
+
+
+## Agreguemos algo de  información
+
+Es muy difícil hacerse una idea de la forma funcional _real_
+solo con la gráfica anterior. 
+
+Suponga que $\varepsilon_i$ tiene una distribución normal con media 0 y desviación 0.2. 
+
+Además, se muestra la función _real_ en color azul.
+
+```{r, echo=F, out.width="90%"}
+plot2 <- plot1 + geom_function(fun = f, color = "blue", 
+                               linewidth = 1)
+ggplotly(plot2)
+
+```
+
+
++ ¿Ahora sí?
++ ¿es polinómica?, ¿es trigonométrica, exponencial?, ¿es racional?, ¿Es alguna combinación de funciones elementales?
++ Está bien, sigue siendo difícil, miremos la ecuación de la función con la que 
+se simularon los datos
+
+## Forma funcional 
+
+La función _real_ a partir de la cual se simularon los datos tiene la forma
+
+$$f(x) = \frac{\left( \cos(ae^{bx}) \right) ^2}{c\sqrt{x}+d}$$
+
++ Ahora sí está fácil, ¿o no?, tenemos la forma funcional. Solo debemos encontrar
+los valores de a, b, c y d.
++ ¿Cómo estimamos los parámetros?
++ ¿Mínimos cuadrados, máxima verosimilitud?
++ Hay una dificultad, el modelo planteado no es lineal en los parámetros, la función de mínimos cuadrados ya no tendrá esa forma sencilla que podíamos incluso resolver de forma matricial (¿se acuerdan de aquella solución elegante $\hat{\boldsymbol{\beta}} = (\textbf{X}^T\textbf{X})^{-1}\textbf{X}^T\textbf{Y}$?)
+
++ Ni qué hablar de máxima verosimilitud, de por sí ya es más complicado de manejar numéricamente que el método de mínimos cuadrados.
+
++ La forma _real_ es: $$f(x) = \frac{\left( \cos(2.5e^{1.1x}) \right) ^2}{2.1\sqrt{x}+ e/\pi}$$
++ ¡Tampoco estaba tan difícil!
+
+### Haga la simulación en su computador
+
+```{r, out.width="90%"}
+library(tidyverse)
+library(plotly)
+set.seed(1005)
+n <- 500
+x <- runif(n, 0, 1.5)
+f <- function(x) (cos(2.5*exp(1.1*x))^2/(2.1*sqrt(x)+exp(1)/pi))
+error <- rnorm(n, 0, 0.2)
+y <- f(x) + error
+datos <- tibble(
+  x = x,
+  y = y
+)
+plot1 <- datos |> ggplot(aes(x = x, y = y)) +
+  geom_point() +
+  geom_function(fun = f, color = "blue",
+                linewidth = 1)
+ggplotly(plot1)
+```
+
+
+## Métodos de regularización  
+
+### Características
+
++ En la práctica, es muy difícil encontrar una forma funcional _a priori_ 
+adecuada para un modelo.  Algunas veces contamos con suficiente evidencia empírica o teórica (por ejemplo, la popular función de _Cobb Douglas_ para modelos econométricos) 
+para respaldar nuestra elección, pero estos casos son más bien rarezas o  los supuestos y simplificaciones son poco convenientes en algunos contextos.
+
++ Hemos visto algunas alternativas que intentan evitar esta difícil elección, como 
+los _regression splines_. Sin embargo, seguimos en la necesidad de parametrizar nuestros modelos aunque ahora lo hagamos de manera más sencilla y en pequeños intervalos.
+
++ Los _regression splines_ necesitan establecer un conjunto de _knots_ para controlar la flexibilidad del modelo. Se puede abordar el problema de regresión desde un punto de vista más general, una familia de métodos no paramétricos. Los llamados modelos de regularización plantean problemas de optimización sobre espacios funcionales bastante generales y controlan la flexiblidad del modelo a través de penalizaciones
+
+### Planteamiento matemático
+
+Matemáticamente, se puede escribir como
+
+$$
+\hat{f}(x) = \underset{f \in \mathcal{H}}{\arg \min} \left\{ \sum_{i=1}^{n} L(y_i, f(x_i)) + \lambda J(f) \right\}
+$$
+
+Esto es un problema bastante general y podemos comentar algunas cosas sin entrar en el detalle matemático:
+
++ $\mathcal{H}$ Es un espacio funcional de infinitas dimensiones (entiéndase como un conjunto muy grande de funciones).
++ $L(y_i, f(x_i))$ es una función de pérdida y mide qué tan bien se ajusta la función estimada a los datos. 
++ $J(f)$ Es una penalización funcional definida sobre el espacio $\mathcal{H}$. Este término en el problema mide qué tan flexible es la función estimada.
++ $\lambda \geq0$ es el _tuning parameter_ y es el que controla el _trade-off_ entre sesgo y varianza del modelo. A medida que aumenta el valor de $\lambda$ el sesgo aumenta y la varianza disminuye (¿por qué?)
++ Cuando $\lambda  = 0$, la solución $\hat{f}$ es cualquier función que interpole los datos. El espacio de funciones es tan grande que siempre podemos encontrar una función que haga cero la función objetivo (¿cómo se llama eso?)
+
+## Smoothing Spline
+
+Un _Smoothing Spline_, es un caso particular del problema más general planteado anteriormente con las siguientes características:
+
++ El espacio $\mathcal{H}$ Es un espacio de funciones con segundas derivadas continuas y con norma finita, es decir, un espacio de Sobolev de orden 2 (piense en una función que no cumpla este requisito).
++ La función de pérdida es la de mínimos cuadrados.
++ El término de penalización está expresado en términos de la segunda derivada. 
++ Bajo estas condiciones, el problema de regularización se reduce a: $$
+\hat{f}(x) = \underset{f \in \mathcal{H}}{\arg \min} \left\{ \sum_{i=1}^{n} \left( y_i - f(x_i) \right)^2 + \lambda \int (f''(t))^2dt \right\}$$
+Y es conocido como _Smoothing Splines_
+
+### ¿Cómo es la solución para un _smoothing spline_?
+El problema sigue siendo bastante general, pero...
+
++ Se puede hacer uso de algunas propiedades del espacio $\mathcal{H}$. Resulta
+que es un espacio de Hilbert con Kernel reproducible. ¿Cómo así? `r emoji::emoji("sleepy")`
++ El _kernel trick_ nos permite expresar la solución en términos de un número finito
+de bases (parámetros) ¡un resultado bastante impresionante!
++ De esa manera ya podemos optimizar y encontrar nuestra $\hat{f}$
++ Como siempre $\lambda$ debe ser calibrado para ajustar la flexibilidad del modelo.
+Es posible hacerlo con _CV_
++ ¿qué pasa si $\lambda=0$?
++ ¿y si $\lambda \to \infty$?
+
+```{r, echo=F, message=F}
+# ggplotly(fig1)
+
+```
+
+### Calibración
+
+Como se mencionó, debemos controlar la flexibilidad de la estimación para evitar 
+_overfitting_.
+En este caso, debemos encontrar el valor de $\lambda$ que minimiza el MSE calculado
+con _CV_. Hay varios paquetes disponibles en `R` para hacer la tarea. Usaremos `gam`
+que viene de _Generalized Additive Models_ `r emoji::emoji("tired")`
+
+### Un modelo muy flexible: $\lambda = 0.1$
+
+```{r, message=F, echo=T, message=F}
+# install.packages("gam")
+library(gam)
+lambda <- 0.1
+mod <- gam(formula = y ~ s(x, spar = lambda), data = datos)
+y_pred <- mod$fitted.values
+smooth1 <- plot1 + geom_line(aes(x = x, y = y_pred),
+                             color =  "red", linewidth = 1)
+ggplotly(smooth1)
+```
+
+### Un modelo poco flexible: $\lambda = 2$
+
+```{r, message=F, echo=T, message=F}
+lambda <- 2
+mod <- gam(formula = y ~ s(x, spar = lambda), data = datos)
+y_pred <- mod$fitted.values
+smooth2 <- plot1 + geom_line(aes(x = x, y = y_pred),
+                             color =  "red", linewidth = 1)
+ggplotly(smooth2)
+```
+
+### Un modelo calibrado (a ojo): $\lambda = 0.7$
+
+```{r, message=F, echo=T, message=F}
+lambda <- 0.7
+mod <- gam(formula = y ~ s(x, spar = lambda), data = datos)
+y_pred <- mod$fitted.values
+smooth3 <- plot1 + geom_line(aes(x = x, y = y_pred),
+                             color =  "red", linewidth = 1)
+ggplotly(smooth3)
+```
+
+
+------------
+
+:::{.callout-note}
+## Ejercicio en casa para reducir la fatiga emocional debida al ocio
+
+Implemente una función que calibre el valor de la pelnalización a través de validación cruzada
+:::

@@ -206,3 +206,5 @@ ggplotly(plot5)
 
 tomar un vector de cantidad de puntos de corte (nodos) y elegir el mejor valor con validación cruzada. 
 :::
+
+

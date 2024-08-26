@@ -30,6 +30,7 @@ book:
         - reg-multiple.qmd
         - flex-lineal.qmd
         - no-lineales.qmd
+        - ssplines.qmd
           
     - references.qmd
 

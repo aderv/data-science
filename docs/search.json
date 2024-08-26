@@ -827,6 +827,72 @@
     ]
   },
   {
+    "objectID": "ssplines.html",
+    "href": "ssplines.html",
+    "title": "12  Smoothing Splines",
+    "section": "",
+    "text": "12.1 Modelo simulado\nConsidere el siguiente conjunto de datos simulados a partir de un modelo del tipo\n\\[\ny_i = f(x_i) + \\varepsilon_i \\hspace{2cm} i=1,...,n\n\\]\nDonde \\(\\varepsilon_i\\) tiene una distribución normal \\(\\varepsilon_i \\sim \\mathrm{N} (0, \\sigma^2)\\)",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>_Smoothing Splines_</span>"
+    ]
+  },
+  {
+    "objectID": "ssplines.html#modelo-simulado",
+    "href": "ssplines.html#modelo-simulado",
+    "title": "12  Smoothing Splines",
+    "section": "",
+    "text": "Intente aproximar una forma funcional adecuada para estos datos\n¿Cuántas opciones tiene disponible?\n¿Cómo saber si la elección es adecuada o no?",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>_Smoothing Splines_</span>"
+    ]
+  },
+  {
+    "objectID": "ssplines.html#agreguemos-algo-de-información",
+    "href": "ssplines.html#agreguemos-algo-de-información",
+    "title": "12  Smoothing Splines",
+    "section": "12.2 Agreguemos algo de información",
+    "text": "12.2 Agreguemos algo de información\nEs muy difícil hacerse una idea de la forma funcional real solo con la gráfica anterior.\nSuponga que \\(\\varepsilon_i\\) tiene una distribución normal con media 0 y desviación 0.2.\nAdemás, se muestra la función real en color azul.\n\n\n\n\n\n\n\n¿Ahora sí?\n¿es polinómica?, ¿es trigonométrica, exponencial?, ¿es racional?, ¿Es alguna combinación de funciones elementales?\nEstá bien, sigue siendo difícil, miremos la ecuación de la función con la que se simularon los datos",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>_Smoothing Splines_</span>"
+    ]
+  },
+  {
+    "objectID": "ssplines.html#forma-funcional",
+    "href": "ssplines.html#forma-funcional",
+    "title": "12  Smoothing Splines",
+    "section": "12.3 Forma funcional",
+    "text": "12.3 Forma funcional\nLa función real a partir de la cual se simularon los datos tiene la forma\n\\[f(x) = \\frac{\\left( \\cos(ae^{bx}) \\right) ^2}{c\\sqrt{x}+d}\\]\n\nAhora sí está fácil, ¿o no?, tenemos la forma funcional. Solo debemos encontrar los valores de a, b, c y d.\n¿Cómo estimamos los parámetros?\n¿Mínimos cuadrados, máxima verosimilitud?\nHay una dificultad, el modelo planteado no es lineal en los parámetros, la función de mínimos cuadrados ya no tendrá esa forma sencilla que podíamos incluso resolver de forma matricial (¿se acuerdan de aquella solución elegante \\(\\hat{\\boldsymbol{\\beta}} = (\\textbf{X}^T\\textbf{X})^{-1}\\textbf{X}^T\\textbf{Y}\\)?)\nNi qué hablar de máxima verosimilitud, de por sí ya es más complicado de manejar numéricamente que el método de mínimos cuadrados.\nLa forma real es: \\[f(x) = \\frac{\\left( \\cos(2.5e^{1.1x}) \\right) ^2}{2.1\\sqrt{x}+ e/\\pi}\\]\n¡Tampoco estaba tan difícil!\n\n\n12.3.1 Haga la simulación en su computador\n\nlibrary(tidyverse)\nlibrary(plotly)\nset.seed(1005)\nn &lt;- 500\nx &lt;- runif(n, 0, 1.5)\nf &lt;- function(x) (cos(2.5*exp(1.1*x))^2/(2.1*sqrt(x)+exp(1)/pi))\nerror &lt;- rnorm(n, 0, 0.2)\ny &lt;- f(x) + error\ndatos &lt;- tibble(\n  x = x,\n  y = y\n)\nplot1 &lt;- datos |&gt; ggplot(aes(x = x, y = y)) +\n  geom_point() +\n  geom_function(fun = f, color = \"blue\",\n                linewidth = 1)\nggplotly(plot1)",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>_Smoothing Splines_</span>"
+    ]
+  },
+  {
+    "objectID": "ssplines.html#métodos-de-regularización",
+    "href": "ssplines.html#métodos-de-regularización",
+    "title": "12  Smoothing Splines",
+    "section": "12.4 Métodos de regularización",
+    "text": "12.4 Métodos de regularización\n\n12.4.1 Características\n\nEn la práctica, es muy difícil encontrar una forma funcional a priori adecuada para un modelo. Algunas veces contamos con suficiente evidencia empírica o teórica (por ejemplo, la popular función de Cobb Douglas para modelos econométricos) para respaldar nuestra elección, pero estos casos son más bien rarezas o los supuestos y simplificaciones son poco convenientes en algunos contextos.\nHemos visto algunas alternativas que intentan evitar esta difícil elección, como los regression splines. Sin embargo, seguimos en la necesidad de parametrizar nuestros modelos aunque ahora lo hagamos de manera más sencilla y en pequeños intervalos.\nLos regression splines necesitan establecer un conjunto de knots para controlar la flexibilidad del modelo. Se puede abordar el problema de regresión desde un punto de vista más general, una familia de métodos no paramétricos. Los llamados modelos de regularización plantean problemas de optimización sobre espacios funcionales bastante generales y controlan la flexiblidad del modelo a través de penalizaciones\n\n\n\n12.4.2 Planteamiento matemático\nMatemáticamente, se puede escribir como\n\\[\n\\hat{f}(x) = \\underset{f \\in \\mathcal{H}}{\\arg \\min} \\left\\{ \\sum_{i=1}^{n} L(y_i, f(x_i)) + \\lambda J(f) \\right\\}\n\\]\nEsto es un problema bastante general y podemos comentar algunas cosas sin entrar en el detalle matemático:\n\n\\(\\mathcal{H}\\) Es un espacio funcional de infinitas dimensiones (entiéndase como un conjunto muy grande de funciones).\n\\(L(y_i, f(x_i))\\) es una función de pérdida y mide qué tan bien se ajusta la función estimada a los datos.\n\\(J(f)\\) Es una penalización funcional definida sobre el espacio \\(\\mathcal{H}\\). Este término en el problema mide qué tan flexible es la función estimada.\n\\(\\lambda \\geq0\\) es el tuning parameter y es el que controla el trade-off entre sesgo y varianza del modelo. A medida que aumenta el valor de \\(\\lambda\\) el sesgo aumenta y la varianza disminuye (¿por qué?)\nCuando \\(\\lambda  = 0\\), la solución \\(\\hat{f}\\) es cualquier función que interpole los datos. El espacio de funciones es tan grande que siempre podemos encontrar una función que haga cero la función objetivo (¿cómo se llama eso?)",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>_Smoothing Splines_</span>"
+    ]
+  },
+  {
+    "objectID": "ssplines.html#smoothing-spline",
+    "href": "ssplines.html#smoothing-spline",
+    "title": "12  Smoothing Splines",
+    "section": "12.5 Smoothing Spline",
+    "text": "12.5 Smoothing Spline\nUn Smoothing Spline, es un caso particular del problema más general planteado anteriormente con las siguientes características:\n\nEl espacio \\(\\mathcal{H}\\) Es un espacio de funciones con segundas derivadas continuas y con norma finita, es decir, un espacio de Sobolev de orden 2 (piense en una función que no cumpla este requisito).\nLa función de pérdida es la de mínimos cuadrados.\nEl término de penalización está expresado en términos de la segunda derivada.\nBajo estas condiciones, el problema de regularización se reduce a: \\[\n\\hat{f}(x) = \\underset{f \\in \\mathcal{H}}{\\arg \\min} \\left\\{ \\sum_{i=1}^{n} \\left( y_i - f(x_i) \\right)^2 + \\lambda \\int (f''(t))^2dt \\right\\}\\] Y es conocido como Smoothing Splines\n\n\n12.5.1 ¿Cómo es la solución para un smoothing spline?\nEl problema sigue siendo bastante general, pero…\n\nSe puede hacer uso de algunas propiedades del espacio \\(\\mathcal{H}\\). Resulta que es un espacio de Hilbert con Kernel reproducible. ¿Cómo así? 😪\nEl kernel trick nos permite expresar la solución en términos de un número finito de bases (parámetros) ¡un resultado bastante impresionante!\nDe esa manera ya podemos optimizar y encontrar nuestra \\(\\hat{f}\\)\nComo siempre \\(\\lambda\\) debe ser calibrado para ajustar la flexibilidad del modelo. Es posible hacerlo con CV\n¿qué pasa si \\(\\lambda=0\\)?\n¿y si \\(\\lambda \\to \\infty\\)?\n\n\n\n12.5.2 Calibración\nComo se mencionó, debemos controlar la flexibilidad de la estimación para evitar overfitting. En este caso, debemos encontrar el valor de \\(\\lambda\\) que minimiza el MSE calculado con CV. Hay varios paquetes disponibles en R para hacer la tarea. Usaremos gam que viene de Generalized Additive Models 🥱\n\n\n12.5.3 Un modelo muy flexible: \\(\\lambda = 0.1\\)\n\n# install.packages(\"gam\")\nlibrary(gam)\nlambda &lt;- 0.1\nmod &lt;- gam(formula = y ~ s(x, spar = lambda), data = datos)\ny_pred &lt;- mod$fitted.values\nsmooth1 &lt;- plot1 + geom_line(aes(x = x, y = y_pred),\n                             color =  \"red\", linewidth = 1)\nggplotly(smooth1)\n\n\n\n\n\n\n\n12.5.4 Un modelo poco flexible: \\(\\lambda = 2\\)\n\nlambda &lt;- 2\nmod &lt;- gam(formula = y ~ s(x, spar = lambda), data = datos)\ny_pred &lt;- mod$fitted.values\nsmooth2 &lt;- plot1 + geom_line(aes(x = x, y = y_pred),\n                             color =  \"red\", linewidth = 1)\nggplotly(smooth2)\n\n\n\n\n\n\n\n12.5.5 Un modelo calibrado (a ojo): \\(\\lambda = 0.7\\)\n\nlambda &lt;- 0.7\nmod &lt;- gam(formula = y ~ s(x, spar = lambda), data = datos)\ny_pred &lt;- mod$fitted.values\nsmooth3 &lt;- plot1 + geom_line(aes(x = x, y = y_pred),\n                             color =  \"red\", linewidth = 1)\nggplotly(smooth3)\n\n\n\n\n\n\n\n\n\n\n\n\nEjercicio en casa para reducir la fatiga emocional debida al ocio\n\n\n\nImplemente una función que calibre el valor de la pelnalización a través de validación cruzada",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>_Smoothing Splines_</span>"
+    ]
+  },
+  {
     "objectID": "references.html",
     "href": "references.html",
     "title": "Referencias",
