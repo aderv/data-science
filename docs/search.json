@@ -893,6 +893,28 @@
     ]
   },
   {
+    "objectID": "locales.html",
+    "href": "locales.html",
+    "title": "13  Suavizadores locales",
+    "section": "",
+    "text": "13.1 Kernel Smoothing\nOtra gran familia de modelos predictivos son los conocidos métodos de suavizado con kernel. A diferencia de los modelos vistos hasta ahora, estos predicen de forma local. Caen dentro de los métodos no paramétricos. Ya hemos visto uno de estos algoritmos: KNN.",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Suavizadores locales</span>"
+    ]
+  },
+  {
+    "objectID": "locales.html#kernel-smoothing",
+    "href": "locales.html#kernel-smoothing",
+    "title": "13  Suavizadores locales",
+    "section": "",
+    "text": "Recordemos el algoritmo de \\(k\\) vecinos más cercanos \\[\\hat{f}(x_0)=\\frac{1}{k} \\sum_{i:x_i \\in \\mathcal{N}_k(x_0)} y_i\\]\nLa predicción se hace punto a punto (de forma local).\n\\(\\mathcal{N}_k(x_0)\\) Es el vecindario del punto \\(x_0\\), es decir, el conjunto de los \\(k\\) puntos más cercanos a \\(x_0\\).\nLa predicción es sencillamente el promedio (de la variable \\(y\\) claro está) para aquellos \\(k\\) puntos más cercanos a \\(x_0\\).\nSencillo, pero aún así muy efectivo para algunos casos.",
+    "crumbs": [
+      "Ciencia de datos",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>Suavizadores locales</span>"
+    ]
+  },
+  {
     "objectID": "references.html",
     "href": "references.html",
     "title": "Referencias",

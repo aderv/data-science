@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.56">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>13&nbsp; Suavizadores locales – Ciencia de Datos</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./references.html" rel="next">
+<link href="./ssplines.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-JBLWWCLEGX"></script>
+
+<script type="text/javascript">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-JBLWWCLEGX', { 'anonymize_ip': true});
+</script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+<script src="site_libs/plotly-binding-4.10.4/plotly.js"></script>
+
+<script src="site_libs/typedarray-0.1/typedarray.min.js"></script>
+
+<script src="site_libs/jquery-3.5.1/jquery.min.js"></script>
+
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+
+<link href="site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+
+<script src="site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="styles/global.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ds-intro.html">Ciencia de datos</a></li><li class="breadcrumb-item"><a href="./locales.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Suavizadores locales</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Ciencia de Datos</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Presentación</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Análisis Exploratorio</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./r-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introducción al uso de <code>R</code></span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./uso-ggplot2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Uso de <code>ggplot2</code></span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./uso-dplyr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Uso de <code>dplyr</code></span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Inferencia clásica</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./r-prob.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Probabilidad</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./r-estimacion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Estimación</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./r-hipotesis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Pruebas de hipótesis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Ciencia de datos</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ds-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Definiciones</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reg-simple.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Regresión lineal simple</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./reg-multiple.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Regresión lineal múltiple</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./flex-lineal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Calibración del modelo lineal</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./no-lineales.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Modelos no lineales</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./ssplines.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title"><em>Smoothing Splines</em></span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./locales.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Suavizadores locales</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referencias</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#kernel-smoothing" id="toc-kernel-smoothing" class="nav-link active" data-scroll-target="#kernel-smoothing"><span class="header-section-number">13.1</span> <em>Kernel Smoothing</em></a></li>
+  <li><a href="#veamos-una-simulación" id="toc-veamos-una-simulación" class="nav-link" data-scroll-target="#veamos-una-simulación"><span class="header-section-number">14</span> Veamos una simulación</a></li>
+  <li><a href="#implementemos-knn" id="toc-implementemos-knn" class="nav-link" data-scroll-target="#implementemos-knn"><span class="header-section-number">15</span> Implementemos Knn</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ds-intro.html">Ciencia de datos</a></li><li class="breadcrumb-item"><a href="./locales.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Suavizadores locales</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Suavizadores locales</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="kernel-smoothing" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="kernel-smoothing"><span class="header-section-number">13.1</span> <em>Kernel Smoothing</em></h2>
+<p>Otra gran familia de modelos predictivos son los conocidos métodos de suavizado con kernel. A diferencia de los modelos vistos hasta ahora, estos predicen de forma <strong>local</strong>. Caen dentro de los métodos no paramétricos. Ya hemos visto uno de estos algoritmos: KNN.</p>
+<ul>
+<li>Recordemos el algoritmo de <span class="math inline">\(k\)</span> vecinos más cercanos <span class="math display">\[\hat{f}(x_0)=\frac{1}{k} \sum_{i:x_i \in \mathcal{N}_k(x_0)} y_i\]</span></li>
+<li>La predicción se hace punto a punto (de forma local).</li>
+<li><span class="math inline">\(\mathcal{N}_k(x_0)\)</span> Es el <em>vecindario</em> del punto <span class="math inline">\(x_0\)</span>, es decir, el conjunto de los <span class="math inline">\(k\)</span> puntos más cercanos a <span class="math inline">\(x_0\)</span>.</li>
+<li>La predicción es sencillamente el promedio (de la variable <span class="math inline">\(y\)</span> claro está) para aquellos <span class="math inline">\(k\)</span> puntos más cercanos a <span class="math inline">\(x_0\)</span>.</li>
+<li>Sencillo, pero aún así muy efectivo para algunos casos.</li>
+</ul>
+</section>
+<section id="veamos-una-simulación" class="level1" data-number="14">
+<h1 data-number="14"><span class="header-section-number">14</span> Veamos una simulación</h1>
+<p>Consideremos el mismo conjunto de datos</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="dv">0</span>, <span class="fl">1.5</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="cf">function</span>(x) (<span class="fu">cos</span>(<span class="fl">2.5</span><span class="sc">*</span><span class="fu">exp</span>(<span class="fl">1.1</span><span class="sc">*</span>x))<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span>(<span class="fl">2.1</span><span class="sc">*</span><span class="fu">sqrt</span>(x)<span class="sc">+</span><span class="fu">exp</span>(<span class="dv">1</span>)<span class="sc">/</span>pi))</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>error <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="fl">0.2</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">f</span>(x) <span class="sc">+</span> error</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x,y)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>fig1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(x,y)) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="sc">-</span><span class="fl">0.3</span>, <span class="dv">1</span>) <span class="sc">+</span> <span class="fu">xlim</span>(<span class="sc">-</span><span class="fl">0.1</span>, <span class="fl">1.6</span>) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> <span class="fu">f</span>(x)), <span class="at">col =</span> <span class="st">"blue"</span>, <span class="at">lwd =</span> <span class="dv">1</span>) </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplotly</span>(fig1)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-74efd652fc575b86ee2a" style="width:70%;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-74efd652fc575b86ee2a">{"x":{"data":[{"x":[1.2785398800624534,1.376296310685575,1.4679370938101783,0.30959333712235093,1.3787172477459535,1.214812442776747,0.45688969432376325,0.48976427887100726,1.4494470540666953,0.40612237039022148,1.4123336467891932,0.044876797939650714,1.1609219141537324,0.54003085114527494,0.622383106732741,1.2744349156273529,0.7495350711978972,0.71801544679328799,0.20269592979457229,0.44787581695709378,0.33265452843625098,0.75050059414934367,1.2989998395787552,1.4132071629865095,0.43589669500943273,0.034388674423098564,0.62578866980038583,0.17301665944978595,1.376872054184787,1.0699830071534961,1.1011942257173359,0.54982975521124899,0.097958829835988581,0.070289661060087383,0.053841675049625337,0.88158238981850445,0.51823777751997113,1.4611407131887972,0.26175432256422937,0.64789521472994238,0.91372313909232616,0.45500471780542284,1.3701825344469398,1.1960683492943645,0.73906948731746525,1.11037096765358,0.77491390134673566,0.1584539293544367,1.2097859226632863,0.90179491834715009,1.377581894164905,0.076331798569299281,0.74045558064244688,0.41905653441790491,0.35490059712901711,0.49108153546694666,0.28301794698927552,0.1033738546539098,1.0349198133917525,0.27949867257848382,0.7889678212814033,0.91803070390596986,1.0512104647932574,1.2632410445949063,0.29174018441699445,0.70471798803191632,0.67477077234070748,1.0392966134240851,0.94577671762090176,0.92778218735475093,0.9917804062133655,1.4622856004862115,0.51720361062325537,0.91499509394634515,1.4255373550113291,1.177436750382185,0.87756747601088136,0.3161395126953721,0.86943729815538973,0.14671530935447663,0.67378354375250638,0.024447452276945114,0.39716136432252824,0.92740687925834209,1.1443578317994252,0.44395379559136927,0.22769555915147066,1.4027528499718755,0.40853528107982129,1.1222455026581883,0.39185563393402845,0.71445727162063122,1.1879830774851143,0.20752311812248081,0.55938930530101061,0.74966430582571775,1.2644396029645577,0.056409267126582563,1.1735437021125108,0.62235372292343527,0.92450114758685231,0.87038802041206509,1.3776824616361409,0.26229692052584141,1.1176142783369869,1.3377449068939313,0.94429792813025415,0.54627410578541458,1.4370453560259193,0.7774644938763231,0.4235980084631592,0.94750440318603069,1.1978676281869411,1.4869209980824962,0.40701311733573675,0.17819312168285251,0.67505474702920765,1.1687500843545422,0.97903698252048343,0.042446704348549247,0.12204064603429288,0.24333478719927371,0.78562213783152401,0.88500031060539186,0.092036284622736275,0.77515163202770054,0.5841726497747004,0.56663848087191582,1.2599810165120289,0.73162159987259656,1.2726506399922073,0.54568943905178457,0.57145614631008357,1.2768897333880886,1.0790690121939406,1.2285916514229029,1.440086500835605,1.4980238482821733,0.27943807526025921,1.2763854620279744,0.2436791171785444,1.3338550060288981,0.082531298277899623,0.80761728552170098,0.56965576170478016,0.29050867329351604,1.0101011727238074,0.11564048565924168,0.76001174014527351,0.18665373022668064,1.35401599353645,0.83502880611922592,0.9073502408573404,0.5193627382395789,1.0938106183893979,1.4742379523813725,0.11185089137870818,0.36062402464449406,0.97421341273002326,0.88586437061894685,0.12780013214796782,0.51270087354350835,1.3794172082562,1.0367150249658152,0.20698437269311398,1.3698122160276398,0.30874442250933498,0.55079227848909795,0.27400440454948694,0.1125181334791705,0.043840064783580601,1.1154510184423998,1.1826892473036423,0.59603192273061723,0.086579955881461501,0.8739669177448377,1.1938673697877675,0.88115443324204534,0.64449342561420053,1.3867054773727432,0.48701933829579502,0.26311675796750933,0.069989431067369878,0.93990174739155918,0.79748663515783846,1.3756000444991514,0.78678933216724545,0.10416584112681448,1.1108148742932826,1.0922137764282525,0.51903012371622026,1.4256211471511051,1.0886820968007669,0.82984690123703331,0.29321247478947043,1.1183472006814554,1.0683769210008904,0.43315835203975439,0.079486379865556955,1.3700651088729501,0.46101210359483957,0.31960430054459721,0.20324499194975942,1.0716022099368274,0.028641498880460858,0.44760826032143086,0.84800999367143959,1.2658569213235751,1.4037243921775371,1.3839143986115232,0.87239431380294263,0.91069549787789583,0.020141220884397626,0.18999396194703877,0.063827068079262972,0.39080013614147902,1.3778614669572562,1.1642077151918784,1.1021634974749759,0.95209005824290216,1.3261733724502847,0.93681499210651964,0.11891303560696542,0.47053547669202089,0.14800695434678346,1.3170157925924286,1.3543649594066665,0.090587482089176774,0.48131366225425154,1.0008876181673259,0.85357309808023274,0.15820356435142457,0.30028336239047348,1.1852553802309558,0.31420462054666132,1.3915448721963912,0.64577635901514441,0.059331649448722601,0.1378254562150687,1.4433568201493472,1.4358706689672545,1.2153756616171449,0.68068309652153403,0.19736457208637148,1.2050271729240194,1.1424933319212869,0.58733436756301671,0.93709382344968617,1.2783171753399074,1.2401685352670029,1.1305276300990954,0.27876396803185344,0.59921691985800862,0.77435909619089216,0.56142590241506696,0.86173215019516647,0.94395230174995959,1.4314917594892904,0.79486786422785372,0.98960527335293591,0.16931195149663836,1.4853363577276468,0.29158947465475649,0.29418641945812851,0.96514369791839272,0.28807319956831634,1.341999860946089,0.93087804189417511,0.006430597510188818,1.3356024243403226,1.4334020734531805,1.0185271472437307,0.38777263602241874,1.3644864294910803,0.72554010129533708,1.0892366948537529,0.93332462618127465,0.41251134511549026,0.15336604358162731,0.033414521254599094,1.0926016500452533,1.0466528531396762,0.73718069738242775,1.189754078630358,1.2439140138449147,0.4079003365477547,0.84570373536553234,0.040726771345362067,0.54236704751383513,0.89841325837187469,0.65310402307659388,0.88186722190584987,0.51589545677416027,0.83798822003882378,0.90566048515029252,0.74883117433637381,0.81249723478686064,0.75449696579016745,1.1869488107040524,0.28183702030219138,0.75672561500687152,0.91389371640980244,1.4883236669702455,0.65451700834091753,0.4935297779738903,1.3665245898300782,1.0824100353056565,1.1945963501930237,0.26169041369576007,0.51156121899839491,0.25412293081171811,0.44003051589243114,1.2370420473162085,0.26657002978026867,0.010559350135736167,0.58960157737601548,0.4602612879825756,1.4266276097623631,0.88530875276774168,0.84027236758265644,0.65752459201030433,1.3492862022249028,0.91977521264925599,0.24003435065969825,0.5260059367865324,0.03586304560303688,0.4983654044335708,0.028673675958998501,0.90113629808183759,0.45436727022752166,0.44837688049301505,0.49745895434170961,0.88887578516732901,0.46675867144949734,1.310913281631656,0.2646787092089653,1.1188319704961032,1.2344645879929885,0.085012123337946832,0.089952426147647202,0.88856938225217164,1.0426104149082676,1.4331266472581774,1.0072189959464595,1.2568379313452169,1.4442724515683949,0.1966780205257237,0.61388180823996663,0.0342031727777794,0.21129252144601196,1.2317434806609526,0.17216383712366223,0.18291226273868233,0.29962539067491889,0.83732305839657784,0.72655863699037582,0.47919676546007395,1.2337858207756653,0.21572976477909833,1.3173164189793169,1.414748651208356,1.0811402209801599,0.61802572372835129,0.7022277417127043,1.223082188051194,0.74140950199216604,0.44003914401400834,1.2586821012664586,0.22778549522627145,1.3910713994409889,1.3837262035813183,1.0425516462419182,0.20147720002569258,0.86576006677933037,0.20604071079287678,0.13971353264059871,0.18433572363574058,0.43709226907230914,1.3468733798945323,0.066614179755561054,0.57956836349330842,0.015444742399267852,0.82831847865600139,0.76279485295526683,0.99073006713297218,0.48173057218082249,1.1635539075359702,0.48943694878835231,1.2758012325502932,1.2447132070083171,1.2599331530509517,1.1015165406279266,0.71065484290011227,0.23785732698161155,0.4381802111165598,0.65048499195836484,0.63662859506439418,0.31992874410934746,1.4711538618430495,0.14116643532179296,1.1255436226492748,1.0680551875848323,1.4991753262002021,1.3897193914745003,1.1230396073078737,0.72598704742267728,1.0049907902721316,0.55827850406058133,0.95250815420877188,0.24377460696268827,0.98070866370107979,0.20755315327551216,0.88583771302364767,0.79623599932529032,0.16094352083746344,1.3063831776380539,0.10963177133817226,1.1813926133327186,1.1987013299949467,0.86707418924197555,1.1891964917303994,1.0577534943586215,0.10667880380060524,0.092778106103651226,0.46443157363682985,0.8172652741195634,0.59298606519587338,1.3729824159527197,1.1513508951757103,0.34621109033469111,1.2625820122193545,0.2160988604882732,1.0748183549148962,0.78679459635168314,0.73451227869372815,0.35176224424503744,0.68096111551858485,1.4897040365030989,0.087586778914555907,0.70958346908446401,0.93118750071153045,0.6439645285718143,0.31074787792749703,1.4491855519590899,0.58377319376450032,0.86671861878130585,0.86183023802004755,0.035885832505300641,1.1278911206172779,1.0590630284277722,1.4394710075575858,1.2379649888025597,1.2219049141276628,0.3218315108679235,0.56897430389653891,1.0432673109462485,1.1804699847707525,1.2300324967363849,0.79374479432590306,1.1648953930707648,0.4835683184210211,1.2588038382818922,1.2301244151312858,1.0809585488168523,0.40174186800140887,0.5300062692258507,0.34979853231925517,0.31176332873292267,0.72338839585427195,0.52720668632537127,0.47969644458498806,0.38748567283619195,0.32849005318712443,1.0482505493564531,0.53080246306490153,0.90440129872877151,0.61125048226676881,0.59845812921412289,0.88148343621287495,1.0908710133517161,0.1166265404317528,1.424544713110663,1.1915994265582412,1.0953329190379009,0.3900517561705783,0.25481460127048194,0.1691699861548841,0.50720300409011543,0.42216622887644917,1.3019588574534282,1.1382249322487041,1.1527641207212582,0.64586092648096383,0.82744488772004843,0.73251642391551286,0.585158436675556,1.4545311945257708,0.056329043232835829,0.42544700636062771,0.73870542389340699],"y":[0.19533709102265304,0.20041433422152877,0.19807626572381046,0.30679869983532199,0.12559664949417909,0.72253979162812465,0.12685496131437596,0.29697904035229394,0.25800419123740659,0.16309725764039892,0.23434234846595264,0.38009093424517676,0.17423863103393505,-0.1760083842327855,0.0593544801560041,0.2001136597111367,0.20321035821406663,0.022450781350928373,0.54486926368553568,0.17548022622908477,0.14828594164894002,0.47189467527189166,0.20241025938618407,0.015545779042221153,0.056572147427926198,0.87587397521484545,null,0.3149423614634681,0.099964604487519024,-0.21692105648047294,0.054148165824287567,-0.041351624771028356,0.55900060849183453,0.58106354245178127,0.58673970750935234,0.26944671643818274,0.20232253644453574,0.46728511911807691,0.52495951449508138,-0.04893868529664451,0.1355811007467578,0.27704450406004788,-0.027874677352111684,0.32029221509140426,0.57769822959362305,0.014688493594705546,0.63384552615713963,0.70861285426034182,-0.0073508351645075742,0.44296186941718318,-0.086172274695640538,0.40367050004581989,0.19200337920814992,0.068651231635794702,0.22462190897981132,0.28625095902170111,0.46120905055457295,0.82644913950804066,0.15208653921736526,0.65887213003487177,0.72613128764286361,-0.21157520882812639,-0.090762012957716229,0.34329720491485177,0.42895401495363977,0.29883710654221973,-0.058095620416968308,-0.20567408234353332,0.088375513355507015,0.19369434662875271,-0.053061657486265644,-0.0060543335057801073,0.19171900561130031,0.48736307758033759,0.57159228244234017,0.12134725364485457,0.28170604008018452,0.32257675821555171,0.55138749288048583,0.80273853454146482,0.15073254961982951,0.47668845456106601,0.32575379955238448,0.32816873753345704,-0.030296368718282451,0.36630176226951761,0.5921217878762246,0.20107835022292964,0.22762629217701186,0.02818955984698307,0.29112815577116047,0.49993534101593162,0.57589693165087152,0.38754088088456606,-0.17647332920178035,0.42130444545560264,0.13735552635436182,0.89478259266215909,0.3224276581885514,0.032999005251179131,0.1868229438820328,0.47618775532713187,0.36903024329562578,0.67930148570666005,-0.22790822387135304,-0.1225467080102164,0.22446253415909834,0.22078236793452893,0.088551734548965366,0.40297144311823102,0.27158244257077657,0.35735992839355718,0.55925882278864658,0.57148389530335886,0.55222974990464746,0.17745869135288495,-6.5293601156840575e-05,0.11143212327292715,-0.15137989513444763,0.68888215608909564,0.79238217832645108,0.82982855752422247,0.33691094589371462,0.26124430162263462,0.27155453777221472,0.19915572261418152,-0.063151894913722625,-0.046640391160139294,0.2819324863331284,0.39440778787511999,0.306333294143804,-0.19050788409880764,-0.0083543705260041099,0.03300158015805385,0.1529656274694336,0.43176053452691165,0.27769330535191811,0.44156755670206949,0.22841316397763539,0.29006210527435272,0.64179878654121003,-0.021917993765963158,0.53958738938686257,0.43567961290912643,-0.2349201381486144,0.38262666704961357,0.31932684028610597,0.33164687381943458,0.49853457246565003,0.72042535929626839,0.15618705348787998,0.16814214784673698,0.21826195057317926,null,0.0053837526792218926,0.21564765003216224,0.64934207061259697,0.33176632820147778,-0.22884597818567459,0.28947943595518499,null,0.096278933766919067,0.069317826845971486,-0.14109939640779989,0.64792725998904244,0.094283144138213787,0.37681846388521723,-0.16505417491336957,0.39210654996149719,0.87258156537618459,0.45357526349093935,0.44498349947595883,0.18049571095715949,-0.056903719597357474,0.9224637404259094,0.31897784411360519,0.19670479267758467,0.28008870506314165,-0.14107995709422055,0.35534527111362968,0.070959072203481147,0.73782139525462487,0.34863338033543134,-0.037799841139783102,0.8191950255066992,0.10763092534998492,0.33799520920555953,0.51748694315079768,0.036823288730307366,0.60889866778185187,-0.17165019825848807,0.38230383503682175,-0.095282580146907048,0.4820545876173265,0.60100665896279026,0.54207551936775333,0.16788850425039831,0.56557785127067728,0.479812573832477,-0.043855937709895883,0.29528581903621104,0.29153911691157602,0.56714624590401175,-0.27769173651064738,0.68604552994890478,0.38571607453047202,0.067986613015715014,0.17091046905745694,0.13490597165658544,-0.02000785477228624,0.49299362777970979,0.42913412846464422,0.77242312061226515,0.42115485237391909,0.90052430558473873,0.35918315180191246,-0.22187847759552515,0.47422051967880346,-0.045560872858403892,0.33185192453875489,-0.22968161971609116,0.48719237172764851,0.65769507633529334,0.059777045495776455,0.50174105368054933,0.10247431895582182,0.24282043002430118,0.61105714318490201,null,-0.13742817839704383,0.46202313902022057,0.64900192574386051,0.70226151917806345,0.29663083890431269,0.49131415504546905,null,null,0.54478844298338069,0.39373411935555064,0.37709116307334239,0.026700014121676829,0.4453262899474652,0.13568864854890034,0.58932381070257722,0.41112970301587143,0.24798118967943061,-0.055040183778048042,-0.0030553776130989863,0.4215703204381015,0.40505214098750775,0.36082597321981308,0.56215573859126344,0.12946924594166592,0.32144364993582697,-0.057225143689217932,0.22147690115344182,0.10310342738033249,-0.20665788759260473,0.37764577784658415,0.019044799281833773,0.3028111336833415,-0.1588454331384393,0.37098355662183158,0.59634102564003566,0.32512474995943852,-0.098347653516735245,0.0075727965140113488,0.26603486210817434,0.74066742649959916,-0.18151825078874537,0.19792541986044676,-0.16433422011255597,0.36135558007817314,-0.078958670139890053,0.34680072373826454,-0.13312896980848221,0.0068968565509409663,0.2650918345982422,0.87935018271996412,0.49235146345789926,0.24038696582239327,-0.0015144256662848587,0.25326532179588501,0.3666677576064033,0.12066604262431765,0.061418473599203327,0.58589769718388407,0.73100182493660015,0.072356449449665572,0.23971092138595448,0.016039944831384968,0.063737306366993041,-0.070833784034559033,0.40778759361870609,0.56779833669205715,0.16101552864367963,0.43910494661088034,0.78951787045259314,0.1925704767711145,0.60582015993416372,0.23602221876755755,-0.15101441793661186,0.024571537200221927,0.085862326310204448,0.12600165042168959,0.27668776380760984,-0.04752926380948172,0.3058022731972192,0.58848581611433648,null,0.68358445685752989,0.40380138802475313,0.53161451850202468,0.51771658211693639,0.47532722562331686,0.3399063371880871,0.40655055791081801,0.039224645098703464,0.21395740565758664,0.437604838289892,0.040622313182922129,0.013208437100121914,0.17014430938253833,0.39677684132848801,-0.0053765143141787028,0.61232575896452701,0.198855434620132,0.52985584585692636,0.69893533434695998,0.16207136680109036,0.046135700001622343,-0.13070770294684397,0.47663232445972181,-0.06526360450436193,0.31918238579764474,0.40736579130784745,-0.029879268258403202,0.75648642667076471,0.46715540346682405,0.7431311357506456,0.21987689792934123,0.17099719018045498,0.39830297047536023,0.12837923755904654,0.29307296287275852,0.29208993259488902,0.6589304681198872,0.080780205606599514,0.36625435369457249,0.44866143521103469,0.28084364323297961,0.79140915074467855,0.52009253998322347,0.63042638771665849,0.016729957508611726,0.14326734055366758,0.41364931633867469,0.40820763144019995,0.59970358523958889,-0.24717668872486398,0.71578106722262835,-0.18763031206132488,0.10151666274632985,0.36760033666781156,0.34544379562020822,0.2320862076066133,0.14961837196034847,0.35623748997995064,0.55329176792120482,0.1068507080346103,0.21969126691998267,-0.20800055254679514,0.78227629490880934,0.29485444964638874,0.61601148186004651,0.67930776601445741,0.72943050173741075,-0.079468558510693177,-0.2612828661090435,0.55647806151691859,0.16973424398286072,0.4992413670687772,0.29310856694573045,0.21905754644626002,0.19490302001848558,-0.085304888584960423,0.74406855408637773,null,0.54314966539773191,0.49029418859168195,0.38116860001392616,-0.17198268495383939,0.11347297218732012,0.33804131196965614,0.4509720554941089,0.040291075337724087,0.021028709132023191,0.63481056792244028,0.62144247054035318,0.39241829975193199,0.22336654466492828,0.10627728454128355,0.22934128574571302,-0.10751770404309806,0.30022386243997445,0.47659123954927929,0.075681838607528598,-0.027570179709766211,0.33153832546387552,0.43202605289903268,0.3351238638778431,0.55957664332411239,0.32572822906244953,0.4901790558372543,0.92134356441929977,0.014310250223251955,0.862334203829076,0.34150846754172592,0.45104958043131416,0.46644748233745859,0.11352272647734127,-0.26358747366934393,0.66350142444832494,0.75070916391426301,0.38168128349994851,0.3849782019977287,-0.022241304867752793,0.049757359615304482,0.0027208605260959084,0.52134984074849511,0.2669028495644028,0.6402345771398259,-0.26123426398298322,0.4458114727088166,0.4502576312884346,0.040298048643612638,0.39630155779745557,0.28693161413242385,0.40887378538169616,-0.14258359277927424,0.20455733053218825,0.089712435595968337,0.48419736839865501,0.25768170971904247,0.50971131815625692,0.60682591864386859,0.30037177137491117,0.42752987296902201,0.20766349853247107,0.41538169480500975,0.054009787450743196,0.11387191179786241,0.48454314257352737,-0.0019962935170790286,null,0.06266957679276719,-0.095346931896974796,0.27225965900513444,0.4054291600909401,0.39942122034835015,-0.016860225694458497,0.18586077863398209,0.36260139180893292,0.063399255890371625,0.45272377651049489,-0.072270519064227601,null,0.32486047562785675,-0.060708123189295499,-0.14267512847254366,0.14406505695190847,0.36665974266277318,0.52839642990450897,0.24122641507017104,0.24826001133361647,0.015622125372631357,0.40250349178990802,0.18910423885287722,0.28092900452711123,0.04195153004963581,0.33280797960867281,0.0022256776041651438,0.26138356936292118,0.085200864786464423,0.34868086748425481,0.67443199033385193,0.65821668758470597,-0.17508050319823382,0.15209757612273234,-0.0070825389307743458,0.083748420725510156,0.47634622648884561,null,0.0051194611364331344,0.31567136764490816,-0.15562470844152654,0.28079610310024766,0.064643078593542125,0.32549042495991709,0.0084956514923837378],"text":["x: 1.278539880<br />y:  0.1953370910","x: 1.376296311<br />y:  0.2004143342","x: 1.467937094<br />y:  0.1980762657","x: 0.309593337<br />y:  0.3067986998","x: 1.378717248<br />y:  0.1255966495","x: 1.214812443<br />y:  0.7225397916","x: 0.456889694<br />y:  0.1268549613","x: 0.489764279<br />y:  0.2969790404","x: 1.449447054<br />y:  0.2580041912","x: 0.406122370<br />y:  0.1630972576","x: 1.412333647<br />y:  0.2343423485","x: 0.044876798<br />y:  0.3800909342","x: 1.160921914<br />y:  0.1742386310","x: 0.540030851<br />y: -0.1760083842","x: 0.622383107<br />y:  0.0593544802","x: 1.274434916<br />y:  0.2001136597","x: 0.749535071<br />y:  0.2032103582","x: 0.718015447<br />y:  0.0224507814","x: 0.202695930<br />y:  0.5448692637","x: 0.447875817<br />y:  0.1754802262","x: 0.332654528<br />y:  0.1482859416","x: 0.750500594<br />y:  0.4718946753","x: 1.298999840<br />y:  0.2024102594","x: 1.413207163<br />y:  0.0155457790","x: 0.435896695<br />y:  0.0565721474","x: 0.034388674<br />y:  0.8758739752","x: 0.625788670<br />y: -0.3731177567","x: 0.173016659<br />y:  0.3149423615","x: 1.376872054<br />y:  0.0999646045","x: 1.069983007<br />y: -0.2169210565","x: 1.101194226<br />y:  0.0541481658","x: 0.549829755<br />y: -0.0413516248","x: 0.097958830<br />y:  0.5590006085","x: 0.070289661<br />y:  0.5810635425","x: 0.053841675<br />y:  0.5867397075","x: 0.881582390<br />y:  0.2694467164","x: 0.518237778<br />y:  0.2023225364","x: 1.461140713<br />y:  0.4672851191","x: 0.261754323<br />y:  0.5249595145","x: 0.647895215<br />y: -0.0489386853","x: 0.913723139<br />y:  0.1355811007","x: 0.455004718<br />y:  0.2770445041","x: 1.370182534<br />y: -0.0278746774","x: 1.196068349<br />y:  0.3202922151","x: 0.739069487<br />y:  0.5776982296","x: 1.110370968<br />y:  0.0146884936","x: 0.774913901<br />y:  0.6338455262","x: 0.158453929<br />y:  0.7086128543","x: 1.209785923<br />y: -0.0073508352","x: 0.901794918<br />y:  0.4429618694","x: 1.377581894<br />y: -0.0861722747","x: 0.076331799<br />y:  0.4036705000","x: 0.740455581<br />y:  0.1920033792","x: 0.419056534<br />y:  0.0686512316","x: 0.354900597<br />y:  0.2246219090","x: 0.491081535<br />y:  0.2862509590","x: 0.283017947<br />y:  0.4612090506","x: 0.103373855<br />y:  0.8264491395","x: 1.034919813<br />y:  0.1520865392","x: 0.279498673<br />y:  0.6588721300","x: 0.788967821<br />y:  0.7261312876","x: 0.918030704<br />y: -0.2115752088","x: 1.051210465<br />y: -0.0907620130","x: 1.263241045<br />y:  0.3432972049","x: 0.291740184<br />y:  0.4289540150","x: 0.704717988<br />y:  0.2988371065","x: 0.674770772<br />y: -0.0580956204","x: 1.039296613<br />y: -0.2056740823","x: 0.945776718<br />y:  0.0883755134","x: 0.927782187<br />y:  0.1936943466","x: 0.991780406<br />y: -0.0530616575","x: 1.462285600<br />y: -0.0060543335","x: 0.517203611<br />y:  0.1917190056","x: 0.914995094<br />y:  0.4873630776","x: 1.425537355<br />y:  0.5715922824","x: 1.177436750<br />y:  0.1213472536","x: 0.877567476<br />y:  0.2817060401","x: 0.316139513<br />y:  0.3225767582","x: 0.869437298<br />y:  0.5513874929","x: 0.146715309<br />y:  0.8027385345","x: 0.673783544<br />y:  0.1507325496","x: 0.024447452<br />y:  0.4766884546","x: 0.397161364<br />y:  0.3257537996","x: 0.927406879<br />y:  0.3281687375","x: 1.144357832<br />y: -0.0302963687","x: 0.443953796<br />y:  0.3663017623","x: 0.227695559<br />y:  0.5921217879","x: 1.402752850<br />y:  0.2010783502","x: 0.408535281<br />y:  0.2276262922","x: 1.122245503<br />y:  0.0281895598","x: 0.391855634<br />y:  0.2911281558","x: 0.714457272<br />y:  0.4999353410","x: 1.187983077<br />y:  0.5758969317","x: 0.207523118<br />y:  0.3875408809","x: 0.559389305<br />y: -0.1764733292","x: 0.749664306<br />y:  0.4213044455","x: 1.264439603<br />y:  0.1373555264","x: 0.056409267<br />y:  0.8947825927","x: 1.173543702<br />y:  0.3224276582","x: 0.622353723<br />y:  0.0329990053","x: 0.924501148<br />y:  0.1868229439","x: 0.870388020<br />y:  0.4761877553","x: 1.377682462<br />y:  0.3690302433","x: 0.262296921<br />y:  0.6793014857","x: 1.117614278<br />y: -0.2279082239","x: 1.337744907<br />y: -0.1225467080","x: 0.944297928<br />y:  0.2244625342","x: 0.546274106<br />y:  0.2207823679","x: 1.437045356<br />y:  0.0885517345","x: 0.777464494<br />y:  0.4029714431","x: 0.423598008<br />y:  0.2715824426","x: 0.947504403<br />y:  0.3573599284","x: 1.197867628<br />y:  0.5592588228","x: 1.486920998<br />y:  0.5714838953","x: 0.407013117<br />y:  0.5522297499","x: 0.178193122<br />y:  0.1774586914","x: 0.675054747<br />y: -0.0000652936","x: 1.168750084<br />y:  0.1114321233","x: 0.979036983<br />y: -0.1513798951","x: 0.042446704<br />y:  0.6888821561","x: 0.122040646<br />y:  0.7923821783","x: 0.243334787<br />y:  0.8298285575","x: 0.785622138<br />y:  0.3369109459","x: 0.885000311<br />y:  0.2612443016","x: 0.092036285<br />y:  0.2715545378","x: 0.775151632<br />y:  0.1991557226","x: 0.584172650<br />y: -0.0631518949","x: 0.566638481<br />y: -0.0466403912","x: 1.259981017<br />y:  0.2819324863","x: 0.731621600<br />y:  0.3944077879","x: 1.272650640<br />y:  0.3063332941","x: 0.545689439<br />y: -0.1905078841","x: 0.571456146<br />y: -0.0083543705","x: 1.276889733<br />y:  0.0330015802","x: 1.079069012<br />y:  0.1529656275","x: 1.228591651<br />y:  0.4317605345","x: 1.440086501<br />y:  0.2776933054","x: 1.498023848<br />y:  0.4415675567","x: 0.279438075<br />y:  0.2284131640","x: 1.276385462<br />y:  0.2900621053","x: 0.243679117<br />y:  0.6417987865","x: 1.333855006<br />y: -0.0219179938","x: 0.082531298<br />y:  0.5395873894","x: 0.807617286<br />y:  0.4356796129","x: 0.569655762<br />y: -0.2349201381","x: 0.290508673<br />y:  0.3826266670","x: 1.010101173<br />y:  0.3193268403","x: 0.115640486<br />y:  0.3316468738","x: 0.760011740<br />y:  0.4985345725","x: 0.186653730<br />y:  0.7204253593","x: 1.354015994<br />y:  0.1561870535","x: 0.835028806<br />y:  0.1681421478","x: 0.907350241<br />y:  0.2182619506","x: 0.519362738<br />y: -0.3343180876","x: 1.093810618<br />y:  0.0053837527","x: 1.474237952<br />y:  0.2156476500","x: 0.111850891<br />y:  0.6493420706","x: 0.360624025<br />y:  0.3317663282","x: 0.974213413<br />y: -0.2288459782","x: 0.885864371<br />y:  0.2894794360","x: 0.127800132<br />y:  1.0715243372","x: 0.512700874<br />y:  0.0962789338","x: 1.379417208<br />y:  0.0693178268","x: 1.036715025<br />y: -0.1410993964","x: 0.206984373<br />y:  0.6479272600","x: 1.369812216<br />y:  0.0942831441","x: 0.308744423<br />y:  0.3768184639","x: 0.550792278<br />y: -0.1650541749","x: 0.274004405<br />y:  0.3921065500","x: 0.112518133<br />y:  0.8725815654","x: 0.043840065<br />y:  0.4535752635","x: 1.115451018<br />y:  0.4449834995","x: 1.182689247<br />y:  0.1804957110","x: 0.596031923<br />y: -0.0569037196","x: 0.086579956<br />y:  0.9224637404","x: 0.873966918<br />y:  0.3189778441","x: 1.193867370<br />y:  0.1967047927","x: 0.881154433<br />y:  0.2800887051","x: 0.644493426<br />y: -0.1410799571","x: 1.386705477<br />y:  0.3553452711","x: 0.487019338<br />y:  0.0709590722","x: 0.263116758<br />y:  0.7378213953","x: 0.069989431<br />y:  0.3486333803","x: 0.939901747<br />y: -0.0377998411","x: 0.797486635<br />y:  0.8191950255","x: 1.375600044<br />y:  0.1076309253","x: 0.786789332<br />y:  0.3379952092","x: 0.104165841<br />y:  0.5174869432","x: 1.110814874<br />y:  0.0368232887","x: 1.092213776<br />y:  0.6088986678","x: 0.519030124<br />y: -0.1716501983","x: 1.425621147<br />y:  0.3823038350","x: 1.088682097<br />y: -0.0952825801","x: 0.829846901<br />y:  0.4820545876","x: 0.293212475<br />y:  0.6010066590","x: 1.118347201<br />y:  0.5420755194","x: 1.068376921<br />y:  0.1678885043","x: 0.433158352<br />y:  0.5655778513","x: 0.079486380<br />y:  0.4798125738","x: 1.370065109<br />y: -0.0438559377","x: 0.461012104<br />y:  0.2952858190","x: 0.319604301<br />y:  0.2915391169","x: 0.203244992<br />y:  0.5671462459","x: 1.071602210<br />y: -0.2776917365","x: 0.028641499<br />y:  0.6860455299","x: 0.447608260<br />y:  0.3857160745","x: 0.848009994<br />y:  0.0679866130","x: 1.265856921<br />y:  0.1709104691","x: 1.403724392<br />y:  0.1349059717","x: 1.383914399<br />y: -0.0200078548","x: 0.872394314<br />y:  0.4929936278","x: 0.910695498<br />y:  0.4291341285","x: 0.020141221<br />y:  0.7724231206","x: 0.189993962<br />y:  0.4211548524","x: 0.063827068<br />y:  0.9005243056","x: 0.390800136<br />y:  0.3591831518","x: 1.377861467<br />y: -0.2218784776","x: 1.164207715<br />y:  0.4742205197","x: 1.102163497<br />y: -0.0455608729","x: 0.952090058<br />y:  0.3318519245","x: 1.326173372<br />y: -0.2296816197","x: 0.936814992<br />y:  0.4871923717","x: 0.118913036<br />y:  0.6576950763","x: 0.470535477<br />y:  0.0597770455","x: 0.148006954<br />y:  0.5017410537","x: 1.317015793<br />y:  0.1024743190","x: 1.354364959<br />y:  0.2428204300","x: 0.090587482<br />y:  0.6110571432","x: 0.481313662<br />y: -0.3251474571","x: 1.000887618<br />y: -0.1374281784","x: 0.853573098<br />y:  0.4620231390","x: 0.158203564<br />y:  0.6490019257","x: 0.300283362<br />y:  0.7022615192","x: 1.185255380<br />y:  0.2966308389","x: 0.314204621<br />y:  0.4913141550","x: 1.391544872<br />y: -0.4455930015","x: 0.645776359<br />y: -0.3406092787","x: 0.059331649<br />y:  0.5447884430","x: 0.137825456<br />y:  0.3937341194","x: 1.443356820<br />y:  0.3770911631","x: 1.435870669<br />y:  0.0267000141","x: 1.215375662<br />y:  0.4453262899","x: 0.680683097<br />y:  0.1356886485","x: 0.197364572<br />y:  0.5893238107","x: 1.205027173<br />y:  0.4111297030","x: 1.142493332<br />y:  0.2479811897","x: 0.587334368<br />y: -0.0550401838","x: 0.937093823<br />y: -0.0030553776","x: 1.278317175<br />y:  0.4215703204","x: 1.240168535<br />y:  0.4050521410","x: 1.130527630<br />y:  0.3608259732","x: 0.278763968<br />y:  0.5621557386","x: 0.599216920<br />y:  0.1294692459","x: 0.774359096<br />y:  0.3214436499","x: 0.561425902<br />y: -0.0572251437","x: 0.861732150<br />y:  0.2214769012","x: 0.943952302<br />y:  0.1031034274","x: 1.431491759<br />y: -0.2066578876","x: 0.794867864<br />y:  0.3776457778","x: 0.989605273<br />y:  0.0190447993","x: 0.169311951<br />y:  0.3028111337","x: 1.485336358<br />y: -0.1588454331","x: 0.291589475<br />y:  0.3709835566","x: 0.294186419<br />y:  0.5963410256","x: 0.965143698<br />y:  0.3251247500","x: 0.288073200<br />y: -0.0983476535","x: 1.341999861<br />y:  0.0075727965","x: 0.930878042<br />y:  0.2660348621","x: 0.006430598<br />y:  0.7406674265","x: 1.335602424<br />y: -0.1815182508","x: 1.433402073<br />y:  0.1979254199","x: 1.018527147<br />y: -0.1643342201","x: 0.387772636<br />y:  0.3613555801","x: 1.364486429<br />y: -0.0789586701","x: 0.725540101<br />y:  0.3468007237","x: 1.089236695<br />y: -0.1331289698","x: 0.933324626<br />y:  0.0068968566","x: 0.412511345<br />y:  0.2650918346","x: 0.153366044<br />y:  0.8793501827","x: 0.033414521<br />y:  0.4923514635","x: 1.092601650<br />y:  0.2403869658","x: 1.046652853<br />y: -0.0015144257","x: 0.737180697<br />y:  0.2532653218","x: 1.189754079<br />y:  0.3666677576","x: 1.243914014<br />y:  0.1206660426","x: 0.407900337<br />y:  0.0614184736","x: 0.845703735<br />y:  0.5858976972","x: 0.040726771<br />y:  0.7310018249","x: 0.542367048<br />y:  0.0723564494","x: 0.898413258<br />y:  0.2397109214","x: 0.653104023<br />y:  0.0160399448","x: 0.881867222<br />y:  0.0637373064","x: 0.515895457<br />y: -0.0708337840","x: 0.837988220<br />y:  0.4077875936","x: 0.905660485<br />y:  0.5677983367","x: 0.748831174<br />y:  0.1610155286","x: 0.812497235<br />y:  0.4391049466","x: 0.754496966<br />y:  0.7895178705","x: 1.186948811<br />y:  0.1925704768","x: 0.281837020<br />y:  0.6058201599","x: 0.756725615<br />y:  0.2360222188","x: 0.913893716<br />y: -0.1510144179","x: 1.488323667<br />y:  0.0245715372","x: 0.654517008<br />y:  0.0858623263","x: 0.493529778<br />y:  0.1260016504","x: 1.366524590<br />y:  0.2766877638","x: 1.082410035<br />y: -0.0475292638","x: 1.194596350<br />y:  0.3058022732","x: 0.261690414<br />y:  0.5884858161","x: 0.511561219<br />y: -0.3860535472","x: 0.254122931<br />y:  0.6835844569","x: 0.440030516<br />y:  0.4038013880","x: 1.237042047<br />y:  0.5316145185","x: 0.266570030<br />y:  0.5177165821","x: 0.010559350<br />y:  0.4753272256","x: 0.589601577<br />y:  0.3399063372","x: 0.460261288<br />y:  0.4065505579","x: 1.426627610<br />y:  0.0392246451","x: 0.885308753<br />y:  0.2139574057","x: 0.840272368<br />y:  0.4376048383","x: 0.657524592<br />y:  0.0406223132","x: 1.349286202<br />y:  0.0132084371","x: 0.919775213<br />y:  0.1701443094","x: 0.240034351<br />y:  0.3967768413","x: 0.526005937<br />y: -0.0053765143","x: 0.035863046<br />y:  0.6123257590","x: 0.498365404<br />y:  0.1988554346","x: 0.028673676<br />y:  0.5298558459","x: 0.901136298<br />y:  0.6989353343","x: 0.454367270<br />y:  0.1620713668","x: 0.448376880<br />y:  0.0461357000","x: 0.497458954<br />y: -0.1307077029","x: 0.888875785<br />y:  0.4766323245","x: 0.466758671<br />y: -0.0652636045","x: 1.310913282<br />y:  0.3191823858","x: 0.264678709<br />y:  0.4073657913","x: 1.118831970<br />y: -0.0298792683","x: 1.234464588<br />y:  0.7564864267","x: 0.085012123<br />y:  0.4671554035","x: 0.089952426<br />y:  0.7431311358","x: 0.888569382<br />y:  0.2198768979","x: 1.042610415<br />y:  0.1709971902","x: 1.433126647<br />y:  0.3983029705","x: 1.007218996<br />y:  0.1283792376","x: 1.256837931<br />y:  0.2930729629","x: 1.444272452<br />y:  0.2920899326","x: 0.196678021<br />y:  0.6589304681","x: 0.613881808<br />y:  0.0807802056","x: 0.034203173<br />y:  0.3662543537","x: 0.211292521<br />y:  0.4486614352","x: 1.231743481<br />y:  0.2808436432","x: 0.172163837<br />y:  0.7914091507","x: 0.182912263<br />y:  0.5200925400","x: 0.299625391<br />y:  0.6304263877","x: 0.837323058<br />y:  0.0167299575","x: 0.726558637<br />y:  0.1432673406","x: 0.479196765<br />y:  0.4136493163","x: 1.233785821<br />y:  0.4082076314","x: 0.215729765<br />y:  0.5997035852","x: 1.317316419<br />y: -0.2471766887","x: 1.414748651<br />y:  0.7157810672","x: 1.081140221<br />y: -0.1876303121","x: 0.618025724<br />y:  0.1015166627","x: 0.702227742<br />y:  0.3676003367","x: 1.223082188<br />y:  0.3454437956","x: 0.741409502<br />y:  0.2320862076","x: 0.440039144<br />y:  0.1496183720","x: 1.258682101<br />y:  0.3562374900","x: 0.227785495<br />y:  0.5532917679","x: 1.391071399<br />y:  0.1068507080","x: 1.383726204<br />y:  0.2196912669","x: 1.042551646<br />y: -0.2080005525","x: 0.201477200<br />y:  0.7822762949","x: 0.865760067<br />y:  0.2948544496","x: 0.206040711<br />y:  0.6160114819","x: 0.139713533<br />y:  0.6793077660","x: 0.184335724<br />y:  0.7294305017","x: 0.437092269<br />y: -0.0794685585","x: 1.346873380<br />y: -0.2612828661","x: 0.066614180<br />y:  0.5564780615","x: 0.579568363<br />y:  0.1697342440","x: 0.015444742<br />y:  0.4992413671","x: 0.828318479<br />y:  0.2931085669","x: 0.762794853<br />y:  0.2190575464","x: 0.990730067<br />y:  0.1949030200","x: 0.481730572<br />y: -0.0853048886","x: 1.163553908<br />y:  0.7440685541","x: 0.489436949<br />y: -0.3081717893","x: 1.275801233<br />y:  0.5431496654","x: 1.244713207<br />y:  0.4902941886","x: 1.259933153<br />y:  0.3811686000","x: 1.101516541<br />y: -0.1719826850","x: 0.710654843<br />y:  0.1134729722","x: 0.237857327<br />y:  0.3380413120","x: 0.438180211<br />y:  0.4509720555","x: 0.650484992<br />y:  0.0402910753","x: 0.636628595<br />y:  0.0210287091","x: 0.319928744<br />y:  0.6348105679","x: 1.471153862<br />y:  0.6214424705","x: 0.141166435<br />y:  0.3924182998","x: 1.125543623<br />y:  0.2233665447","x: 1.068055188<br />y:  0.1062772845","x: 1.499175326<br />y:  0.2293412857","x: 1.389719391<br />y: -0.1075177040","x: 1.123039607<br />y:  0.3002238624","x: 0.725987047<br />y:  0.4765912395","x: 1.004990790<br />y:  0.0756818386","x: 0.558278504<br />y: -0.0275701797","x: 0.952508154<br />y:  0.3315383255","x: 0.243774607<br />y:  0.4320260529","x: 0.980708664<br />y:  0.3351238639","x: 0.207553153<br />y:  0.5595766433","x: 0.885837713<br />y:  0.3257282291","x: 0.796235999<br />y:  0.4901790558","x: 0.160943521<br />y:  0.9213435644","x: 1.306383178<br />y:  0.0143102502","x: 0.109631771<br />y:  0.8623342038","x: 1.181392613<br />y:  0.3415084675","x: 1.198701330<br />y:  0.4510495804","x: 0.867074189<br />y:  0.4664474823","x: 1.189196492<br />y:  0.1135227265","x: 1.057753494<br />y: -0.2635874737","x: 0.106678804<br />y:  0.6635014244","x: 0.092778106<br />y:  0.7507091639","x: 0.464431574<br />y:  0.3816812835","x: 0.817265274<br />y:  0.3849782020","x: 0.592986065<br />y: -0.0222413049","x: 1.372982416<br />y:  0.0497573596","x: 1.151350895<br />y:  0.0027208605","x: 0.346211090<br />y:  0.5213498407","x: 1.262582012<br />y:  0.2669028496","x: 0.216098860<br />y:  0.6402345771","x: 1.074818355<br />y: -0.2612342640","x: 0.786794596<br />y:  0.4458114727","x: 0.734512279<br />y:  0.4502576313","x: 0.351762244<br />y:  0.0402980486","x: 0.680961116<br />y:  0.3963015578","x: 1.489704037<br />y:  0.2869316141","x: 0.087586779<br />y:  0.4088737854","x: 0.709583469<br />y: -0.1425835928","x: 0.931187501<br />y:  0.2045573305","x: 0.643964529<br />y:  0.0897124356","x: 0.310747878<br />y:  0.4841973684","x: 1.449185552<br />y:  0.2576817097","x: 0.583773194<br />y:  0.5097113182","x: 0.866718619<br />y:  0.6068259186","x: 0.861830238<br />y:  0.3003717714","x: 0.035885833<br />y:  0.4275298730","x: 1.127891121<br />y:  0.2076634985","x: 1.059063028<br />y:  0.4153816948","x: 1.439471008<br />y:  0.0540097875","x: 1.237964989<br />y:  0.1138719118","x: 1.221904914<br />y:  0.4845431426","x: 0.321831511<br />y: -0.0019962935","x: 0.568974304<br />y: -0.5476849457","x: 1.043267311<br />y:  0.0626695768","x: 1.180469985<br />y: -0.0953469319","x: 1.230032497<br />y:  0.2722596590","x: 0.793744794<br />y:  0.4054291601","x: 1.164895393<br />y:  0.3994212203","x: 0.483568318<br />y: -0.0168602257","x: 1.258803838<br />y:  0.1858607786","x: 1.230124415<br />y:  0.3626013918","x: 1.080958549<br />y:  0.0633992559","x: 0.401741868<br />y:  0.4527237765","x: 0.530006269<br />y: -0.0722705191","x: 0.349798532<br />y: -0.3956713544","x: 0.311763329<br />y:  0.3248604756","x: 0.723388396<br />y: -0.0607081232","x: 0.527206686<br />y: -0.1426751285","x: 0.479696445<br />y:  0.1440650570","x: 0.387485673<br />y:  0.3666597427","x: 0.328490053<br />y:  0.5283964299","x: 1.048250549<br />y:  0.2412264151","x: 0.530802463<br />y:  0.2482600113","x: 0.904401299<br />y:  0.0156221254","x: 0.611250482<br />y:  0.4025034918","x: 0.598458129<br />y:  0.1891042389","x: 0.881483436<br />y:  0.2809290045","x: 1.090871013<br />y:  0.0419515300","x: 0.116626540<br />y:  0.3328079796","x: 1.424544713<br />y:  0.0022256776","x: 1.191599427<br />y:  0.2613835694","x: 1.095332919<br />y:  0.0852008648","x: 0.390051756<br />y:  0.3486808675","x: 0.254814601<br />y:  0.6744319903","x: 0.169169986<br />y:  0.6582166876","x: 0.507203004<br />y: -0.1750805032","x: 0.422166229<br />y:  0.1520975761","x: 1.301958857<br />y: -0.0070825389","x: 1.138224932<br />y:  0.0837484207","x: 1.152764121<br />y:  0.4763462265","x: 0.645860926<br />y: -0.4557378948","x: 0.827444888<br />y:  0.0051194611","x: 0.732516424<br />y:  0.3156713676","x: 0.585158437<br />y: -0.1556247084","x: 1.454531195<br />y:  0.2807961031","x: 0.056329043<br />y:  0.0646430786","x: 0.425447006<br />y:  0.3254904250","x: 0.738705424<br />y:  0.0084956515"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[0.006430597510188818,0.010559350135736167,0.015444742399267852,0.020141220884397626,0.024447452276945114,0.028641498880460858,0.028673675958998501,0.033414521254599094,0.0342031727777794,0.034388674423098564,0.03586304560303688,0.035885832505300641,0.040726771345362067,0.042446704348549247,0.043840064783580601,0.044876797939650714,0.053841675049625337,0.056329043232835829,0.056409267126582563,0.059331649448722601,0.063827068079262972,0.066614179755561054,0.069989431067369878,0.070289661060087383,0.076331798569299281,0.079486379865556955,0.082531298277899623,0.085012123337946832,0.086579955881461501,0.087586778914555907,0.089952426147647202,0.090587482089176774,0.092036284622736275,0.092778106103651226,0.097958829835988581,0.1033738546539098,0.10416584112681448,0.10667880380060524,0.10963177133817226,0.11185089137870818,0.1125181334791705,0.11564048565924168,0.1166265404317528,0.11891303560696542,0.12204064603429288,0.12780013214796782,0.1378254562150687,0.13971353264059871,0.14116643532179296,0.14671530935447663,0.14800695434678346,0.15336604358162731,0.15820356435142457,0.1584539293544367,0.16094352083746344,0.1691699861548841,0.16931195149663836,0.17216383712366223,0.17301665944978595,0.17819312168285251,0.18291226273868233,0.18433572363574058,0.18665373022668064,0.18999396194703877,0.1966780205257237,0.19736457208637148,0.20147720002569258,0.20269592979457229,0.20324499194975942,0.20604071079287678,0.20698437269311398,0.20752311812248081,0.20755315327551216,0.21129252144601196,0.21572976477909833,0.2160988604882732,0.22769555915147066,0.22778549522627145,0.23785732698161155,0.24003435065969825,0.24333478719927371,0.2436791171785444,0.24377460696268827,0.25412293081171811,0.25481460127048194,0.26169041369576007,0.26175432256422937,0.26229692052584141,0.26311675796750933,0.2646787092089653,0.26657002978026867,0.27400440454948694,0.27876396803185344,0.27943807526025921,0.27949867257848382,0.28183702030219138,0.28301794698927552,0.28807319956831634,0.29050867329351604,0.29158947465475649,0.29174018441699445,0.29321247478947043,0.29418641945812851,0.29962539067491889,0.30028336239047348,0.30874442250933498,0.30959333712235093,0.31074787792749703,0.31176332873292267,0.31420462054666132,0.3161395126953721,0.31960430054459721,0.31992874410934746,0.3218315108679235,0.32849005318712443,0.33265452843625098,0.34621109033469111,0.34979853231925517,0.35176224424503744,0.35490059712901711,0.36062402464449406,0.38748567283619195,0.38777263602241874,0.3900517561705783,0.39080013614147902,0.39185563393402845,0.39716136432252824,0.40174186800140887,0.40612237039022148,0.40701311733573675,0.4079003365477547,0.40853528107982129,0.41251134511549026,0.41905653441790491,0.42216622887644917,0.4235980084631592,0.42544700636062771,0.43315835203975439,0.43589669500943273,0.43709226907230914,0.4381802111165598,0.44003051589243114,0.44003914401400834,0.44395379559136927,0.44760826032143086,0.44787581695709378,0.44837688049301505,0.45436727022752166,0.45500471780542284,0.45688969432376325,0.4602612879825756,0.46101210359483957,0.46443157363682985,0.46675867144949734,0.47053547669202089,0.47919676546007395,0.47969644458498806,0.48131366225425154,0.48173057218082249,0.4835683184210211,0.48701933829579502,0.48943694878835231,0.48976427887100726,0.49108153546694666,0.4935297779738903,0.49745895434170961,0.4983654044335708,0.50720300409011543,0.51156121899839491,0.51270087354350835,0.51589545677416027,0.51720361062325537,0.51823777751997113,0.51903012371622026,0.5193627382395789,0.5260059367865324,0.52720668632537127,0.5300062692258507,0.53080246306490153,0.54003085114527494,0.54236704751383513,0.54568943905178457,0.54627410578541458,0.54982975521124899,0.55079227848909795,0.55827850406058133,0.55938930530101061,0.56142590241506696,0.56663848087191582,0.56897430389653891,0.56965576170478016,0.57145614631008357,0.57956836349330842,0.58377319376450032,0.5841726497747004,0.585158436675556,0.58733436756301671,0.58960157737601548,0.59298606519587338,0.59603192273061723,0.59845812921412289,0.59921691985800862,0.61125048226676881,0.61388180823996663,0.61802572372835129,0.62235372292343527,0.622383106732741,0.62578866980038583,0.63662859506439418,0.6439645285718143,0.64449342561420053,0.64577635901514441,0.64586092648096383,0.64789521472994238,0.65048499195836484,0.65310402307659388,0.65451700834091753,0.65752459201030433,0.67378354375250638,0.67477077234070748,0.67505474702920765,0.68068309652153403,0.68096111551858485,0.7022277417127043,0.70471798803191632,0.70958346908446401,0.71065484290011227,0.71445727162063122,0.71801544679328799,0.72338839585427195,0.72554010129533708,0.72598704742267728,0.72655863699037582,0.73162159987259656,0.73251642391551286,0.73451227869372815,0.73718069738242775,0.73870542389340699,0.73906948731746525,0.74045558064244688,0.74140950199216604,0.74883117433637381,0.7495350711978972,0.74966430582571775,0.75050059414934367,0.75449696579016745,0.75672561500687152,0.76001174014527351,0.76279485295526683,0.77435909619089216,0.77491390134673566,0.77515163202770054,0.7774644938763231,0.78562213783152401,0.78678933216724545,0.78679459635168314,0.7889678212814033,0.79374479432590306,0.79486786422785372,0.79623599932529032,0.79748663515783846,0.80761728552170098,0.81249723478686064,0.8172652741195634,0.82744488772004843,0.82831847865600139,0.82984690123703331,0.83502880611922592,0.83732305839657784,0.83798822003882378,0.84027236758265644,0.84570373536553234,0.84800999367143959,0.85357309808023274,0.86173215019516647,0.86183023802004755,0.86576006677933037,0.86671861878130585,0.86707418924197555,0.86943729815538973,0.87038802041206509,0.87239431380294263,0.8739669177448377,0.87756747601088136,0.88115443324204534,0.88148343621287495,0.88158238981850445,0.88186722190584987,0.88500031060539186,0.88530875276774168,0.88583771302364767,0.88586437061894685,0.88856938225217164,0.88887578516732901,0.89841325837187469,0.90113629808183759,0.90179491834715009,0.90440129872877151,0.90566048515029252,0.9073502408573404,0.91069549787789583,0.91372313909232616,0.91389371640980244,0.91499509394634515,0.91803070390596986,0.91977521264925599,0.92450114758685231,0.92740687925834209,0.92778218735475093,0.93087804189417511,0.93118750071153045,0.93332462618127465,0.93681499210651964,0.93709382344968617,0.93990174739155918,0.94395230174995959,0.94429792813025415,0.94577671762090176,0.94750440318603069,0.95209005824290216,0.95250815420877188,0.96514369791839272,0.97421341273002326,0.97903698252048343,0.98070866370107979,0.98960527335293591,0.99073006713297218,0.9917804062133655,1.0008876181673259,1.0049907902721316,1.0072189959464595,1.0101011727238074,1.0185271472437307,1.0349198133917525,1.0367150249658152,1.0392966134240851,1.0425516462419182,1.0426104149082676,1.0432673109462485,1.0466528531396762,1.0482505493564531,1.0512104647932574,1.0577534943586215,1.0590630284277722,1.0680551875848323,1.0683769210008904,1.0699830071534961,1.0716022099368274,1.0748183549148962,1.0790690121939406,1.0809585488168523,1.0811402209801599,1.0824100353056565,1.0886820968007669,1.0892366948537529,1.0908710133517161,1.0922137764282525,1.0926016500452533,1.0938106183893979,1.0953329190379009,1.1011942257173359,1.1015165406279266,1.1021634974749759,1.11037096765358,1.1108148742932826,1.1154510184423998,1.1176142783369869,1.1183472006814554,1.1188319704961032,1.1222455026581883,1.1230396073078737,1.1255436226492748,1.1278911206172779,1.1305276300990954,1.1382249322487041,1.1424933319212869,1.1443578317994252,1.1513508951757103,1.1527641207212582,1.1609219141537324,1.1635539075359702,1.1642077151918784,1.1648953930707648,1.1687500843545422,1.1735437021125108,1.177436750382185,1.1804699847707525,1.1813926133327186,1.1826892473036423,1.1852553802309558,1.1869488107040524,1.1879830774851143,1.1891964917303994,1.189754078630358,1.1915994265582412,1.1938673697877675,1.1945963501930237,1.1960683492943645,1.1978676281869411,1.1987013299949467,1.2050271729240194,1.2097859226632863,1.214812442776747,1.2153756616171449,1.2219049141276628,1.223082188051194,1.2285916514229029,1.2300324967363849,1.2301244151312858,1.2317434806609526,1.2337858207756653,1.2344645879929885,1.2370420473162085,1.2379649888025597,1.2401685352670029,1.2439140138449147,1.2447132070083171,1.2568379313452169,1.2586821012664586,1.2588038382818922,1.2599331530509517,1.2599810165120289,1.2625820122193545,1.2632410445949063,1.2644396029645577,1.2658569213235751,1.2726506399922073,1.2744349156273529,1.2758012325502932,1.2763854620279744,1.2768897333880886,1.2783171753399074,1.2785398800624534,1.2989998395787552,1.3019588574534282,1.3063831776380539,1.310913281631656,1.3170157925924286,1.3173164189793169,1.3261733724502847,1.3338550060288981,1.3356024243403226,1.3377449068939313,1.341999860946089,1.3468733798945323,1.3492862022249028,1.35401599353645,1.3543649594066665,1.3644864294910803,1.3665245898300782,1.3698122160276398,1.3700651088729501,1.3701825344469398,1.3729824159527197,1.3756000444991514,1.376296310685575,1.376872054184787,1.377581894164905,1.3776824616361409,1.3778614669572562,1.3787172477459535,1.3794172082562,1.3837262035813183,1.3839143986115232,1.3867054773727432,1.3897193914745003,1.3910713994409889,1.3915448721963912,1.4027528499718755,1.4037243921775371,1.4123336467891932,1.4132071629865095,1.414748651208356,1.424544713110663,1.4255373550113291,1.4256211471511051,1.4266276097623631,1.4314917594892904,1.4331266472581774,1.4334020734531805,1.4358706689672545,1.4370453560259193,1.4394710075575858,1.440086500835605,1.4433568201493472,1.4442724515683949,1.4491855519590899,1.4494470540666953,1.4545311945257708,1.4611407131887972,1.4622856004862115,1.4679370938101783,1.4711538618430495,1.4742379523813725,1.4853363577276468,1.4869209980824962,1.4883236669702455,1.4897040365030989,1.4980238482821733,1.4991753262002021],"y":[0.63730618856708776,0.61938070191586037,0.60585542845892693,0.59704587133496356,0.59119837933506159,0.58691633538109733,0.58688781657134481,0.58327454792292588,0.58277421314232147,0.58266022361459202,0.58180189147112749,0.58178926815559973,0.57950036981086728,0.57885356336714655,0.57838466253196263,0.57806545048863767,0.57617331191734533,0.57586996481239627,0.57586147723254411,0.57560231980413956,0.57536969482832268,0.5753086460664496,0.57530329243719946,0.57530597334183486,0.57544713519123081,0.5755720035146481,0.575714576746581,0.57584158726450496,0.5759250695942838,0.57597949529037662,0.57610846335217236,0.57614307948028165,0.57622159341696755,0.57626139877134297,0.57652494179333635,0.57675477422744703,0.57678298548109619,0.57686158087278117,0.57693037057745733,0.57696334216350753,0.57696987393923249,0.57697820430401825,0.57697283888811113,0.57694470930923492,0.57686873554553131,0.57660549455581678,0.57571799258630763,0.57548395845812783,0.57528854016071262,0.57441512032247366,0.57418200390584129,0.57308945116554666,0.57192349054278491,0.5718583634441794,0.57118461192143455,0.56861124269397167,0.56856203750242429,0.56753826400930041,0.56721894868520761,0.56514843977218188,0.56305899046537766,0.56239021584207816,0.56126244455167984,0.55955207465320489,0.55582210636647666,0.55541545226490685,0.55288647580255601,0.55210622630958328,0.55175007691671529,0.54989181599372217,0.54924760210596957,0.54887595651460985,0.54885515457626644,0.54619689416565886,0.54286525405931385,0.54257940166426077,0.53290899296125072,0.53282874355740872,0.52332597297862893,0.52113717524156211,0.51772730258740152,0.51736519508165035,0.51726456236293616,0.50581149179825091,0.50500736127956158,0.49675157436483591,0.49667261163283638,0.49600055592143905,0.4949795256700229,0.49301567436626043,0.49060514274868272,0.48078642353814116,0.47421570177363825,0.47326729545848872,0.47318182560327177,0.46985667266769798,0.4681574389318392,0.46073352325541117,0.45707100100355025,0.45542796166823435,0.45519799145209333,0.45294036377369157,0.4514359389653369,0.44287580086632361,0.44182219414115076,0.42793470475975393,0.42650727341524813,0.42455617123764744,0.42283087706931338,0.41864796370563745,0.41529796828869309,0.40922380940180669,0.4086501413103894,0.4052691614045667,0.39322007444777751,0.38551844100556992,0.35963487013519224,0.35259452189834223,0.34870982375798837,0.34245804145853065,0.33092768293279373,0.2751061843509322,0.2744992235994157,0.26967391613971398,0.26808778966480246,0.26584950528731088,0.2545809582698243,0.2448398257005949,0.23552474035172999,0.23363166214439932,0.23174665825341617,0.23039804718908805,0.22196287897615799,0.2081319216210141,0.20159382926483702,0.19859238486062561,0.1947254945556228,0.17872913034854149,0.17310791876214185,0.17066472722705833,0.16844763067113702,0.16469093060773426,0.16467345527937771,0.15678760904485833,0.14950828706382119,0.148978672005671,0.14798810657647932,0.13627986510760323,0.1350493215148342,0.13142881469116188,0.12502377254193914,0.12361028358165424,0.11723465876263782,0.11295600484394501,0.10612128623116239,0.090998770355530542,0.090151259237749748,0.087427844322673295,0.086730663046491727,0.083681818079054282,0.078066342737202102,0.074220490015453611,0.073705498436749312,0.071647038144244835,0.067881663354750446,0.062007638245090958,0.060682848333689067,0.048390301332800097,0.042763631884036243,0.041341750227582706,0.037468031382351864,0.035930138095638421,0.034734526288804426,0.033830637043425364,0.033454357167151297,0.026337715570785125,0.025133986771448871,0.022428034876435628,0.021684445812737971,0.013927217273558393,0.012220960422412237,0.009978340002993781,0.009606262427281605,0.0074906319214283756,0.0069617244965598565,0.003495593186460502,0.0030802443305032478,0.0023859693703591743,0.0010088604820653944,0.00058003458289730562,0.00047703967332406562,0.00025316266180631111,0.00011858210171408091,0.00061617431181996529,0.00068370029862048866,0.00086540639345869855,0.0013424411963957649,0.0019508106297358137,0.003070532865742276,0.0042948328705730721,0.0054167533595633607,0.0057943018071121184,0.01347088735983658,0.015569265012912486,0.019174895954140705,0.023329349402121856,0.023358898713537041,0.026905167191653263,0.039761957119775329,0.049764054281019078,0.050524108701976683,0.052389006660202395,0.052512987466867458,0.055534202740232116,0.05948680620332928,0.063602597102036432,0.065871536533514005,0.070811345478538942,0.099906082981696717,0.10179059216959266,0.10233493212466382,0.11332321460331019,0.11387542485701389,0.15820230507473224,0.16359560838929732,0.17420496585978251,0.17655110184688944,0.18489723991968982,0.192722742907701,0.20453415831877783,0.2092524157487067,0.2102311024535771,0.21148192790587367,0.22251238345119681,0.22445073129890489,0.2287593514290113,0.23448400469151237,0.23773429283662303,0.23850795582124015,0.2414445120638905,0.2434568370673344,0.25883650832262717,0.26026663527126315,0.260528614881535,0.26221940255041026,0.27018572990848316,0.27454099614097749,0.28083856954533332,0.28604812355325987,0.30630627567763236,0.30721618920494598,0.30760421364156854,0.31131976997152644,0.32351366572808155,0.32513552608273238,0.32514276820854648,0.32807601477575793,0.33411561157540587,0.33545148917489531,0.33703446386862357,0.3384382493641751,0.3482220195929801,0.35187684592972157,0.3547489197875292,0.3584719022663696,0.35863430118278444,0.3588575997898536,0.35903331524843085,0.35882169361163574,0.35872688741594988,0.35828641984589021,0.35652104676096258,0.35546456286555683,0.35216218836957941,0.34539836866513812,0.3453032637047343,0.34122622055113633,0.34015323877568387,0.33974744057654016,0.33694407784187952,0.33576431381870525,0.33317772737292806,0.33105901073001237,0.32591018776136704,0.32037617687221759,0.31984872436833284,0.31968943734051647,0.31922927437911469,0.31400609627995618,0.31347605544302209,0.31256053688045904,0.31251418046347068,0.30770278766237313,0.30714450259199289,0.28847628081229443,0.28271145422593807,0.28128987110209275,0.27556345189428161,0.2727408040582413,0.26889746480987536,0.26110878383379782,0.25386524129879889,0.25345192255942528,0.25077030439260478,0.24326789042235095,0.23888655052925847,0.22678634573167894,0.21919764683615003,0.21821011732967333,0.21000636382623067,0.20918103964407564,0.20345794058491135,0.19403458029853887,0.1932783226118252,0.18563980751111972,0.17456857650155966,0.17362217585451781,0.16957157125781464,0.16483853753376501,0.15229700414694083,0.15115658941332094,0.11725576631698861,0.09408552555730669,0.082359148634949947,0.078410654755031672,0.058554583844634418,0.056197041485417057,0.054029178257571787,0.036698333732794262,0.029823665828537481,0.026353372938400291,0.022150760621781205,0.011818492844330387,0.00081451852111899515,0.00038561684800512172,4.6320306286915159e-05,8.8592093808239464e-05,9.4196555882006567e-05,0.00016855735894082032,0.00089350148708428935,0.0014347400845245847,0.0027750710813895358,0.0072891054634386891,0.0084473747873560507,0.018651453839755423,0.019088062522538907,0.021339839274727226,0.023730776775167689,0.028833163746414835,0.03627790062058666,0.03983518711063145,0.040185047491226041,0.042668282848276826,0.055870458387012524,0.057109706993169182,0.060826240349719632,0.063950396271576587,0.064864445634377974,0.067746138112087434,0.071443489351217887,0.086348097219158829,0.087196462029881072,0.08890777424292208,0.11150069036874645,0.11276389536400021,0.12616026975864991,0.13252061247573535,0.134688630767617,0.13612590378819617,0.14631021221897586,0.14869265547974414,0.15622788863437168,0.16331186709112747,0.17127269799922951,0.19435428133617469,0.20690955651771947,0.21230899919364021,0.23194513457695579,0.23577222107433043,0.25669447708652343,0.26295632077190068,0.2644704961745572,0.26604473733637252,0.27450476785174055,0.28409964951765981,0.29107020647251003,0.29595455781339564,0.29734131406148578,0.2992102345450755,0.30262751170715513,0.30467301750729642,0.30583863454049331,0.30712408993629581,0.30768478170957325,0.30940409726086188,0.31122628940323904,0.3117429394351946,0.31268259374951712,0.31364117887361659,0.31401385073395688,0.31534247777277263,0.31456852457334133,0.31207858062239646,0.31169242598944691,0.30564969659079955,0.30425594566551672,0.29652404822668915,0.29417914696142045,0.29402509524509424,0.29122475167462103,0.28746071722825628,0.28615340777561721,0.28093837653575354,0.27897609895143388,0.27409402774316077,0.26518052187937852,0.26318211045352813,0.2291654430427249,0.22345935591240454,0.22307847072340811,0.21952124710654433,0.21936954723579202,0.21101775771086809,0.20886961677008098,0.20493216977316614,0.20022799870690466,0.17709261042876454,0.17089656227183009,0.16613002494034881,0.16408728902570607,0.16232229591495195,0.15731893421436965,0.15653759593592456,0.086672755344139416,0.077369798526537872,0.064104972087332013,0.051459613169644189,0.036184827716873154,0.035489906886225546,0.01772941805767167,0.0070082318782147364,0.0052291753904753066,0.0033951742095371241,0.00091182954913884319,4.7094263815627018e-06,0.00033295025828265063,0.0024797108132658518,0.0027169198773919121,0.014240551469803317,0.017621394383382109,0.023791752187701912,0.024302279891175484,0.024541049085509799,0.030551868727549059,0.036707527812330137,0.038429151121057561,0.039878873067363194,0.041698360154975946,0.041958979079451085,0.042424600781414148,0.044681032228875581,0.046563533636011012,0.058850875080994812,0.059413707455537562,0.068000586969730076,0.077744677485193411,0.082261208232518687,0.083862780822881927,0.12416756146577528,0.12782018977827375,0.16059561566433031,0.16392503521711083,0.16978437682546285,0.2059437579588288,0.20944597989442015,0.20973982301130487,0.21324652511596762,0.22952921273810423,0.23472119155529259,0.23558050527724364,0.24307266566625621,0.24649875444886318,0.25326932567516247,0.25491920481510655,0.26319437918027655,0.26535678621709291,0.27572085061340235,0.2762114323039665,0.28444602119326579,0.29123098178916434,0.2919339466137621,0.29329095352965362,0.29247128687197566,0.29059316258546841,0.27512598812845651,0.27184412417597581,0.26872630001035719,0.26546699986154693,0.24206824623813752,0.23836182290085461],"text":["x: 0.006430598<br />f(x): 6.373062e-01","x: 0.010559350<br />f(x): 6.193807e-01","x: 0.015444742<br />f(x): 6.058554e-01","x: 0.020141221<br />f(x): 5.970459e-01","x: 0.024447452<br />f(x): 5.911984e-01","x: 0.028641499<br />f(x): 5.869163e-01","x: 0.028673676<br />f(x): 5.868878e-01","x: 0.033414521<br />f(x): 5.832745e-01","x: 0.034203173<br />f(x): 5.827742e-01","x: 0.034388674<br />f(x): 5.826602e-01","x: 0.035863046<br />f(x): 5.818019e-01","x: 0.035885833<br />f(x): 5.817893e-01","x: 0.040726771<br />f(x): 5.795004e-01","x: 0.042446704<br />f(x): 5.788536e-01","x: 0.043840065<br />f(x): 5.783847e-01","x: 0.044876798<br />f(x): 5.780655e-01","x: 0.053841675<br />f(x): 5.761733e-01","x: 0.056329043<br />f(x): 5.758700e-01","x: 0.056409267<br />f(x): 5.758615e-01","x: 0.059331649<br />f(x): 5.756023e-01","x: 0.063827068<br />f(x): 5.753697e-01","x: 0.066614180<br />f(x): 5.753086e-01","x: 0.069989431<br />f(x): 5.753033e-01","x: 0.070289661<br />f(x): 5.753060e-01","x: 0.076331799<br />f(x): 5.754471e-01","x: 0.079486380<br />f(x): 5.755720e-01","x: 0.082531298<br />f(x): 5.757146e-01","x: 0.085012123<br />f(x): 5.758416e-01","x: 0.086579956<br />f(x): 5.759251e-01","x: 0.087586779<br />f(x): 5.759795e-01","x: 0.089952426<br />f(x): 5.761085e-01","x: 0.090587482<br />f(x): 5.761431e-01","x: 0.092036285<br />f(x): 5.762216e-01","x: 0.092778106<br />f(x): 5.762614e-01","x: 0.097958830<br />f(x): 5.765249e-01","x: 0.103373855<br />f(x): 5.767548e-01","x: 0.104165841<br />f(x): 5.767830e-01","x: 0.106678804<br />f(x): 5.768616e-01","x: 0.109631771<br />f(x): 5.769304e-01","x: 0.111850891<br />f(x): 5.769633e-01","x: 0.112518133<br />f(x): 5.769699e-01","x: 0.115640486<br />f(x): 5.769782e-01","x: 0.116626540<br />f(x): 5.769728e-01","x: 0.118913036<br />f(x): 5.769447e-01","x: 0.122040646<br />f(x): 5.768687e-01","x: 0.127800132<br />f(x): 5.766055e-01","x: 0.137825456<br />f(x): 5.757180e-01","x: 0.139713533<br />f(x): 5.754840e-01","x: 0.141166435<br />f(x): 5.752885e-01","x: 0.146715309<br />f(x): 5.744151e-01","x: 0.148006954<br />f(x): 5.741820e-01","x: 0.153366044<br />f(x): 5.730895e-01","x: 0.158203564<br />f(x): 5.719235e-01","x: 0.158453929<br />f(x): 5.718584e-01","x: 0.160943521<br />f(x): 5.711846e-01","x: 0.169169986<br />f(x): 5.686112e-01","x: 0.169311951<br />f(x): 5.685620e-01","x: 0.172163837<br />f(x): 5.675383e-01","x: 0.173016659<br />f(x): 5.672189e-01","x: 0.178193122<br />f(x): 5.651484e-01","x: 0.182912263<br />f(x): 5.630590e-01","x: 0.184335724<br />f(x): 5.623902e-01","x: 0.186653730<br />f(x): 5.612624e-01","x: 0.189993962<br />f(x): 5.595521e-01","x: 0.196678021<br />f(x): 5.558221e-01","x: 0.197364572<br />f(x): 5.554155e-01","x: 0.201477200<br />f(x): 5.528865e-01","x: 0.202695930<br />f(x): 5.521062e-01","x: 0.203244992<br />f(x): 5.517501e-01","x: 0.206040711<br />f(x): 5.498918e-01","x: 0.206984373<br />f(x): 5.492476e-01","x: 0.207523118<br />f(x): 5.488760e-01","x: 0.207553153<br />f(x): 5.488552e-01","x: 0.211292521<br />f(x): 5.461969e-01","x: 0.215729765<br />f(x): 5.428653e-01","x: 0.216098860<br />f(x): 5.425794e-01","x: 0.227695559<br />f(x): 5.329090e-01","x: 0.227785495<br />f(x): 5.328287e-01","x: 0.237857327<br />f(x): 5.233260e-01","x: 0.240034351<br />f(x): 5.211372e-01","x: 0.243334787<br />f(x): 5.177273e-01","x: 0.243679117<br />f(x): 5.173652e-01","x: 0.243774607<br />f(x): 5.172646e-01","x: 0.254122931<br />f(x): 5.058115e-01","x: 0.254814601<br />f(x): 5.050074e-01","x: 0.261690414<br />f(x): 4.967516e-01","x: 0.261754323<br />f(x): 4.966726e-01","x: 0.262296921<br />f(x): 4.960006e-01","x: 0.263116758<br />f(x): 4.949795e-01","x: 0.264678709<br />f(x): 4.930157e-01","x: 0.266570030<br />f(x): 4.906051e-01","x: 0.274004405<br />f(x): 4.807864e-01","x: 0.278763968<br />f(x): 4.742157e-01","x: 0.279438075<br />f(x): 4.732673e-01","x: 0.279498673<br />f(x): 4.731818e-01","x: 0.281837020<br />f(x): 4.698567e-01","x: 0.283017947<br />f(x): 4.681574e-01","x: 0.288073200<br />f(x): 4.607335e-01","x: 0.290508673<br />f(x): 4.570710e-01","x: 0.291589475<br />f(x): 4.554280e-01","x: 0.291740184<br />f(x): 4.551980e-01","x: 0.293212475<br />f(x): 4.529404e-01","x: 0.294186419<br />f(x): 4.514359e-01","x: 0.299625391<br />f(x): 4.428758e-01","x: 0.300283362<br />f(x): 4.418222e-01","x: 0.308744423<br />f(x): 4.279347e-01","x: 0.309593337<br />f(x): 4.265073e-01","x: 0.310747878<br />f(x): 4.245562e-01","x: 0.311763329<br />f(x): 4.228309e-01","x: 0.314204621<br />f(x): 4.186480e-01","x: 0.316139513<br />f(x): 4.152980e-01","x: 0.319604301<br />f(x): 4.092238e-01","x: 0.319928744<br />f(x): 4.086501e-01","x: 0.321831511<br />f(x): 4.052692e-01","x: 0.328490053<br />f(x): 3.932201e-01","x: 0.332654528<br />f(x): 3.855184e-01","x: 0.346211090<br />f(x): 3.596349e-01","x: 0.349798532<br />f(x): 3.525945e-01","x: 0.351762244<br />f(x): 3.487098e-01","x: 0.354900597<br />f(x): 3.424580e-01","x: 0.360624025<br />f(x): 3.309277e-01","x: 0.387485673<br />f(x): 2.751062e-01","x: 0.387772636<br />f(x): 2.744992e-01","x: 0.390051756<br />f(x): 2.696739e-01","x: 0.390800136<br />f(x): 2.680878e-01","x: 0.391855634<br />f(x): 2.658495e-01","x: 0.397161364<br />f(x): 2.545810e-01","x: 0.401741868<br />f(x): 2.448398e-01","x: 0.406122370<br />f(x): 2.355247e-01","x: 0.407013117<br />f(x): 2.336317e-01","x: 0.407900337<br />f(x): 2.317467e-01","x: 0.408535281<br />f(x): 2.303980e-01","x: 0.412511345<br />f(x): 2.219629e-01","x: 0.419056534<br />f(x): 2.081319e-01","x: 0.422166229<br />f(x): 2.015938e-01","x: 0.423598008<br />f(x): 1.985924e-01","x: 0.425447006<br />f(x): 1.947255e-01","x: 0.433158352<br />f(x): 1.787291e-01","x: 0.435896695<br />f(x): 1.731079e-01","x: 0.437092269<br />f(x): 1.706647e-01","x: 0.438180211<br />f(x): 1.684476e-01","x: 0.440030516<br />f(x): 1.646909e-01","x: 0.440039144<br />f(x): 1.646735e-01","x: 0.443953796<br />f(x): 1.567876e-01","x: 0.447608260<br />f(x): 1.495083e-01","x: 0.447875817<br />f(x): 1.489787e-01","x: 0.448376880<br />f(x): 1.479881e-01","x: 0.454367270<br />f(x): 1.362799e-01","x: 0.455004718<br />f(x): 1.350493e-01","x: 0.456889694<br />f(x): 1.314288e-01","x: 0.460261288<br />f(x): 1.250238e-01","x: 0.461012104<br />f(x): 1.236103e-01","x: 0.464431574<br />f(x): 1.172347e-01","x: 0.466758671<br />f(x): 1.129560e-01","x: 0.470535477<br />f(x): 1.061213e-01","x: 0.479196765<br />f(x): 9.099877e-02","x: 0.479696445<br />f(x): 9.015126e-02","x: 0.481313662<br />f(x): 8.742784e-02","x: 0.481730572<br />f(x): 8.673066e-02","x: 0.483568318<br />f(x): 8.368182e-02","x: 0.487019338<br />f(x): 7.806634e-02","x: 0.489436949<br />f(x): 7.422049e-02","x: 0.489764279<br />f(x): 7.370550e-02","x: 0.491081535<br />f(x): 7.164704e-02","x: 0.493529778<br />f(x): 6.788166e-02","x: 0.497458954<br />f(x): 6.200764e-02","x: 0.498365404<br />f(x): 6.068285e-02","x: 0.507203004<br />f(x): 4.839030e-02","x: 0.511561219<br />f(x): 4.276363e-02","x: 0.512700874<br />f(x): 4.134175e-02","x: 0.515895457<br />f(x): 3.746803e-02","x: 0.517203611<br />f(x): 3.593014e-02","x: 0.518237778<br />f(x): 3.473453e-02","x: 0.519030124<br />f(x): 3.383064e-02","x: 0.519362738<br />f(x): 3.345436e-02","x: 0.526005937<br />f(x): 2.633772e-02","x: 0.527206686<br />f(x): 2.513399e-02","x: 0.530006269<br />f(x): 2.242803e-02","x: 0.530802463<br />f(x): 2.168445e-02","x: 0.540030851<br />f(x): 1.392722e-02","x: 0.542367048<br />f(x): 1.222096e-02","x: 0.545689439<br />f(x): 9.978340e-03","x: 0.546274106<br />f(x): 9.606262e-03","x: 0.549829755<br />f(x): 7.490632e-03","x: 0.550792278<br />f(x): 6.961724e-03","x: 0.558278504<br />f(x): 3.495593e-03","x: 0.559389305<br />f(x): 3.080244e-03","x: 0.561425902<br />f(x): 2.385969e-03","x: 0.566638481<br />f(x): 1.008860e-03","x: 0.568974304<br />f(x): 5.800346e-04","x: 0.569655762<br />f(x): 4.770397e-04","x: 0.571456146<br />f(x): 2.531627e-04","x: 0.579568363<br />f(x): 1.185821e-04","x: 0.583773194<br />f(x): 6.161743e-04","x: 0.584172650<br />f(x): 6.837003e-04","x: 0.585158437<br />f(x): 8.654064e-04","x: 0.587334368<br />f(x): 1.342441e-03","x: 0.589601577<br />f(x): 1.950811e-03","x: 0.592986065<br />f(x): 3.070533e-03","x: 0.596031923<br />f(x): 4.294833e-03","x: 0.598458129<br />f(x): 5.416753e-03","x: 0.599216920<br />f(x): 5.794302e-03","x: 0.611250482<br />f(x): 1.347089e-02","x: 0.613881808<br />f(x): 1.556927e-02","x: 0.618025724<br />f(x): 1.917490e-02","x: 0.622353723<br />f(x): 2.332935e-02","x: 0.622383107<br />f(x): 2.335890e-02","x: 0.625788670<br />f(x): 2.690517e-02","x: 0.636628595<br />f(x): 3.976196e-02","x: 0.643964529<br />f(x): 4.976405e-02","x: 0.644493426<br />f(x): 5.052411e-02","x: 0.645776359<br />f(x): 5.238901e-02","x: 0.645860926<br />f(x): 5.251299e-02","x: 0.647895215<br />f(x): 5.553420e-02","x: 0.650484992<br />f(x): 5.948681e-02","x: 0.653104023<br />f(x): 6.360260e-02","x: 0.654517008<br />f(x): 6.587154e-02","x: 0.657524592<br />f(x): 7.081135e-02","x: 0.673783544<br />f(x): 9.990608e-02","x: 0.674770772<br />f(x): 1.017906e-01","x: 0.675054747<br />f(x): 1.023349e-01","x: 0.680683097<br />f(x): 1.133232e-01","x: 0.680961116<br />f(x): 1.138754e-01","x: 0.702227742<br />f(x): 1.582023e-01","x: 0.704717988<br />f(x): 1.635956e-01","x: 0.709583469<br />f(x): 1.742050e-01","x: 0.710654843<br />f(x): 1.765511e-01","x: 0.714457272<br />f(x): 1.848972e-01","x: 0.718015447<br />f(x): 1.927227e-01","x: 0.723388396<br />f(x): 2.045342e-01","x: 0.725540101<br />f(x): 2.092524e-01","x: 0.725987047<br />f(x): 2.102311e-01","x: 0.726558637<br />f(x): 2.114819e-01","x: 0.731621600<br />f(x): 2.225124e-01","x: 0.732516424<br />f(x): 2.244507e-01","x: 0.734512279<br />f(x): 2.287594e-01","x: 0.737180697<br />f(x): 2.344840e-01","x: 0.738705424<br />f(x): 2.377343e-01","x: 0.739069487<br />f(x): 2.385080e-01","x: 0.740455581<br />f(x): 2.414445e-01","x: 0.741409502<br />f(x): 2.434568e-01","x: 0.748831174<br />f(x): 2.588365e-01","x: 0.749535071<br />f(x): 2.602666e-01","x: 0.749664306<br />f(x): 2.605286e-01","x: 0.750500594<br />f(x): 2.622194e-01","x: 0.754496966<br />f(x): 2.701857e-01","x: 0.756725615<br />f(x): 2.745410e-01","x: 0.760011740<br />f(x): 2.808386e-01","x: 0.762794853<br />f(x): 2.860481e-01","x: 0.774359096<br />f(x): 3.063063e-01","x: 0.774913901<br />f(x): 3.072162e-01","x: 0.775151632<br />f(x): 3.076042e-01","x: 0.777464494<br />f(x): 3.113198e-01","x: 0.785622138<br />f(x): 3.235137e-01","x: 0.786789332<br />f(x): 3.251355e-01","x: 0.786794596<br />f(x): 3.251428e-01","x: 0.788967821<br />f(x): 3.280760e-01","x: 0.793744794<br />f(x): 3.341156e-01","x: 0.794867864<br />f(x): 3.354515e-01","x: 0.796235999<br />f(x): 3.370345e-01","x: 0.797486635<br />f(x): 3.384382e-01","x: 0.807617286<br />f(x): 3.482220e-01","x: 0.812497235<br />f(x): 3.518768e-01","x: 0.817265274<br />f(x): 3.547489e-01","x: 0.827444888<br />f(x): 3.584719e-01","x: 0.828318479<br />f(x): 3.586343e-01","x: 0.829846901<br />f(x): 3.588576e-01","x: 0.835028806<br />f(x): 3.590333e-01","x: 0.837323058<br />f(x): 3.588217e-01","x: 0.837988220<br />f(x): 3.587269e-01","x: 0.840272368<br />f(x): 3.582864e-01","x: 0.845703735<br />f(x): 3.565210e-01","x: 0.848009994<br />f(x): 3.554646e-01","x: 0.853573098<br />f(x): 3.521622e-01","x: 0.861732150<br />f(x): 3.453984e-01","x: 0.861830238<br />f(x): 3.453033e-01","x: 0.865760067<br />f(x): 3.412262e-01","x: 0.866718619<br />f(x): 3.401532e-01","x: 0.867074189<br />f(x): 3.397474e-01","x: 0.869437298<br />f(x): 3.369441e-01","x: 0.870388020<br />f(x): 3.357643e-01","x: 0.872394314<br />f(x): 3.331777e-01","x: 0.873966918<br />f(x): 3.310590e-01","x: 0.877567476<br />f(x): 3.259102e-01","x: 0.881154433<br />f(x): 3.203762e-01","x: 0.881483436<br />f(x): 3.198487e-01","x: 0.881582390<br />f(x): 3.196894e-01","x: 0.881867222<br />f(x): 3.192293e-01","x: 0.885000311<br />f(x): 3.140061e-01","x: 0.885308753<br />f(x): 3.134761e-01","x: 0.885837713<br />f(x): 3.125605e-01","x: 0.885864371<br />f(x): 3.125142e-01","x: 0.888569382<br />f(x): 3.077028e-01","x: 0.888875785<br />f(x): 3.071445e-01","x: 0.898413258<br />f(x): 2.884763e-01","x: 0.901136298<br />f(x): 2.827115e-01","x: 0.901794918<br />f(x): 2.812899e-01","x: 0.904401299<br />f(x): 2.755635e-01","x: 0.905660485<br />f(x): 2.727408e-01","x: 0.907350241<br />f(x): 2.688975e-01","x: 0.910695498<br />f(x): 2.611088e-01","x: 0.913723139<br />f(x): 2.538652e-01","x: 0.913893716<br />f(x): 2.534519e-01","x: 0.914995094<br />f(x): 2.507703e-01","x: 0.918030704<br />f(x): 2.432679e-01","x: 0.919775213<br />f(x): 2.388866e-01","x: 0.924501148<br />f(x): 2.267863e-01","x: 0.927406879<br />f(x): 2.191976e-01","x: 0.927782187<br />f(x): 2.182101e-01","x: 0.930878042<br />f(x): 2.100064e-01","x: 0.931187501<br />f(x): 2.091810e-01","x: 0.933324626<br />f(x): 2.034579e-01","x: 0.936814992<br />f(x): 1.940346e-01","x: 0.937093823<br />f(x): 1.932783e-01","x: 0.939901747<br />f(x): 1.856398e-01","x: 0.943952302<br />f(x): 1.745686e-01","x: 0.944297928<br />f(x): 1.736222e-01","x: 0.945776718<br />f(x): 1.695716e-01","x: 0.947504403<br />f(x): 1.648385e-01","x: 0.952090058<br />f(x): 1.522970e-01","x: 0.952508154<br />f(x): 1.511566e-01","x: 0.965143698<br />f(x): 1.172558e-01","x: 0.974213413<br />f(x): 9.408553e-02","x: 0.979036983<br />f(x): 8.235915e-02","x: 0.980708664<br />f(x): 7.841065e-02","x: 0.989605273<br />f(x): 5.855458e-02","x: 0.990730067<br />f(x): 5.619704e-02","x: 0.991780406<br />f(x): 5.402918e-02","x: 1.000887618<br />f(x): 3.669833e-02","x: 1.004990790<br />f(x): 2.982367e-02","x: 1.007218996<br />f(x): 2.635337e-02","x: 1.010101173<br />f(x): 2.215076e-02","x: 1.018527147<br />f(x): 1.181849e-02","x: 1.034919813<br />f(x): 8.145185e-04","x: 1.036715025<br />f(x): 3.856168e-04","x: 1.039296613<br />f(x): 4.632031e-05","x: 1.042551646<br />f(x): 8.859209e-05","x: 1.042610415<br />f(x): 9.419656e-05","x: 1.043267311<br />f(x): 1.685574e-04","x: 1.046652853<br />f(x): 8.935015e-04","x: 1.048250549<br />f(x): 1.434740e-03","x: 1.051210465<br />f(x): 2.775071e-03","x: 1.057753494<br />f(x): 7.289105e-03","x: 1.059063028<br />f(x): 8.447375e-03","x: 1.068055188<br />f(x): 1.865145e-02","x: 1.068376921<br />f(x): 1.908806e-02","x: 1.069983007<br />f(x): 2.133984e-02","x: 1.071602210<br />f(x): 2.373078e-02","x: 1.074818355<br />f(x): 2.883316e-02","x: 1.079069012<br />f(x): 3.627790e-02","x: 1.080958549<br />f(x): 3.983519e-02","x: 1.081140221<br />f(x): 4.018505e-02","x: 1.082410035<br />f(x): 4.266828e-02","x: 1.088682097<br />f(x): 5.587046e-02","x: 1.089236695<br />f(x): 5.710971e-02","x: 1.090871013<br />f(x): 6.082624e-02","x: 1.092213776<br />f(x): 6.395040e-02","x: 1.092601650<br />f(x): 6.486445e-02","x: 1.093810618<br />f(x): 6.774614e-02","x: 1.095332919<br />f(x): 7.144349e-02","x: 1.101194226<br />f(x): 8.634810e-02","x: 1.101516541<br />f(x): 8.719646e-02","x: 1.102163497<br />f(x): 8.890777e-02","x: 1.110370968<br />f(x): 1.115007e-01","x: 1.110814874<br />f(x): 1.127639e-01","x: 1.115451018<br />f(x): 1.261603e-01","x: 1.117614278<br />f(x): 1.325206e-01","x: 1.118347201<br />f(x): 1.346886e-01","x: 1.118831970<br />f(x): 1.361259e-01","x: 1.122245503<br />f(x): 1.463102e-01","x: 1.123039607<br />f(x): 1.486927e-01","x: 1.125543623<br />f(x): 1.562279e-01","x: 1.127891121<br />f(x): 1.633119e-01","x: 1.130527630<br />f(x): 1.712727e-01","x: 1.138224932<br />f(x): 1.943543e-01","x: 1.142493332<br />f(x): 2.069096e-01","x: 1.144357832<br />f(x): 2.123090e-01","x: 1.151350895<br />f(x): 2.319451e-01","x: 1.152764121<br />f(x): 2.357722e-01","x: 1.160921914<br />f(x): 2.566945e-01","x: 1.163553908<br />f(x): 2.629563e-01","x: 1.164207715<br />f(x): 2.644705e-01","x: 1.164895393<br />f(x): 2.660447e-01","x: 1.168750084<br />f(x): 2.745048e-01","x: 1.173543702<br />f(x): 2.840996e-01","x: 1.177436750<br />f(x): 2.910702e-01","x: 1.180469985<br />f(x): 2.959546e-01","x: 1.181392613<br />f(x): 2.973413e-01","x: 1.182689247<br />f(x): 2.992102e-01","x: 1.185255380<br />f(x): 3.026275e-01","x: 1.186948811<br />f(x): 3.046730e-01","x: 1.187983077<br />f(x): 3.058386e-01","x: 1.189196492<br />f(x): 3.071241e-01","x: 1.189754079<br />f(x): 3.076848e-01","x: 1.191599427<br />f(x): 3.094041e-01","x: 1.193867370<br />f(x): 3.112263e-01","x: 1.194596350<br />f(x): 3.117429e-01","x: 1.196068349<br />f(x): 3.126826e-01","x: 1.197867628<br />f(x): 3.136412e-01","x: 1.198701330<br />f(x): 3.140139e-01","x: 1.205027173<br />f(x): 3.153425e-01","x: 1.209785923<br />f(x): 3.145685e-01","x: 1.214812443<br />f(x): 3.120786e-01","x: 1.215375662<br />f(x): 3.116924e-01","x: 1.221904914<br />f(x): 3.056497e-01","x: 1.223082188<br />f(x): 3.042559e-01","x: 1.228591651<br />f(x): 2.965240e-01","x: 1.230032497<br />f(x): 2.941791e-01","x: 1.230124415<br />f(x): 2.940251e-01","x: 1.231743481<br />f(x): 2.912248e-01","x: 1.233785821<br />f(x): 2.874607e-01","x: 1.234464588<br />f(x): 2.861534e-01","x: 1.237042047<br />f(x): 2.809384e-01","x: 1.237964989<br />f(x): 2.789761e-01","x: 1.240168535<br />f(x): 2.740940e-01","x: 1.243914014<br />f(x): 2.651805e-01","x: 1.244713207<br />f(x): 2.631821e-01","x: 1.256837931<br />f(x): 2.291654e-01","x: 1.258682101<br />f(x): 2.234594e-01","x: 1.258803838<br />f(x): 2.230785e-01","x: 1.259933153<br />f(x): 2.195212e-01","x: 1.259981017<br />f(x): 2.193695e-01","x: 1.262582012<br />f(x): 2.110178e-01","x: 1.263241045<br />f(x): 2.088696e-01","x: 1.264439603<br />f(x): 2.049322e-01","x: 1.265856921<br />f(x): 2.002280e-01","x: 1.272650640<br />f(x): 1.770926e-01","x: 1.274434916<br />f(x): 1.708966e-01","x: 1.275801233<br />f(x): 1.661300e-01","x: 1.276385462<br />f(x): 1.640873e-01","x: 1.276889733<br />f(x): 1.623223e-01","x: 1.278317175<br />f(x): 1.573189e-01","x: 1.278539880<br />f(x): 1.565376e-01","x: 1.298999840<br />f(x): 8.667276e-02","x: 1.301958857<br />f(x): 7.736980e-02","x: 1.306383178<br />f(x): 6.410497e-02","x: 1.310913282<br />f(x): 5.145961e-02","x: 1.317015793<br />f(x): 3.618483e-02","x: 1.317316419<br />f(x): 3.548991e-02","x: 1.326173372<br />f(x): 1.772942e-02","x: 1.333855006<br />f(x): 7.008232e-03","x: 1.335602424<br />f(x): 5.229175e-03","x: 1.337744907<br />f(x): 3.395174e-03","x: 1.341999861<br />f(x): 9.118295e-04","x: 1.346873380<br />f(x): 4.709426e-06","x: 1.349286202<br />f(x): 3.329503e-04","x: 1.354015994<br />f(x): 2.479711e-03","x: 1.354364959<br />f(x): 2.716920e-03","x: 1.364486429<br />f(x): 1.424055e-02","x: 1.366524590<br />f(x): 1.762139e-02","x: 1.369812216<br />f(x): 2.379175e-02","x: 1.370065109<br />f(x): 2.430228e-02","x: 1.370182534<br />f(x): 2.454105e-02","x: 1.372982416<br />f(x): 3.055187e-02","x: 1.375600044<br />f(x): 3.670753e-02","x: 1.376296311<br />f(x): 3.842915e-02","x: 1.376872054<br />f(x): 3.987887e-02","x: 1.377581894<br />f(x): 4.169836e-02","x: 1.377682462<br />f(x): 4.195898e-02","x: 1.377861467<br />f(x): 4.242460e-02","x: 1.378717248<br />f(x): 4.468103e-02","x: 1.379417208<br />f(x): 4.656353e-02","x: 1.383726204<br />f(x): 5.885088e-02","x: 1.383914399<br />f(x): 5.941371e-02","x: 1.386705477<br />f(x): 6.800059e-02","x: 1.389719391<br />f(x): 7.774468e-02","x: 1.391071399<br />f(x): 8.226121e-02","x: 1.391544872<br />f(x): 8.386278e-02","x: 1.402752850<br />f(x): 1.241676e-01","x: 1.403724392<br />f(x): 1.278202e-01","x: 1.412333647<br />f(x): 1.605956e-01","x: 1.413207163<br />f(x): 1.639250e-01","x: 1.414748651<br />f(x): 1.697844e-01","x: 1.424544713<br />f(x): 2.059438e-01","x: 1.425537355<br />f(x): 2.094460e-01","x: 1.425621147<br />f(x): 2.097398e-01","x: 1.426627610<br />f(x): 2.132465e-01","x: 1.431491759<br />f(x): 2.295292e-01","x: 1.433126647<br />f(x): 2.347212e-01","x: 1.433402073<br />f(x): 2.355805e-01","x: 1.435870669<br />f(x): 2.430727e-01","x: 1.437045356<br />f(x): 2.464988e-01","x: 1.439471008<br />f(x): 2.532693e-01","x: 1.440086501<br />f(x): 2.549192e-01","x: 1.443356820<br />f(x): 2.631944e-01","x: 1.444272452<br />f(x): 2.653568e-01","x: 1.449185552<br />f(x): 2.757209e-01","x: 1.449447054<br />f(x): 2.762114e-01","x: 1.454531195<br />f(x): 2.844460e-01","x: 1.461140713<br />f(x): 2.912310e-01","x: 1.462285600<br />f(x): 2.919339e-01","x: 1.467937094<br />f(x): 2.932910e-01","x: 1.471153862<br />f(x): 2.924713e-01","x: 1.474237952<br />f(x): 2.905932e-01","x: 1.485336358<br />f(x): 2.751260e-01","x: 1.486920998<br />f(x): 2.718441e-01","x: 1.488323667<br />f(x): 2.687263e-01","x: 1.489704037<br />f(x): 2.654670e-01","x: 1.498023848<br />f(x): 2.420682e-01","x: 1.499175326<br />f(x): 2.383618e-01"],"type":"scatter","mode":"lines","line":{"width":3.7795275590551185,"color":"rgba(0,0,255,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":26.228310502283104,"r":7.3059360730593621,"b":40.182648401826491,"l":43.105022831050235},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.18500000000000003,1.6850000000000001],"tickmode":"array","ticktext":["0.0","0.5","1.0","1.5"],"tickvals":[0,0.5,1,1.5],"categoryorder":"array","categoryarray":["0.0","0.5","1.0","1.5"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"x","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.36499999999999999,1.0649999999999999],"tickmode":"array","ticktext":["0.0","0.4","0.8"],"tickvals":[0,0.40000000000000002,0.80000000000000004],"categoryorder":"array","categoryarray":["0.0","0.4","0.8"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"y","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.8897637795275593,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"12c470c1e18":{"x":{},"y":{},"type":"scatter"},"12c4d9b410d":{"x":{},"y":{}}},"cur_data":"12c470c1e18","visdat":{"12c470c1e18":["function (y) ","x"],"12c4d9b410d":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="implementemos-knn" class="level1" data-number="15">
+<h1 data-number="15"><span class="header-section-number">15</span> Implementemos Knn</h1>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiado");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiado");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./ssplines.html" class="pagination-link" aria-label="_Smoothing Splines_">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title"><em>Smoothing Splines</em></span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./references.html" class="pagination-link" aria-label="Referencias">
+        <span class="nav-page-text">Referencias</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

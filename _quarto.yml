@@ -31,6 +31,7 @@ book:
         - flex-lineal.qmd
         - no-lineales.qmd
         - ssplines.qmd
+        - locales.qmd
           
     - references.qmd
 
@@ -42,7 +43,7 @@ reference-location: margin
 
 format:
   html:
-    theme: default
+    theme: pulse
     css: styles/global.css
     class-output: hscroll
     mermaid: 

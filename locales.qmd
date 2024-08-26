@@ -1,0 +1,57 @@
+# Suavizadores locales
+
+## _Kernel Smoothing_
+
+Otra gran familia de modelos predictivos son los conocidos métodos de
+suavizado con kernel. A diferencia de los modelos vistos hasta ahora, estos
+predicen de forma __local__. Caen dentro de los métodos no paramétricos.
+Ya hemos visto uno de estos algoritmos: KNN. 
+
++ Recordemos el algoritmo de $k$ vecinos más cercanos 
+$$\hat{f}(x_0)=\frac{1}{k} \sum_{i:x_i \in \mathcal{N}_k(x_0)} y_i$$
++ La predicción se hace punto a punto (de forma local).
++ $\mathcal{N}_k(x_0)$ Es el _vecindario_ del punto $x_0$, es decir, el conjunto
+de los $k$ puntos más cercanos a $x_0$.
++ La predicción es sencillamente el promedio (de la variable $y$ claro está) para
+aquellos $k$ puntos más cercanos a $x_0$.
++ Sencillo, pero aún así muy efectivo para algunos casos.
+
+# Veamos una simulación
+Consideremos el mismo conjunto de datos 
+
+```{r, echo=T, out.width="70%"}
+library(ggplot2)
+library(plotly)
+library(caret)
+
+n <- 500
+x <- runif(n, 0, 1.5)
+f <- function(x) (cos(2.5*exp(1.1*x))^2/(2.1*sqrt(x)+exp(1)/pi))
+error <- rnorm(n, 0, 0.2)
+y <- f(x) + error
+datos <- data.frame(x,y)
+
+fig1 <- ggplot(data = data.frame(x,y)) + ylim(-0.3, 1) + xlim(-0.1, 1.6) + geom_point(aes(x=x, y=y)) +  geom_line(aes(x = x, y = f(x)), col = "blue", lwd = 1) 
+
+ggplotly(fig1)
+
+```
+
+# Implementemos Knn
+
+```{r}
+#| eval: false
+#| echo: false
+
+mod_knn <- knnreg(x = datos, y = y, k = 10)
+y_pred <- predict(mod_knn, data.frame(x))
+sub_data <- sample(1:n, size = 350, replace = F)
+datos_train <- datos[sub_data,]
+datos_test <- datos[-sub_data,]
+
+
+mod_knn <- knnreg(x = datos_train, y = y, k = 10)
+predict(mod_knn, datos_test$y)
+
+
+```
