@@ -1,0 +1,208 @@
+---
+title: "Modelos no lineales"
+---
+
+
+# Modelos no lineales en los predictores
+
+Veamos ahora el control de flexibilidad del modelo desde el punto de vista del aumento de la familia de funciones consideradas y no del número de variables involucradas.
+
+<!-- <hr> -->
+
+## Regresión polinómica
+
+Consideremos un modelo lineal en una sola variable $y_i = \beta_0 + \beta_1 x_i + \epsilon_i$, al pensar en aumentar la flexibilidad del modelo para abordar problemas más complejos, podemos pensar en agregar términos cuadráticos, cúbicos y polinómicos de alto grado:
+
++ $y_i = \beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \epsilon_i$
++ $y_i = \beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \beta_3 x_i^3 + \epsilon_i$
++ $y_i = \beta_0 + \beta_1 x_{i} + \beta_2 x_{i}^2 +...+ \beta_p x_{i}^p + \epsilon_i$
+
+Estos modelos pueden llamarse modelos cuadráticos, cúbicos; y en general: modelos polinómicos. 
+Las ecuaciones son no lineales en $x$ pero siguen siendo modelos lineales en los parámetros, por lo que se resuelven de la forma habitual usando cuadrados mínimos ordinarios (OLS)
+
+Podemos agregar tantos términos al polinomio como sea necesario para obtener un modelo bastante flexible, pero este enfoque tiene muchos inconvenientes y suele evitarse en la práctica. Para ver por qué, hagamos algunas simulaciones. 
+
+### Datos simulados
+
+Consideremos la función
+
+$$f(x)=2 + 1.5 \mathrm{sen}(2x) + 0.07x^2$$
+
+Y un ruido aleatorio $\varepsilon_i$ con una distribución normal estándar. Los datos se generan mediante la ecuación:
+
+$$y_i=2 + 1.5\mathbb{sen}(2x_i) + 0.07x_i^2 + \varepsilon_i$$
+
+```{r, message=F, warning=F}
+library(tidyverse)
+library(plotly)
+
+set.seed(789)
+n <- 200
+f <- function(x) 2 + 1.5*sin(2*x) + 0.07*x^2
+x <- runif(n, 0, 8)
+error = rnorm(n)
+y <- f(x) + error
+
+datos <- tibble(y = y, x = x)
+
+plot1 <- datos |> ggplot(aes(x,y)) + 
+  geom_point() +
+  geom_function(fun = f, colour = "red", linewidth = 1) +
+  labs(title = "Función y datos simulados")
+plot1
+```
+
+En la gráfica, podemos ver la función $f(x)$ que debemos estimar a partir de los datos
+
+
+### Extrapolación
+
+Vamos a resaltar primero, lo deficiente y poco recomendable que es usar regresión polinómica para **extrapolar** predicciones fuera del rango de valores observados (esto no solo es cierto para regresión polinómica sino para la mayoría de métodos). Para hacerlo, usemos solo la parte _interna_ de los datos y miremos cómo se comporta más allá de este intervalo al ajustar polinomios de grados superiores. Para facilitar la tarea, usamos (entre otras cosas) la función `poly` para crear de forma rápida los valores de los polinomios requeridos para el ajuste. Veamos un pequeño ejemplo
+
+```{r}
+xx <- c(1,2,3,4)
+poly(x = xx, degree = 3)
+```
+Por defecto genera polinomios ortogonales, para evitarlo usamos el argumento `raw = T`
+
+```{r}
+poly(xx, 3, raw = T, simple = T)
+```
+Con esto, podemos ajustar modelos polinómicos de forma más sencilla
+
+
+```{r, warning=F, message=F}
+library(randomcoloR) # para generar colores de forma aleatoria
+library(patchwork)
+pg <- floor(n/5):floor(4*n/5)
+datos_sub <- datos |> arrange(x) |> slice(pg)
+
+plot2 <- plot1 + geom_point(data = datos_sub, mapping = aes(x, y),
+                   colour = "blue")
+
+for(i in 3:6){
+  ajuste.lineal <- lm(y ~ poly(x, i, raw = T),
+                      data = datos_sub)
+  y_pred <- predict(ajuste.lineal, newdata = datos)
+  plot3 <- plot2 + geom_line(aes(x=x, y=y_pred), size=1, colour = randomColor())
+  print(plot3)
+}
+```
+
+Analice las gráficas y concluya al respecto.
+
+### Varianza de los modelos
+
+Podemos evaluar el desempeño de un polinomio de alto grado desde otro punto de vista: Cómo cambia la estimación al cambiar los datos
+
+![](meme.png)
+
+```{r, eval = T}
+d <- 20
+for(i in 1:4){
+  x <- runif(n, 0, 8)
+  error = rnorm(n)
+  y <- f(x) + error
+  assign(paste0("data", i), tibble(x = x, y = y))
+  modelo.lineal <- lm(y ~ poly(x, degree = d, raw = T))
+  assign(paste0("y_pred",i), predict(modelo.lineal))
+}
+
+plot4 <- ggplot() +
+  geom_function(fun = f, color = "red", linewidth = 1) +
+  geom_line(aes(x, y = y_pred1), data = data1,
+            linewidth = 0.8, color = randomColor()) +
+  geom_line(aes(x, y = y_pred2), data = data2, 
+            linewidth = 0.8, color = randomColor()) +
+  geom_line(aes(x, y = y_pred3), data = data3, 
+            linewidth = 0.8, color = randomColor()) +
+  geom_line(aes(x, y = y_pred4), data = data4, 
+            linewidth = 0.8, color = randomColor())
+# plot4
+ggplotly(plot4)
+```
+
+
+<!-- ```{r} -->
+<!-- plot(f,xlim=c(-1,9),ylim=c(-1,10),lwd=2) -->
+
+<!-- d <- 20 -->
+<!-- for(i in 1:4){ -->
+<!--   x <- sort(runif(n,0,8)); error = rnorm(n) -->
+<!--   y <- f(x) + error -->
+<!--   lines(x,lm(y~poly(x,d,raw = T))$fitted.values,col=i+1,lwd=2) -->
+<!--   } -->
+<!-- ``` -->
+
+¿Qué puede decir sobre estos resultados?
+
+
+## _Regression Splines_
+
+Así que aumentar la flexibilidad del modelo a través del grado del polinomio no es el camino a seguir. En su lugar podemos ajustar varios modelos sencillos en subintervalos. 
+
+Este enfoque nos trae de vuelta a un problema expresado en bases funcionales (¿por qué se da eso? explique), donde debemos estimar unos parámetros lineales (entonces, ¿cuál es la ventaja de estos métodos?) para resolver el modelo.
+
+Las bases dependerán del tipo de modelo ajustado y de la cantidad y posición de los nodos. Como el objetivo es facilitar la tarea, por lo común, los nodos o puntos de corte se ponen de forma uniforme en todo el intervalo (piense en qué situaciones podría ser ventajoso hacerlo de otra manera).^[Bono para quien deduzca las bases funcionales de un _cubic spline_ (ver ejercicio 1 del cap 7 del libro guía)]
+
+La flexibilidad del modelo resultante se puede controlar de 2 formas:
+
++ Variando la complejidad del modelo ajustado en cada subintervalo.
++ Variando la cantidad de nodos. 
+
+Pero el lema es "Ajustar varios modelos __sencillos__", entonces lo más recomendado (y lo que mejor funciona en la práctica) es variar la cantidad de nodos. Cuando estos modelos sencillos son polinomios de bajo grado y tienen ciertas restricciones en los puntos de corte (¿cuáles son esas restricciones o condiciones?) se obtienen los modelos conocidos como _regression splines_
+
+### Simulaciones
+
+Veamos cómo resulta en las simulaciones. Para facilitar la tarea, usaremos el paquete `splines` en `R`
+
+```{r}
+library(splines)
+
+x <- runif(n, 0, 8)
+error = rnorm(n)
+y <- f(x) + error
+
+datos <- tibble(y = y, x = x)
+
+plot1 <- datos |> ggplot(aes(x,y)) + 
+  geom_point() +
+  geom_function(fun = f, colour = "red", linewidth = 1) +
+  labs(title = "Función y datos simulados")
+plot1
+
+d <- 4
+# con 3 nodos
+nodos <- seq(0, 8, length.out = 5)
+nodos <- nodos[-c(1,length(nodos))]
+d_spline <- lm(y ~ bs(x, knots = nodos, degree = d))
+ds_pred1 <- predict(object = d_spline)
+
+# con 1 nodo
+nodos <- seq(0, 8, length.out = 3)
+nodos <- nodos[-c(1,length(nodos))]
+d_spline <- lm(y ~ bs(x, knots = nodos, degree = d))
+ds_pred2 <- predict(object = d_spline)
+
+# con 20 nodos
+nodos <- seq(0, 8, length.out = 22)
+nodos <- nodos[-c(1,length(nodos))]
+d_spline <- lm(y ~ bs(x, knots = nodos, degree = d))
+ds_pred3 <- predict(object = d_spline)
+
+plot5 <- plot1 +
+  geom_line(aes(x = x, y = ds_pred1), linewidth = 0.5, color = "purple") +
+  geom_line(aes(x = x, y = ds_pred2), linewidth = 0.5, color = "orange") +
+  geom_line(aes(x = x, y = ds_pred3), linewidth = 0.5, color = "blue")
+
+plot5
+ggplotly(plot5)
+
+```
+
+
+:::{.callout-note}
+## Ejercicio para la casa para reducir los niveles de cortisol
+
+tomar un vector de cantidad de puntos de corte (nodos) y elegir el mejor valor con validación cruzada. 
+:::

@@ -1,3 +1,7 @@
+---
+title: "Calibración del modelo lineal"
+---
+
 # Controlando la flexibilidad del modelo de regresión lineal
 
 Existen diversos métodos para comparar modelos lineales. La flexibilidad del modelo se puede medir en términos del número de variables, de tal forma que entre más variables tenemos en un modelo lineal, más flexible es. Hay varias formas de controlar esta flexibilidad:
@@ -16,7 +20,7 @@ Se ajustan todos los modelos posibles, desde el modelo con 0 variables (solo el 
 
 Para evitar el crecimiento exponencial en la cantidad de modelos a ajustar, 
 se puede optar por un procedimiento heurístico de selección hacia adelante o hacia atrás.
-En el caso de selección hacia adelante, se inicia con el modelo que no contiene variables ($\mathcal{M}_0$), y se forman $p$ modelos univariados agregando cada una de las $p$ variables, se escoge el _mejor_ de estos modelos (que puede ser elegido con el $R^2$ ya que tienen el mismo número de variables), llamemos a este modelo $\mathcal{M}_1$. A $\mathcal{M}_1$ se le agrega cada una de las $p-1$ variables restantes y se elige el _mejor_ modelo de 2 variables: $\mathcal{M}_2$. Al final se tendrán $1 + \frac{p(p+1)}{2}$^[Es fácil comprobar que $$1 + p + (p-1) + (p-2) + \cdots + 1 = 1 + \sum_{k=1}^{p}k = 1 + \frac{p(p+1)}{2}$$] modelos:
+En el caso de selección hacia adelante, se inicia con el modelo que no contiene variables ($\mathcal{M}_0$), y se forman $p$ modelos univariados agregando cada una de las $p$ variables, se escoge el _mejor_ de estos modelos (que puede ser elegido con el $R^2$ ya que tienen el mismo número de variables), llamemos a este modelo $\mathcal{M}_1$. A $\mathcal{M}_1$ se le agrega cada una de las $p-1$ variables restantes y se elige el _mejor_ modelo de 2 variables: $\mathcal{M}_2$. Al final se tendrán $1 + \frac{p(p+1)}{2}$^[Es fácil comprobar que $$1 + p + (p-1) + \cdots + 1 = 1 + \sum_{k=1}^{p}k = 1 + \frac{p(p+1)}{2}$$] modelos:
 $$\mathcal{M}_0, \mathcal{M}_1, \mathcal{M}_2, \cdots, \mathcal{M}_p$$
 Para elegir entre estos modelos, no es adecuado el $R^2$ (¿por qué?) y debe recurrirse a medidas tales como: $R_{adj}^2$, $AIC$, $C_p$ y $BIC$, sin olvidar que para el $R_{adj}^2$ se busca el modelo con mayor valor, y para el resto de métricas se busca el menor valor (¿por qué?). También es posible hacer _Cross Validation_ (CV) y elegir el modelo con menor $MSE_{cv}$, pero para el caso de regresión lineal, no es necesario hacerlo (¿por qué?). 
 
